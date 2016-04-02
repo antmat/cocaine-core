@@ -31,61 +31,111 @@ namespace cocaine {
 // Configuration
 
 struct config_t {
-    config_t(const std::string& source);
+public:
+    struct path_t {
+        virtual
+        const std::vector<std::string>&
+        plugins() const = 0;
+
+        virtual
+        const std::string&
+        runtime() const = 0;
+    };
+
+    struct network_t {
+        struct ports_t {
+            virtual
+            const std::map<std::string, port_t>&
+            pinned() const = 0;
+
+            virtual
+            const std::tuple<port_t, port_t>&
+            shared() const = 0;
+        };
+
+        virtual
+        const ports_t&
+        ports() const = 0;
+
+        virtual
+        const std::string&
+        endpoint() const = 0;
+
+        virtual
+        const std:string&
+        hostname() const = 0;
+
+        virtual
+        size_t
+        pool() const = 0;
+    };
+
+    struct logging_t {
+        virtual
+        const dynamic_t&
+        loggers() const = 0;
+
+        virtual
+        logging::priorities
+        severity() const = 0;
+    };
+
+    struct component_t {
+        virtual
+        const std::string&
+        type() const = 0;
+
+        virtual
+        const dynamic_t&
+        args() const = 0;
+    };
+
+    typedef std::function<void(const component_t&)> component_visitor_t;
+
+    virtual
+    const network_t&
+    network() const = 0;
+
+    virtual
+    const logging_t&
+    logging() const = 0;
+
+    virtual
+    const path_t&
+    path() = const 0;
+
+    virtual
+    const component_t&
+    service(const std::string& name) const = 0;
+
+    virtual
+    const component_t&
+    storage(const std::string& name) const = 0;
+
+    virtual
+    const component_t&
+    unicorn(const std::string& name) const = 0;
+
+    virtual
+    const component_t&
+    visit_services(component_visitor_t& visitor) const = 0;
+
+    virtual
+    const component_t&
+    visit_storages(component_visitor_t& visitor) const = 0;
+
+    virtual
+    const component_t&
+    visit_unicorns(component_visitor_t& visitor) const = 0;
 
     static
     int
     versions();
 
-public:
-    struct {
-        // Paths to load plugins from
-        std::vector<std::string> plugins;
-        std::string runtime;
-    } path;
-
-    struct {
-        // An endpoint where all the services will be bound. Note that binding on [::] will bind on
-        // 0.0.0.0 too as long as the "net.ipv6.bindv6only" sysctl is set to 0 (default).
-        asio::ip::address endpoint;
-
-        // Local hostname. In case it can't be automatically detected by resolving a CNAME for the
-        // contents of /etc/hostname via the default system resolver, it can be configured manually.
-        std::string hostname;
-
-        // I/O thread pool size.
-        size_t pool;
-
-        struct {
-            // Pinned ports for static service port allocation.
-            std::map<std::string, port_t> pinned;
-
-            // Port range to populate the dynamic port pool for service port allocation.
-            std::tuple<port_t, port_t> shared;
-        } ports;
-    } network;
-
-    struct logging_t {
-        dynamic_t loggers;
-        logging::priorities severity;
-    };
-
-    struct component_t {
-        std::string type;
-        dynamic_t   args;
-    };
-
-    typedef std::map<std::string, component_t> component_map_t;
-
-    component_map_t services;
-    component_map_t storages;
-    component_map_t unicorns;
-    logging_t       logging;
-
-#ifdef COCAINE_ALLOW_RAFT
-    bool create_raft_cluster;
-#endif
 };
+
+std::unique_ptr<config_t>
+make_config(const std::string& source);
 
 } // namespace cocaine
 

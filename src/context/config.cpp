@@ -33,7 +33,7 @@
 
 #include "rapidjson/reader.h"
 
-using namespace cocaine;
+namespace cocaine {
 
 namespace fs = boost::filesystem;
 
@@ -183,8 +183,6 @@ private:
 
 } // namespace
 
-namespace cocaine {
-
 template<>
 struct dynamic_converter<config_t::component_t> {
     typedef config_t::component_t result_type;
@@ -232,7 +230,113 @@ struct dynamic_converter<config_t::logging_t> {
     }
 };
 
-} // namespace cocaine
+
+struct config_impl_t : public config_t {
+public:
+    struct path_t : public config_t::path_t {
+        virtual
+        const std::vector<std::string>&
+        plugins() const {
+            return m_plugins;
+        }
+
+        virtual
+        const std::string&
+        runtime() const {
+            return m_runtime;
+        }
+
+        // Paths to load plugins from
+        std::vector<std::string> m_plugins;
+        std::string m_runtime;
+    };
+
+
+
+
+    config_impl_t(const std::string& source) {
+
+    }
+
+
+
+    const config_t::path_t&
+    path() const {
+        return m_path;
+    }
+
+    struct network_t : public config_t::network_t {
+        struct ports_t : public config_t::network_t::ports_t {
+            virtual
+            const std::map<std::string, port_t>&
+            pinned() const {
+                return pinned;
+            }
+
+            virtual
+            const std::tuple<port_t, port_t>&
+            shared() const {
+                return shared;
+            };
+
+            // Pinned ports for static service port allocation.
+            std::map<std::string, port_t> pinned;
+
+            // Port range to populate the dynamic port pool for service port allocation.
+            std::tuple<port_t, port_t> shared;
+        };
+
+        virtual
+        const ports_t&
+        ports() const {
+            return m_ports;
+        }
+
+        virtual
+        const std::string&
+            endpoint() const = 0;
+
+        virtual
+        const std:string&
+        hostname() const = 0;
+
+        virtual
+        size_t
+            pool() const = 0;
+        // An endpoint where all the services will be bound. Note that binding on [::] will bind on
+        // 0.0.0.0 too as long as the "net.ipv6.bindv6only" sysctl is set to 0 (default).
+        asio::ip::address endpoint;
+
+        // Local hostname. In case it can't be automatically detected by resolving a CNAME for the
+        // contents of /etc/hostname via the default system resolver, it can be configured manually.
+        std::string hostname;
+
+        // I/O thread pool size.
+        size_t pool;
+    };
+
+    struct logging_t : public config_t::logging_t {
+        dynamic_t loggers;
+        logging::priorities severity;
+    };
+
+    struct component_t : public config_t::component_t {
+        std::string type;
+        dynamic_t   args;
+    };
+
+    typedef std::map<std::string, component_t> component_map_t;
+
+    path_t m_path;
+    network_t m_network;
+    logging_t m_logging;
+    component_map_t m_services;
+    component_map_t m_storages;
+    component_map_t m_unicorns;
+
+
+};
+
 
 config_t::config_t(const std::string& source) {
     const auto source_file_status = fs::status(source);
@@ -347,3 +451,5 @@ int
 config_t::versions() {
     return COCAINE_VERSION;
 }
+
+} //  namespace cocaine
