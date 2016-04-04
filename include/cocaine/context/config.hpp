@@ -22,9 +22,12 @@
 #define COCAINE_CONTEXT_CONFIG_HPP
 
 #include "cocaine/common.hpp"
-#include "cocaine/dynamic/dynamic.hpp"
 
-#include <asio/ip/address.hpp>
+#include <boost/optional/optional_fwd.hpp>
+
+#include <map>
+#include <string>
+#include <vector>
 
 namespace cocaine {
 
@@ -62,7 +65,7 @@ public:
         endpoint() const = 0;
 
         virtual
-        const std:string&
+        const std::string&
         hostname() const = 0;
 
         virtual
@@ -90,7 +93,20 @@ public:
         args() const = 0;
     };
 
-    typedef std::function<void(const component_t&)> component_visitor_t;
+    struct component_group_t {
+        typedef std::function<void(const std::string name, const component_t&)> component_visitor_t;
+
+        virtual
+        size_t size() const = 0;
+
+        virtual
+        boost::optional<const component_t&>
+        get(const std::string& name) const = 0;
+
+        virtual
+        void
+        visit(const component_visitor_t& visitor) const = 0;
+    };
 
     virtual
     const network_t&
@@ -102,31 +118,19 @@ public:
 
     virtual
     const path_t&
-    path() = const 0;
+    path() const = 0;
 
     virtual
-    const component_t&
-    service(const std::string& name) const = 0;
+    const component_group_t&
+    services() const = 0;
 
     virtual
-    const component_t&
-    storage(const std::string& name) const = 0;
+    const component_group_t&
+    storages() const = 0;
 
     virtual
-    const component_t&
-    unicorn(const std::string& name) const = 0;
-
-    virtual
-    const component_t&
-    visit_services(component_visitor_t& visitor) const = 0;
-
-    virtual
-    const component_t&
-    visit_storages(component_visitor_t& visitor) const = 0;
-
-    virtual
-    const component_t&
-    visit_unicorns(component_visitor_t& visitor) const = 0;
+    const component_group_t&
+    unicorns() const = 0;
 
     static
     int
