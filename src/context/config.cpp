@@ -185,54 +185,6 @@ private:
 
 } // namespace
 
-//template<>
-//struct dynamic_converter<config_t::component_t> {
-//    typedef config_t::component_t result_type;
-//
-//    static
-//    result_type
-//    convert(const dynamic_t& from) {
-//        return config_impl_t::component_t {
-//            from.as_object().at("type", "unspecified").as_string(),
-//            from.as_object().at("args", dynamic_t::object_t())
-//        };
-//    }
-//};
-
-//template<>
-//struct dynamic_converter<config_t::logging_t> {
-//    typedef config_t::logging_t result_type;
-//
-//    static
-//    result_type
-//    convert(const dynamic_t& from) {
-//        result_type result{
-//            from.as_object().at("loggers"),
-//            logmask(from.as_object().at("severity", "info").as_string())
-//        };
-//
-//        return result;
-//    }
-//
-//    static inline
-//    logging::priorities
-//    logmask(const std::string& severity) {
-//        static std::map<std::string, logging::priorities> priorities{
-//            {"debug",   logging::debug  },
-//            {"info",    logging::info   },
-//            {"warning", logging::warning},
-//            {"error",   logging::error  }
-//        };
-//
-//        try {
-//            return priorities.at(severity);
-//        } catch (const std::out_of_range&) {
-//            throw cocaine::error_t("severity \"{}\" not found", severity);
-//        }
-//    }
-//};
-
-
 struct config_impl_t : public config_t {
 public:
     struct path_t : public config_t::path_t {
@@ -401,8 +353,8 @@ public:
         }
 
         logging_t(const dynamic_t::object_t& source) {
-            if(source.count("logging") == 0) {
-                throw error_t("missing \"logging\" section in configuration file");
+            if(source.count("loggers") == 0) {
+                throw error_t("missing \"logging.loggers\" field in configuration file");
             }
             m_loggers = source.at("loggers");
 
@@ -513,13 +465,21 @@ public:
     }
 
     virtual
-    boost::optional<const config_t::component_group_t&>
-    component_group(const std::string& name) const {
-        auto it = component_groups.find(name);
-        if(it == component_groups.end()) {
-            return boost::none;
-        }
-        return it->second;
+    const component_group_t&
+    services() const {
+        return component_groups.at("services");
+    }
+
+    virtual
+    const component_group_t&
+    storages() const {
+        return component_groups.at("storages");
+    }
+
+    virtual
+    const component_group_t&
+    unicorns() const {
+        return component_groups.at("unicorns");
     }
 
     static
@@ -592,6 +552,11 @@ public:
 int
 config_t::versions() {
     return COCAINE_VERSION;
+}
+
+std::unique_ptr<config_t>
+make_config(const std::string& source) {
+    return std::unique_ptr<config_t>(new config_impl_t(source));
 }
 
 } //  namespace cocaine

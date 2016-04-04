@@ -72,7 +72,6 @@ SET_TARGET_PROPERTIES(cocaine-util PROPERTIES
         COMPILE_FLAGS -fPIC)
 
 ADD_LIBRARY(cocaine-core SHARED
-        src/test.cpp
     src/actor.cpp
     src/actor_unix.cpp
     src/api.cpp

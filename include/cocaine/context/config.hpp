@@ -35,6 +35,8 @@ namespace cocaine {
 
 struct config_t {
 public:
+    virtual ~config_t() {}
+
     struct path_t {
         virtual
         const std::vector<std::string>&
