@@ -35,9 +35,13 @@ namespace cocaine {
 
 struct config_t {
 public:
-    virtual ~config_t() {}
+    virtual
+    ~config_t() {}
 
     struct path_t {
+        virtual
+        ~path_t() {}
+
         virtual
         const std::vector<std::string>&
         plugins() const = 0;
@@ -50,6 +54,9 @@ public:
     struct network_t {
         struct ports_t {
             virtual
+            ~ports_t() {}
+
+            virtual
             const std::map<std::string, port_t>&
             pinned() const = 0;
 
@@ -57,6 +64,9 @@ public:
             const std::tuple<port_t, port_t>&
             shared() const = 0;
         };
+
+        virtual
+        ~network_t() {}
 
         virtual
         const ports_t&
@@ -77,6 +87,9 @@ public:
 
     struct logging_t {
         virtual
+        ~logging_t() {}
+
+        virtual
         const dynamic_t&
         loggers() const = 0;
 
@@ -86,6 +99,9 @@ public:
     };
 
     struct component_t {
+        virtual
+        ~component_t() {}
+
         virtual
         const std::string&
         type() const = 0;
@@ -97,6 +113,9 @@ public:
 
     struct component_group_t {
         typedef std::function<void(const std::string name, const component_t&)> component_visitor_t;
+
+        virtual
+        ~component_group_t() {}
 
         virtual
         size_t size() const = 0;
