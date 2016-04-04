@@ -30,6 +30,7 @@
 #include <boost/filesystem/convenience.hpp>
 #include <boost/filesystem/fstream.hpp>
 #include <boost/filesystem/operations.hpp>
+#include <boost/optional/optional.hpp>
 #include <boost/thread/thread.hpp>
 
 #include "rapidjson/reader.h"
@@ -293,11 +294,11 @@ public:
             ports_t(const dynamic_t::object_t& source) {
                 auto pinned = source.at("pinned", dynamic_t::empty_object);
                 if(!pinned.is_object()) {
-                    throw cocaine::error_t("invalid configuration for \"pinned\" section - {}", boost::lexical_cast(pinned));
+                    throw cocaine::error_t("invalid configuration for \"pinned\" section - {}", boost::lexical_cast<std::string>(pinned));
                 }
-                for(const auto& pair : pinned) {
+                for(const auto& pair : pinned.as_object()) {
                     if(!pair.second.is_uint()) {
-                        throw cocaine::error_t("invalid configuration for \"pinned\" section - {}", boost::lexical_cast(pinned));
+                        throw cocaine::error_t("invalid configuration for \"pinned\" section - {}", boost::lexical_cast<std::string>(pinned));
                     }
                     m_pinned[pair.first] = pair.second.as_uint();
                 }
@@ -307,7 +308,7 @@ public:
                     !shared.as_array()[0].is_uint() ||
                     !shared.as_array()[1].is_uint())
                 {
-                    throw cocaine::error_t("invalid configuration for \"shared\" section - {}", boost::lexical_cast(shared));
+                    throw cocaine::error_t("invalid configuration for \"shared\" section - {}", boost::lexical_cast<std::string>(shared));
                 }
                 m_shared = std::make_tuple(shared.as_array()[0].as_uint(), shared.as_array()[1].as_uint());
             }
@@ -437,6 +438,8 @@ public:
             return m_args;
         }
 
+        component_t() {}
+
         component_t(const dynamic_t& source) :
             m_type(source.as_object().at("type", "unspecified").as_string()),
             m_args(source.as_object().at("args", dynamic_t::empty_object))
@@ -472,12 +475,16 @@ public:
             }
         }
 
+        component_group_t() {}
+
         component_group_t(std::string name, const dynamic_t::object_t& source) :
             m_name(std::move(name))
         {
             for(const auto& p : source) {
                 if(!p.second.is_object()) {
-                    throw error_t("invalid configuration for {} components section - {} (in {})", m_name, p.second);
+                    throw error::error_t("invalid configuration for {} components section - {} (in {})",
+                                         m_name,
+                                         boost::lexical_cast<std::string>(p.second));
                 }
                 components[p.first] = component_t(p.second);
             }
@@ -563,13 +570,14 @@ public:
         groups["services"] = component_group_t("services", services_src);
         groups["storages"] = component_group_t("storages", storages_src);
         groups["unicorns"] = component_group_t("unicorns", unicorns_src);
+        return groups;
     };
 
     config_impl_t(const std::string& source_file) :
         m_source(read_source_file(source_file)),
-        m_path(m_source.as_object().at("paths",   dynamic_t::empty_object).as_object(),
+        m_path(m_source.as_object().at("paths", dynamic_t::empty_object).as_object()),
         m_network(m_source.as_object().at("network", dynamic_t::empty_object).as_object()),
-        m_logging(m_source.as_object().at("logging", dynamic_t::empty_object).as_object())),
+        m_logging(m_source.as_object().at("logging", dynamic_t::empty_object).as_object()),
         component_groups(init_components_groups(m_source))
     {
     }

@@ -23,6 +23,8 @@
 #include "cocaine/context.hpp"
 #include "cocaine/context/config.hpp"
 
+#include <boost/optional/optional.hpp>
+
 namespace cocaine { namespace api {
 
 // Storage
