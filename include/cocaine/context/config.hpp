@@ -112,7 +112,7 @@ public:
     };
 
     struct component_group_t {
-        typedef std::function<void(const std::string name, const component_t&)> component_visitor_t;
+        typedef std::function<void(const std::string name, const component_t&)> callable_t;
 
         virtual
         ~component_group_t() {}
@@ -126,7 +126,7 @@ public:
 
         virtual
         void
-        visit(const component_visitor_t& visitor) const = 0;
+        apply(const callable_t& callable) const = 0;
     };
 
     virtual

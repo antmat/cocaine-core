@@ -185,7 +185,8 @@ private:
 
 } // namespace
 
-struct config_impl_t : public config_t {
+template<size_t Version>
+struct config : public config_t {
 public:
     struct path_t : public config_t::path_t {
         virtual
@@ -421,9 +422,9 @@ public:
 
         virtual
         void
-        visit(const component_visitor_t& visitor) const {
+        apply(const callable_t& callable) const {
             for(const auto& p : components) {
-                visitor(p.first, p.second);
+                callable(p.first, p.second);
             }
         }
 
@@ -512,7 +513,7 @@ public:
         }
         auto root = configuration_constructor.Result();
 
-        if(root.as_object().at("version", 0).to<unsigned int>() != 4) {
+        if(root.as_object().at("version", 0).to<unsigned int>() != Version) {
             throw cocaine::error_t("configuration file version is invalid");
         }
 
@@ -533,7 +534,7 @@ public:
         return groups;
     };
 
-    config_impl_t(const std::string& source_file) :
+    config(const std::string& source_file) :
         m_source(read_source_file(source_file)),
         m_path(m_source.as_object().at("paths", dynamic_t::empty_object).as_object()),
         m_network(m_source.as_object().at("network", dynamic_t::empty_object).as_object()),
@@ -556,7 +557,7 @@ config_t::versions() {
 
 std::unique_ptr<config_t>
 make_config(const std::string& source) {
-    return std::unique_ptr<config_t>(new config_impl_t(source));
+    return std::unique_ptr<config_t>(new config<4>(source));
 }
 
 } //  namespace cocaine
