@@ -202,8 +202,6 @@ public:
         }
 
         path_t(const dynamic_t::object_t& source) {
-            // Path configuration
-
             const auto& plugins = source.at("plugins", defaults::plugins_path);
             if(plugins.is_array()) {
                 for(const auto& plugin_entry: plugins.as_array()) {
@@ -225,7 +223,6 @@ public:
             }
         }
 
-        // Paths to load plugins from
         std::vector<std::string> m_plugins;
         std::string m_runtime;
     };
@@ -266,10 +263,7 @@ public:
                 m_shared = std::make_tuple(shared.as_array()[0].as_uint(), shared.as_array()[1].as_uint());
             }
 
-            // Pinned ports for static service port allocation.
             std::map<std::string, port_t> m_pinned;
-
-            // Port range to populate the dynamic port pool for service port allocation.
             std::tuple<port_t, port_t> m_shared;
         };
 
@@ -300,8 +294,6 @@ public:
         network_t(const dynamic_t::object_t& source) :
             m_ports(source)
         {
-            // Network configuration
-
             m_endpoint = source.at("endpoint", defaults::endpoint).as_string();
 
             asio::io_service asio;
@@ -327,16 +319,8 @@ public:
         }
 
         ports_t m_ports;
-
-        // An endpoint where all the services will be bound. Note that binding on [::] will bind on
-        // 0.0.0.0 too as long as the "net.ipv6.bindv6only" sysctl is set to 0 (default).
         std::string m_endpoint;
-
-        // Local hostname. In case it can't be automatically detected by resolving a CNAME for the
-        // contents of /etc/hostname via the default system resolver, it can be configured manually.
         std::string m_hostname;
-
-        // I/O thread pool size.
         size_t m_pool;
     };
 
@@ -422,7 +406,7 @@ public:
 
         virtual
         void
-        apply(const callable_t& callable) const {
+        each(const callable_t& callable) const {
             for(const auto& p : components) {
                 callable(p.first, p.second);
             }

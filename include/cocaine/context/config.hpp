@@ -42,10 +42,12 @@ public:
         virtual
         ~path_t() {}
 
+        // Paths to search cocaine plugins for
         virtual
         const std::vector<std::string>&
         plugins() const = 0;
 
+        // Path used to create cocaine stuff like unix socket for workers, cocaine pid file, etc
         virtual
         const std::string&
         runtime() const = 0;
@@ -56,10 +58,13 @@ public:
             virtual
             ~ports_t() {}
 
+            // Pinned services - services bound to some specific port
+            // Returns map of service name -> port number
             virtual
             const std::map<std::string, port_t>&
             pinned() const = 0;
 
+             // Diapason of ports to bound on for all non-pinned services
             virtual
             const std::tuple<port_t, port_t>&
             shared() const = 0;
@@ -72,14 +77,19 @@ public:
         const ports_t&
         ports() const = 0;
 
+        // An endpoint where all the services will be bound. Note that binding on [::] will bind on
+        // 0.0.0.0 too as long as the "net.ipv6.bindv6only" sysctl is set to 0 (default).
         virtual
         const std::string&
         endpoint() const = 0;
 
+        // Local hostname. In case it can't be automatically detected by resolving a CNAME for the
+        // contents of /etc/hostname via the default system resolver, it can be configured manually.
         virtual
         const std::string&
         hostname() const = 0;
 
+        // I/O thread pool size.
         virtual
         size_t
         pool() const = 0;
@@ -111,8 +121,9 @@ public:
         args() const = 0;
     };
 
+    // Component group such as storages, services or unicorns
     struct component_group_t {
-        typedef std::function<void(const std::string name, const component_t&)> callable_t;
+        typedef std::function<void(const std::string& name, const component_t&)> callable_t;
 
         virtual
         ~component_group_t() {}
@@ -124,9 +135,10 @@ public:
         boost::optional<const component_t&>
         get(const std::string& name) const = 0;
 
+        // Apply callable to each component stored in component group
         virtual
         void
-        apply(const callable_t& callable) const = 0;
+        each(const callable_t& callable) const = 0;
     };
 
     virtual

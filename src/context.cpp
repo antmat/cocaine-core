@@ -97,7 +97,7 @@ public:
 
         std::vector<std::string> errored;
 
-        m_config->services().apply([&](const std::string& name, const config_t::component_t& service) mutable {
+        m_config->services().each([&](const std::string& name, const config_t::component_t& service) mutable {
             const holder_t scoped(*m_log, {{"service", name}});
 
             const auto asio = std::make_shared<asio::io_service>();
@@ -279,7 +279,7 @@ public:
         // lives have to be extended until those sessions are active.
         std::vector<std::unique_ptr<actor_t>> actors;
 
-        m_config->services().apply([&](const std::string& name, const config_t::component_t&){
+        m_config->services().each([&](const std::string& name, const config_t::component_t&){
             try {
                 actors.push_back(remove(name));
             } catch (...) {
