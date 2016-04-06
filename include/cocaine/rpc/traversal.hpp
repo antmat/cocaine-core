@@ -29,7 +29,7 @@
 #include <boost/mpl/end.hpp>
 #include <boost/mpl/next.hpp>
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 template<class Tag, class Vertex = graph_root_t>
 auto
@@ -101,6 +101,6 @@ traverse() -> boost::optional<Vertex> {
     return vertex;
 }
 
-}} // namespace cocaine::io
+}} // namespace бесовъ_порошокъ::io
 
 #endif

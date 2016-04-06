@@ -29,7 +29,7 @@
 
 #include <string>
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 
 template<class Tag> class dispatch;
 
@@ -78,6 +78,6 @@ public:
 };
 
 } // namespace io
-} // namespace cocaine
+} // namespace бесовъ_порошокъ
 
 #endif

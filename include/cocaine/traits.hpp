@@ -23,7 +23,7 @@
 
 #include <msgpack.hpp>
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 template<class T, class = void>
 struct type_traits {
@@ -41,6 +41,6 @@ struct type_traits {
     }
 };
 
-}} // namespace cocaine::io
+}} // namespace бесовъ_порошокъ::io
 
 #endif

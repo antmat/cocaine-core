@@ -25,7 +25,7 @@
 
 #include "cocaine/rpc/queue.hpp"
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 template<
     template<class> class T,
@@ -198,6 +198,6 @@ private:
     const std::shared_ptr<synchronized<queue_type>> outbox;
 };
 
-} // namespace cocaine
+} // namespace бесовъ_порошокъ
 
 #endif

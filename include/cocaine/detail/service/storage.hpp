@@ -26,7 +26,7 @@
 #include "cocaine/idl/storage.hpp"
 #include "cocaine/rpc/dispatch.hpp"
 
-namespace cocaine { namespace service {
+namespace бесовъ_порошокъ { namespace service {
 
 struct storage_t:
     public api::service_t,
@@ -39,6 +39,6 @@ struct storage_t:
     prototype() const -> const io::basic_dispatch_t&;
 };
 
-}} // namespace cocaine::service
+}} // namespace бесовъ_порошокъ::service
 
 #endif

@@ -23,7 +23,7 @@
 
 #include <blackhole/extensions/format.hpp>
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 
 template<class... Args>
 inline
@@ -37,6 +37,6 @@ format(const std::string& format, const Args&... args) {
     }
 }
 
-} // namespace cocaine
+} // namespace бесовъ_порошокъ
 
 #endif

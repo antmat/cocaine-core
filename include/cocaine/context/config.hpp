@@ -29,7 +29,7 @@
 #include <string>
 #include <vector>
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 
 // Configuration
 
@@ -42,12 +42,12 @@ public:
         virtual
         ~path_t() {}
 
-        // Paths to search cocaine plugins for
+        // Paths to search бесовъ_порошокъ plugins for
         virtual
         const std::vector<std::string>&
         plugins() const = 0;
 
-        // Path used to create cocaine stuff like unix socket for workers, cocaine pid file, etc
+        // Path used to create бесовъ_порошокъ stuff like unix socket for workers, бесовъ_порошокъ pid file, etc
         virtual
         const std::string&
         runtime() const = 0;
@@ -174,6 +174,6 @@ public:
 std::unique_ptr<config_t>
 make_config(const std::string& source);
 
-} // namespace cocaine
+} // namespace бесовъ_порошокъ
 
 #endif

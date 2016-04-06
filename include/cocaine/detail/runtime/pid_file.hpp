@@ -25,7 +25,7 @@
 
 #include <boost/filesystem/path.hpp>
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 
 class pid_file_t {
     COCAINE_DECLARE_NONCOPYABLE(pid_file_t)
@@ -41,6 +41,6 @@ private:
     remove();
 };
 
-} // namespace cocaine
+} // namespace бесовъ_порошокъ
 
 #endif

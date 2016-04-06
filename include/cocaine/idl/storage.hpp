@@ -24,7 +24,7 @@
 #include "cocaine/rpc/protocol.hpp"
 
 #include <vector>
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 struct storage_tag;
 
@@ -129,6 +129,6 @@ struct protocol<storage_tag> {
     typedef storage scope;
 };
 
-}} // namespace cocaine::io
+}} // namespace бесовъ_порошокъ::io
 
 #endif

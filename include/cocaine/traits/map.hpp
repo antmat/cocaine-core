@@ -25,7 +25,7 @@
 
 #include <map>
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 template<class K, class V>
 struct type_traits<std::map<K, V>> {
@@ -61,6 +61,6 @@ struct type_traits<std::map<K, V>> {
     }
 };
 
-}} // namespace cocaine::io
+}} // namespace бесовъ_порошокъ::io
 
 #endif

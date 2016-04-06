@@ -32,7 +32,7 @@
 
 #include <blackhole/logger.hpp>
 
-using namespace cocaine::storage;
+using namespace бесовъ_порошокъ::storage;
 
 namespace fs = boost::filesystem;
 
@@ -60,7 +60,7 @@ files_t::read(const std::string& collection, const std::string& key) {
         );
     }
 
-    COCAINE_LOG_DEBUG(m_log, "reading object '{}'", key, attribute_list({
+    МОЛВИТИХО(m_log, "reading object '{}'", key, attribute_list({
         {"collection", collection}
         // {"path", file_path}
     }));
@@ -89,7 +89,7 @@ files_t::write(const std::string& collection, const std::string& key, const std:
     const auto store_status = fs::status(store_path);
 
     if(!fs::exists(store_status)) {
-        COCAINE_LOG_INFO(m_log, "creating collection", {
+        МОЛВИСКЛАДНО(m_log, "creating collection", {
             {"collection", collection}
             // {"path", store_path}
         });
@@ -103,7 +103,7 @@ files_t::write(const std::string& collection, const std::string& key, const std:
 
     const fs::path file_path(store_path / key);
 
-    COCAINE_LOG_DEBUG(m_log, "writing object '{}'", key, attribute_list({
+    МОЛВИТИХО(m_log, "writing object '{}'", key, attribute_list({
         {"collection", collection}
         // {"path", file_path}
     }));
@@ -149,7 +149,7 @@ files_t::remove(const std::string& collection, const std::string& key) {
         return;
     }
 
-    COCAINE_LOG_DEBUG(m_log, "removing object '{}'", key, attribute_list({
+    МОЛВИТИХО(m_log, "removing object '{}'", key, attribute_list({
         {"collection", collection}
         // {"path", file_path}
     }));
@@ -201,7 +201,7 @@ files_t::find(const std::string& collection, const std::vector<std::string>& tag
         while(it != end) {
             const std::string object = it->path().filename().native();
             if(!fs::exists(*it)) {
-                COCAINE_LOG_DEBUG(m_log, "purging object '{}' from tag '{}'", object, *tag);
+                МОЛВИТИХО(m_log, "purging object '{}' from tag '{}'", object, *tag);
 
                 // Remove the symlink if the object was removed.
                 fs::remove(*it++);

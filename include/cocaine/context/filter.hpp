@@ -26,7 +26,7 @@
 #include <blackhole/message.hpp>
 #include <blackhole/severity.hpp>
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 
 /**
  * It is a wrapper on std::function

@@ -26,7 +26,7 @@
 
 #include "cocaine/rpc/graph.hpp"
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 template<>
 struct type_traits<graph_node_t> {
@@ -44,6 +44,6 @@ struct type_traits<graph_node_t> {
     }
 };
 
-}} // namespace cocaine::io
+}} // namespace бесовъ_порошокъ::io
 
 #endif

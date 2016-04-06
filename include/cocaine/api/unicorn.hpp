@@ -21,16 +21,16 @@
 #include <future>
 #include <vector>
 
-namespace cocaine { namespace unicorn {
+namespace бесовъ_порошокъ { namespace unicorn {
 
 typedef long long version_t;
 typedef std::string path_t;
-typedef cocaine::dynamic_t value_t;
+typedef бесовъ_порошокъ::dynamic_t value_t;
 class versioned_value_t;
 
-}} //namespace cocaine::unicorn
+}} //namespace бесовъ_порошокъ::unicorn
 
-namespace cocaine { namespace api {
+namespace бесовъ_порошокъ { namespace api {
 
 /**
  * Unicorn request scope.

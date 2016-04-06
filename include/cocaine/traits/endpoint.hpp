@@ -28,7 +28,7 @@
 
 #include <asio/ip/basic_endpoint.hpp>
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 // Addresses are packed as strings in order for other languages like Python or JS to be able to use
 // them without figuring out the correct sockaddr structure formats.
@@ -61,6 +61,6 @@ struct type_traits<asio::ip::basic_endpoint<InternetProtocol>> {
     }
 };
 
-}} // namespace cocaine::io
+}} // namespace бесовъ_порошокъ::io
 
 #endif

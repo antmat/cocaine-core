@@ -29,7 +29,7 @@
 #include <boost/optional/optional.hpp>
 #include <boost/range/algorithm/find_if.hpp>
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 namespace io {
 
 
@@ -110,4 +110,4 @@ decoder_t::decode(const char* data, size_t size, message_type& message, std::err
     return offset;
 }
 
-}} // namespace cocaine::io
+}} // namespace бесовъ_порошокъ::io

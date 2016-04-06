@@ -23,8 +23,8 @@
 #include "cocaine/api/storage.hpp"
 #include "cocaine/dynamic/dynamic.hpp"
 
-using namespace cocaine::io;
-using namespace cocaine::service;
+using namespace бесовъ_порошокъ::io;
+using namespace бесовъ_порошокъ::service;
 
 namespace ph = std::placeholders;
 

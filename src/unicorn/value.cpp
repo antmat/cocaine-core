@@ -15,7 +15,7 @@
 
 #include "cocaine/unicorn/value.hpp"
 
-namespace cocaine { namespace unicorn {
+namespace бесовъ_порошокъ { namespace unicorn {
 
 versioned_value_t::versioned_value_t(value_t _value, version_t _version) :
     value(std::move(_value)),

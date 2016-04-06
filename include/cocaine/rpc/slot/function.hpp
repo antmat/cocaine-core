@@ -37,7 +37,7 @@
 
 #include <asio/system_error.hpp>
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 template<class Event, class R> struct function_slot;
 
@@ -108,6 +108,6 @@ private:
     const callable_type callable;
 };
 
-}} // namespace cocaine::io
+}} // namespace бесовъ_порошокъ::io
 
 #endif

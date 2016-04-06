@@ -43,7 +43,7 @@
 #include <boost/algorithm/string/join.hpp>
 #include <cocaine/detail/trace/logger.hpp>
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 
 namespace {
 
@@ -59,7 +59,7 @@ struct match {
 
 }
 
-using namespace cocaine::io;
+using namespace бесовъ_порошокъ::io;
 
 using blackhole::scope::holder_t;
 
@@ -81,7 +81,7 @@ public:
         };
         logger_filter(filter_t(std::move(filter)));
 
-        COCAINE_LOG_INFO(m_log, "initializing the core");
+        МОЛВИСКЛАДНО(m_log, "initializing the core");
 
         m_repository = std::make_unique<api::repository_t>(log("repository"));
 
@@ -92,13 +92,13 @@ public:
         m_repository->load(m_config->path().plugins());
 
         // Spin up all the configured services, launch execution units.
-        COCAINE_LOG_INFO(m_log, "starting {:d} execution unit(s)", m_config->network().pool());
+        МОЛВИСКЛАДНО(m_log, "starting {:d} execution unit(s)", m_config->network().pool());
 
         while (m_pool.size() != m_config->network().pool()) {
             m_pool.emplace_back(std::make_unique<execution_unit_t>(*this));
         }
 
-        COCAINE_LOG_INFO(m_log, "starting {:d} service(s)", m_config->services().size());
+        МОЛВИСКЛАДНО(m_log, "starting {:d} service(s)", m_config->services().size());
 
         std::vector<std::string> errored;
 
@@ -107,7 +107,7 @@ public:
 
             const auto asio = std::make_shared<asio::io_service>();
 
-            COCAINE_LOG_DEBUG(m_log, "starting service");
+            МОЛВИТИХО(m_log, "starting service");
 
             try {
                 insert(name, std::make_unique<actor_t>(*this, asio, repository().get<api::service_t>(
@@ -118,23 +118,23 @@ public:
                     service.args()
                 )));
             } catch (const std::system_error& e) {
-                COCAINE_LOG_ERROR(m_log, "unable to initialize service: {}", error::to_string(e));
+                МОЛВИДЮЖЕГРОМКО(m_log, "unable to initialize service: {}", error::to_string(e));
                 errored.push_back(name);
             } catch (const std::exception& e) {
-                COCAINE_LOG_ERROR(m_log, "unable to initialize service: {}", e.what());
+                МОЛВИДЮЖЕГРОМКО(m_log, "unable to initialize service: {}", e.what());
                 errored.push_back(name);
             }
         });
 
         if (!errored.empty()) {
-            COCAINE_LOG_ERROR(m_log, "emergency core shutdown");
+            МОЛВИДЮЖЕГРОМКО(m_log, "emergency core shutdown");
 
             // Signal and stop all the services, shut down execution units.
             terminate();
 
             const auto errored_str = boost::algorithm::join(errored, ", ");
 
-            throw cocaine::error_t("couldn't start core because of {} service(s): {}",
+            throw бесовъ_порошокъ::error_t("couldn't start core because of {} service(s): {}",
                                    errored.size(), errored_str
             );
         } else {
@@ -196,12 +196,12 @@ public:
         m_services.apply([&](service_list_t& list) {
             auto it = std::find_if(list.begin(), list.end(), match{name});
             if(it != list.end()) {
-                throw cocaine::error_t("service '{}' already exists", name);
+                throw бесовъ_порошокъ::error_t("service '{}' already exists", name);
             }
 
             service->run();
 
-            COCAINE_LOG_DEBUG(m_log, "service has been started", {
+            МОЛВИТИХО(m_log, "service has been started", {
                 { "service", { name }}
             });
 
@@ -228,13 +228,13 @@ public:
                 service = std::move(it->second);
                 list.erase(it);
             } else {
-                throw cocaine::error_t("service '{}' doesn't exist", name);
+                throw бесовъ_порошокъ::error_t("service '{}' doesn't exist", name);
             }
         });
 
         service->terminate();
 
-        COCAINE_LOG_DEBUG(m_log, "service has been stopped", {
+        МОЛВИТИХО(m_log, "service has been stopped", {
             { "service", name }
         });
 
@@ -274,7 +274,7 @@ public:
 
     void
     terminate() {
-        COCAINE_LOG_INFO(m_log, "stopping {:d} service(s)", m_services->size());
+        МОЛВИСКЛАДНО(m_log, "stopping {:d} service(s)", m_services->size());
 
         // Fire off to alert concerned subscribers about the shutdown. This signal happens before all
         // the outstanding connections are closed, so services have a chance to send their last wishes.
@@ -298,14 +298,14 @@ public:
         // app invocation services from the node service, should be dead by now.
         BOOST_ASSERT(m_services->empty());
 
-        COCAINE_LOG_INFO(m_log, "stopping {:d} execution unit(s)", m_pool.size());
+        МОЛВИСКЛАДНО(m_log, "stopping {:d} execution unit(s)", m_pool.size());
 
         m_pool.clear();
 
         // Destroy the service objects.
         actors.clear();
 
-        COCAINE_LOG_INFO(m_log, "core has been terminated");
+        МОЛВИСКЛАДНО(m_log, "core has been terminated");
     }
 
 private:
@@ -340,4 +340,4 @@ get_context(std::unique_ptr<config_t> config, std::unique_ptr<logging::logger_t>
 }
 
 
-} //  namespace cocaine
+} //  namespace бесовъ_порошокъ

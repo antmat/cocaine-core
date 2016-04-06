@@ -25,7 +25,7 @@
 
 #include <cocaine/dynamic/dynamic.hpp>
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 // Dynamic objects essentially have the same structure as msgpack objects, so these serialization
 // traits are pretty much straightforward.
@@ -169,6 +169,6 @@ struct type_traits<dynamic_t> {
     }
 };
 
-}} // namespace cocaine::io
+}} // namespace бесовъ_порошокъ::io
 
 #endif

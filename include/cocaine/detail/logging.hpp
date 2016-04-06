@@ -3,7 +3,7 @@
 #include <string>
 #include <typeinfo>
 
-namespace cocaine { namespace detail { namespace logging {
+namespace бесовъ_порошокъ { namespace detail { namespace logging {
 
 // C++ typename demangling
 
@@ -16,4 +16,4 @@ demangle() -> std::string {
     return demangle(typeid(T).name());
 }
 
-}}} // namespace cocaine::detail::logging
+}}} // namespace бесовъ_порошокъ::detail::logging

@@ -25,7 +25,7 @@
 
 #include <boost/filesystem/path.hpp>
 
-namespace cocaine { namespace storage {
+namespace бесовъ_порошокъ { namespace storage {
 
 class files_t:
     public api::storage_t
@@ -62,6 +62,6 @@ public:
     find(const std::string& collection, const std::vector<std::string>& tags);
 };
 
-}} // namespace cocaine::storage
+}} // namespace бесовъ_порошокъ::storage
 
 #endif

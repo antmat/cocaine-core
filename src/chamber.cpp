@@ -33,7 +33,7 @@
 
 #include <sys/resource.h>
 
-using namespace cocaine::io;
+using namespace бесовъ_порошокъ::io;
 
 // Chamber internals
 

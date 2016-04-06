@@ -26,7 +26,7 @@
 #include <unordered_map>
 #include <set>
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 
 template<>
 struct dynamic_converter<dynamic_t> {
@@ -412,6 +412,6 @@ struct dynamic_converter<std::unordered_map<std::string, T>> {
     }
 };
 
-} // namespace cocaine
+} // namespace бесовъ_порошокъ
 
 #endif // COCAINE_DYNAMIC_CONVERTERS_HPP

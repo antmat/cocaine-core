@@ -6,7 +6,7 @@
 #include "cocaine/locked_ptr.hpp"
 #include "cocaine/rpc/session.hpp"
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 
 class unix_actor_t {
     typedef asio::local::stream_protocol protocol_type;

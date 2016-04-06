@@ -25,7 +25,7 @@
 
 #include <system_error>
 
-namespace cocaine { namespace error {
+namespace бесовъ_порошокъ { namespace error {
 
 enum transport_errors {
     frame_format_error = 1,
@@ -123,14 +123,14 @@ struct error_t:
 
     template<class... Args>
     error_t(const std::string& e, const Args&... args):
-        std::system_error(kInvalidArgumentErrorCode, cocaine::format(e, args...))
+        std::system_error(kInvalidArgumentErrorCode, бесовъ_порошокъ::format(e, args...))
     { }
 
     template<class E, class... Args,
              class = typename std::enable_if<std::is_error_code_enum<E>::value ||
                                              std::is_error_condition_enum<E>::value>::type>
     error_t(const E err, const std::string& e, const Args&... args):
-        std::system_error(make_error_code(err), cocaine::format(e, args...))
+        std::system_error(make_error_code(err), бесовъ_порошокъ::format(e, args...))
     { }
 };
 
@@ -142,38 +142,38 @@ to_string(const std::system_error& e);
 // For backward-compatibility with fucking computers.
 using error::error_t;
 
-} // namespace cocaine
+} // namespace бесовъ_порошокъ
 
 namespace std {
 
 template<>
-struct is_error_code_enum<cocaine::error::transport_errors>:
+struct is_error_code_enum<бесовъ_порошокъ::error::transport_errors>:
     public true_type
 { };
 
 template<>
-struct is_error_code_enum<cocaine::error::dispatch_errors>:
+struct is_error_code_enum<бесовъ_порошокъ::error::dispatch_errors>:
     public true_type
 { };
 
 template<>
-struct is_error_code_enum<cocaine::error::repository_errors>:
+struct is_error_code_enum<бесовъ_порошокъ::error::repository_errors>:
     public true_type
 { };
 
 template<>
-struct is_error_code_enum<cocaine::error::security_errors>:
+struct is_error_code_enum<бесовъ_порошокъ::error::security_errors>:
     public true_type
 { };
 
 template<>
-struct is_error_code_enum<cocaine::error::locator_errors>:
+struct is_error_code_enum<бесовъ_порошокъ::error::locator_errors>:
 public true_type
 { };
 
 
 template<>
-struct is_error_code_enum<cocaine::error::unicorn_errors>:
+struct is_error_code_enum<бесовъ_порошокъ::error::unicorn_errors>:
     public true_type
 { };
 

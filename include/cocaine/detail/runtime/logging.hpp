@@ -23,7 +23,7 @@
 
 #include <blackhole/sink/console.hpp>
 
-namespace cocaine { namespace logging {
+namespace бесовъ_порошокъ { namespace logging {
 
 class console_t : public blackhole::sink::console_t {
 public:
@@ -33,7 +33,7 @@ protected:
     auto color(const blackhole::record_t& record) const -> blackhole::sink::color_t;
 };
 
-}} // namespace cocaine::logging
+}} // namespace бесовъ_порошокъ::logging
 
 namespace blackhole {
 inline namespace v1 {
@@ -52,9 +52,9 @@ template<typename>
 struct factory;
 
 template<>
-struct factory<cocaine::logging::console_t> {
+struct factory<бесовъ_порошокъ::logging::console_t> {
     static auto type() -> const char*;
-    static auto from(const config::node_t& config) -> cocaine::logging::console_t;
+    static auto from(const config::node_t& config) -> бесовъ_порошокъ::logging::console_t;
 };
 
 }  // namespace v1

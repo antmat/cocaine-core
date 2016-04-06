@@ -23,7 +23,7 @@
 
 #include "cocaine/traits.hpp"
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 // This magic specialization allows to pack string literals. It packs only the meaningful bytes,
 // trailing zero is dropped. Unpacking is intentionally prohibited as it might force us to silently
@@ -75,6 +75,6 @@ struct type_traits<std::string> {
     }
 };
 
-}} // namespace cocaine::io
+}} // namespace бесовъ_порошокъ::io
 
 #endif

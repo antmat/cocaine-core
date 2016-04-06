@@ -31,7 +31,7 @@
 
 #include <deque>
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 template<class Protocol, class Encoder>
 class writable_stream:
@@ -156,6 +156,6 @@ private:
     }
 };
 
-}} // namespace cocaine::io
+}} // namespace бесовъ_порошокъ::io
 
 #endif

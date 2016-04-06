@@ -27,7 +27,7 @@
 
 #include <boost/optional/optional_fwd.hpp>
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 struct graph_node_t;
 
@@ -52,6 +52,6 @@ typedef std::map<
     std::tuple<std::string, boost::optional<graph_node_t>, boost::optional<graph_node_t>>
 > graph_root_t;
 
-}} // namespace cocaine::io
+}} // namespace бесовъ_порошокъ::io
 
 #endif

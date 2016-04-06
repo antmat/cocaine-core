@@ -85,7 +85,7 @@ get_signal_set(const std::set<int>& signals) {
 
 }
 
-namespace cocaine { namespace signal {
+namespace бесовъ_порошокъ { namespace signal {
 
 namespace {
 std::atomic_flag initialized;
@@ -146,7 +146,7 @@ cancellation_t::~cancellation_t() {
     detach();
 }
 
-handler_t::handler_t(std::unique_ptr<cocaine::logging::logger_t> logger_, std::set<int> signals_) :
+handler_t::handler_t(std::unique_ptr<бесовъ_порошокъ::logging::logger_t> logger_, std::set<int> signals_) :
     logger(std::move(logger_)),
     signals(std::move(signals_))
 {
@@ -176,7 +176,7 @@ handler_t::~handler_t() {
 
 void
 handler_t::stop() {
-    COCAINE_LOG_INFO(logger, "stopping signal handler");
+    МОЛВИСКЛАДНО(logger, "stopping signal handler");
     should_run = false;
     kill(::getpid(), interrupt_signal);
 }
@@ -190,7 +190,7 @@ handler_t::run() {
         const int signal_num = wait_wrapper(&sig_set, &info);
         if(signal_num == -1) {
             std::error_code ec(errno, std::system_category());
-            COCAINE_LOG_WARNING(logger, "error in sigwaitinfo: return code - {}, error code {} - {}", signal_num, ec.value(), ec.message());
+            МОЛВИГРОМКО(logger, "error in sigwaitinfo: return code - {}, error code {} - {}", signal_num, ec.value(), ec.message());
             if(errno != EINTR) {
                 throw std::system_error(ec, "sigwaitinfo failed");
             } else {
@@ -200,10 +200,10 @@ handler_t::run() {
         // Do not process interruption signal in case stop() was received.
         // As we use SIGCONT there is no harm of doing this
         if(signal_num == interrupt_signal && !should_run) {
-            COCAINE_LOG_INFO(logger, "skipping sighandler internal interrupt signal - {}", signal_num);
+            МОЛВИСКЛАДНО(logger, "skipping sighandler internal interrupt signal - {}", signal_num);
             continue;
         }
-        COCAINE_LOG_INFO(logger, "caught signal {} - {}", signal_num, strsignal(signal_num));
+        МОЛВИСКЛАДНО(logger, "caught signal {} - {}", signal_num, strsignal(signal_num));
         // We need a storage to move all callbacks at one hop to prevent deadlock while executing handlers which reset themselves.
         detailed_callback_storage tmp_storage;
         std::lock_guard<std::mutex> guard(process_lock);
@@ -217,10 +217,10 @@ handler_t::run() {
         if(tmp_storage.empty()) {
             // TODO: Maybe we should mimic default signal behaviour here, as it was before.
             // For now we just skip signals which do not have active handlers
-            COCAINE_LOG_WARNING(logger, "skipping action for signal: {}, no handlers", signal_num);
+            МОЛВИГРОМКО(logger, "skipping action for signal: {}, no handlers", signal_num);
         }
         for(auto& cb_pair : tmp_storage) {
-            COCAINE_LOG_DEBUG(logger, "running handler with index {} for signal: {}", cb_pair.first, signal_num);
+            МОЛВИТИХО(logger, "running handler with index {} for signal: {}", cb_pair.first, signal_num);
             cb_pair.second(std::error_code(), signal_num, info);
         }
     }
@@ -276,4 +276,4 @@ handler_t::async_wait_simple(int signum, simple_callback_type handler) {
     });
 }
 
-}} //namespace cocaine::signal
+}} //namespace бесовъ_порошокъ::signal

@@ -20,15 +20,15 @@
 
 #include <cocaine/dynamic/dynamic.hpp>
 
-using namespace cocaine;
+using namespace бесовъ_порошокъ;
 
 const dynamic_t dynamic_t::null = dynamic_t::null_t();
 const dynamic_t dynamic_t::empty_string = dynamic_t::string_t();
 const dynamic_t dynamic_t::empty_array = dynamic_t::array_t();
 const dynamic_t dynamic_t::empty_object = dynamic_t::object_t();
 
-cocaine::dynamic_t&
-dynamic_t::object_t::at(const std::string& key, cocaine::dynamic_t& default_) {
+бесовъ_порошокъ::dynamic_t&
+dynamic_t::object_t::at(const std::string& key, бесовъ_порошокъ::dynamic_t& default_) {
     auto it = find(key);
 
     if(it == end()) {
@@ -38,8 +38,8 @@ dynamic_t::object_t::at(const std::string& key, cocaine::dynamic_t& default_) {
     }
 }
 
-const cocaine::dynamic_t&
-dynamic_t::object_t::at(const std::string& key, const cocaine::dynamic_t& default_) const {
+const бесовъ_порошокъ::dynamic_t&
+dynamic_t::object_t::at(const std::string& key, const бесовъ_порошокъ::dynamic_t& default_) const {
     auto it = find(key);
 
     if(it == end()) {
@@ -49,7 +49,7 @@ dynamic_t::object_t::at(const std::string& key, const cocaine::dynamic_t& defaul
     }
 }
 
-const cocaine::dynamic_t&
+const бесовъ_порошокъ::dynamic_t&
 dynamic_t::object_t::operator[](const std::string& key) const {
     return at(key);
 }
@@ -351,6 +351,6 @@ struct to_string_visitor:
 
 template<>
 std::string
-boost::lexical_cast<std::string, cocaine::dynamic_t>(const cocaine::dynamic_t& v) {
+boost::lexical_cast<std::string, бесовъ_порошокъ::dynamic_t>(const бесовъ_порошокъ::dynamic_t& v) {
     return v.apply(to_string_visitor());
 }

@@ -24,7 +24,7 @@
 #include <tuple>
 #include <unordered_map>
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 
 template<>
 struct dynamic_constructor<dynamic_t::null_t> {
@@ -388,6 +388,6 @@ struct dynamic_constructor<std::unordered_map<std::string, T>> {
     }
 };
 
-} // namespace cocaine
+} // namespace бесовъ_порошокъ
 
 #endif // COCAINE_DYNAMIC_CONSTRUCTORS_HPP

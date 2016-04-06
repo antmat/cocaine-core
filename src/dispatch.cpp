@@ -22,7 +22,7 @@
 
 #include "cocaine/errors.hpp"
 
-using namespace cocaine::io;
+using namespace бесовъ_порошокъ::io;
 
 basic_dispatch_t::basic_dispatch_t(const std::string& name):
     m_name(name)

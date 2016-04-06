@@ -27,7 +27,7 @@
 
 #include <boost/optional/optional.hpp>
 
-namespace cocaine { namespace api {
+namespace бесовъ_порошокъ { namespace api {
 
 // Storage
 
@@ -59,4 +59,4 @@ unicorn(context_t& context, const std::string& name) {
     return context.repository().get<unicorn_t>(unicorn->type(), context, name, unicorn->args());
 }
 
-}} // namespace cocaine::api
+}} // namespace бесовъ_порошокъ::api

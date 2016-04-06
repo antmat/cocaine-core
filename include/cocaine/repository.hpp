@@ -34,7 +34,7 @@
 
 #include <ltdl.h>
 
-namespace cocaine { namespace api {
+namespace бесовъ_порошокъ { namespace api {
 
 template<class Category>
 struct category_traits;
@@ -155,6 +155,6 @@ struct preconditions_t {
     unsigned version;
 };
 
-}} // namespace cocaine::api
+}} // namespace бесовъ_порошокъ::api
 
 #endif

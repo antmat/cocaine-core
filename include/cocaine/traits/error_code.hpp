@@ -27,7 +27,7 @@
 
 #include <system_error>
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 template<>
 struct type_traits<std::error_code> {
@@ -55,6 +55,6 @@ struct type_traits<std::error_code> {
     }
 };
 
-}} // namespace cocaine::io
+}} // namespace бесовъ_порошокъ::io
 
 #endif

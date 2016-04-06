@@ -5,7 +5,7 @@
 
 #include "cocaine/hpack/header_definitions.hpp"
 
-namespace cocaine { namespace hpack {
+namespace бесовъ_порошокъ { namespace hpack {
 
 struct header_static_table_t {
     typedef boost::mpl::vector83 <
@@ -122,4 +122,4 @@ struct header_static_table_t {
 };
 
 } //  namespace hpack
-} //  namespace cocaine
+} //  namespace бесовъ_порошокъ

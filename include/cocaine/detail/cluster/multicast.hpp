@@ -30,7 +30,7 @@
 #include <asio/ip/tcp.hpp>
 #include <asio/ip/udp.hpp>
 
-namespace cocaine { namespace cluster {
+namespace бесовъ_порошокъ { namespace cluster {
 
 class multicast_cfg_t
 {
@@ -83,6 +83,6 @@ private:
     on_expired(const std::error_code& ec, const std::string& uuid);
 };
 
-}} // namespace cocaine::cluster
+}} // namespace бесовъ_порошокъ::cluster
 
 #endif

@@ -27,7 +27,7 @@
 #include "cocaine/rpc/asio/writable_stream.hpp"
 #include "cocaine/rpc/asio/encoder.hpp"
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 template<class Protocol, class Encoder, class Decoder>
 struct transport {
@@ -72,6 +72,6 @@ struct transport {
     const std::shared_ptr<writable_stream<protocol_type, encoder_type>> writer;
 };
 
-}} // namespace cocaine::io
+}} // namespace бесовъ_порошокъ::io
 
 #endif

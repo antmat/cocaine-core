@@ -34,7 +34,7 @@
 
 #include <blackhole/logger.hpp>
 
-using namespace cocaine::service;
+using namespace бесовъ_порошокъ::service;
 
 continuum_t::continuum_t(std::unique_ptr<logging::logger_t> log, const stored_type& group):
     m_log(std::move(log))
@@ -42,13 +42,13 @@ continuum_t::continuum_t(std::unique_ptr<logging::logger_t> log, const stored_ty
     const size_t length = group.size();
     const double weight = boost::accumulate(group | boost::adaptors::map_values, 0.0f);
 
-    COCAINE_LOG_DEBUG(m_log, "populating continuum based on {} group elements, total weight: {:.2f}",
+    МОЛВИТИХО(m_log, "populating continuum based on {} group elements, total weight: {:.2f}",
         length, weight);
 
     // Each item in a routing group has its own positive integer weight, so the total weight must
     // be more than 0.
     if(!length || weight < std::numeric_limits<double>::epsilon()) {
-        throw cocaine::error_t("the total weight of the routing group must be positive");
+        throw бесовъ_порошокъ::error_t("the total weight of the routing group must be positive");
     }
 
     union digest_t {
@@ -81,7 +81,7 @@ continuum_t::continuum_t(std::unique_ptr<logging::logger_t> log, const stored_ty
             });
         }
 
-        COCAINE_LOG_DEBUG(m_log, "added {} quads for {}, weight: {:.2f}%, {}/{}", steps, value,
+        МОЛВИТИХО(m_log, "added {} quads for {}, weight: {:.2f}%, {}/{}", steps, value,
             slice * 100.0f,
             steps, length * 64
         );
@@ -90,7 +90,7 @@ continuum_t::continuum_t(std::unique_ptr<logging::logger_t> log, const stored_ty
     // Sort the ring to enable binary searching.
     std::sort(m_elements.begin(), m_elements.end());
 
-    COCAINE_LOG_DEBUG(m_log, "resulting continuum population: {:d} points, unique: {}",
+    МОЛВИТИХО(m_log, "resulting continuum population: {:d} points, unique: {}",
         m_elements.size(),
         boost::adjacent_find(m_elements) == m_elements.end()
     );
@@ -118,7 +118,7 @@ continuum_t::get(const std::string& key) const {
     auto  it = std::upper_bound(m_elements.begin(), m_elements.end(), point);
     auto& rv = it != m_elements.end() ? *it : m_elements.front();
 
-    COCAINE_LOG_DEBUG(m_log, "hashed key '{}' -> point {:d} mapped to {}, value: {}", key, point,
+    МОЛВИТИХО(m_log, "hashed key '{}' -> point {:d} mapped to {}, value: {}", key, point,
         rv.point, rv.value
     );
 
@@ -134,7 +134,7 @@ continuum_t::get() const {
     auto  it = std::upper_bound(m_elements.begin(), m_elements.end(), point);
     auto& rv = it != m_elements.end() ? *it : m_elements.front();
 
-    COCAINE_LOG_DEBUG(m_log, "randomized keyless point {:d} mapped to {:d}, value: {}", point,
+    МОЛВИТИХО(m_log, "randomized keyless point {:d} mapped to {:d}, value: {}", point,
         rv.point, rv.value
     );
 

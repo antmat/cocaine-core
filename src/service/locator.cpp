@@ -59,9 +59,9 @@
 #include <boost/range/algorithm/transform.hpp>
 #include <boost/range/numeric.hpp>
 
-using namespace cocaine;
-using namespace cocaine::io;
-using namespace cocaine::service;
+using namespace бесовъ_порошокъ;
+using namespace бесовъ_порошокъ::io;
+using namespace бесовъ_порошокъ::service;
 
 
 using namespace asio;
@@ -126,7 +126,7 @@ void
 locator_t::connect_sink_t::discard(const std::error_code& ec) const {
     if(ec.value() == 0) return;
 
-    COCAINE_LOG_ERROR(parent->m_log, "remote client discarded: [{:d}] {}", ec.value(), ec.message(), attribute_list({
+    МОЛВИДЮЖЕГРОМКО(parent->m_log, "remote client discarded: [{:d}] {}", ec.value(), ec.message(), attribute_list({
         {"uuid", uuid}
     }));
 
@@ -140,7 +140,7 @@ locator_t::connect_sink_t::cleanup() {
             it++; continue;
         }
 
-        COCAINE_LOG_DEBUG(parent->m_log, "protocol '{}' extinct in the cluster", it->first);
+        МОЛВИТИХО(parent->m_log, "protocol '{}' extinct in the cluster", it->first);
 
         it = parent->m_aggregate.erase(it);
     }
@@ -151,7 +151,7 @@ locator_t::connect_sink_t::on_announce(const std::string& node,
                                        std::map<std::string, results::resolve>&& update)
 {
     if(node != uuid) {
-        COCAINE_LOG_ERROR(parent->m_log, "remote client id mismatch: '{}' vs. '{}'", uuid, node);
+        МОЛВИДЮЖЕГРОМКО(parent->m_log, "remote client id mismatch: '{}' vs. '{}'", uuid, node);
 
         parent->drop_node(uuid);
         return;
@@ -185,7 +185,7 @@ locator_t::connect_sink_t::on_announce(const std::string& node,
 
     const auto joined = boost::algorithm::join(update | boost::adaptors::map_keys, ", ");
 
-    COCAINE_LOG_INFO(parent->m_log, "remote client updated {:d} service(s): {}", update.size(), joined, attribute_list({
+    МОЛВИСКЛАДНО(parent->m_log, "remote client updated {:d} service(s): {}", update.size(), joined, attribute_list({
         {"uuid", uuid}
     }));
 
@@ -194,7 +194,7 @@ locator_t::connect_sink_t::on_announce(const std::string& node,
 
 void
 locator_t::connect_sink_t::on_shutdown() {
-    COCAINE_LOG_INFO(parent->m_log, "remote client closed its stream", {
+    МОЛВИСКЛАДНО(parent->m_log, "remote client closed its stream", {
         {"uuid", uuid}
     });
 
@@ -228,7 +228,7 @@ public:
 
     auto
     operator()(tuple_type&& args, upstream_type&& upstream) -> boost::optional<result_type> {
-        const auto dispatch = cocaine::tuple::invoke(std::move(args),
+        const auto dispatch = бесовъ_порошокъ::tuple::invoke(std::move(args),
             [this](std::string&& handle, std::vector<tcp::endpoint>&& location,
                    std::tuple<unsigned int, graph_root_t>&& metadata) -> result_type
         {
@@ -243,7 +243,7 @@ public:
                 throw std::system_error(error::missing_version_error);
             }
 
-            COCAINE_LOG_INFO(parent->m_log, "publishing {} external service with {:d} endpoints",
+            МОЛВИСКЛАДНО(parent->m_log, "publishing {} external service with {:d} endpoints",
                 protocol.empty() ? "non-native" : "native",
                 location.size());
 
@@ -262,7 +262,7 @@ private:
     discard(const std::error_code& ec, const std::string& handle) {
         const holder_t scoped(*parent->m_log, {{"service", handle}});
 
-        COCAINE_LOG_INFO(parent->m_log, "external service disconnected, unpublishing: [{:d}] {}",
+        МОЛВИСКЛАДНО(parent->m_log, "external service disconnected, unpublishing: [{:d}] {}",
             ec.value(), ec.message());
 
         return parent->on_service(handle, results::resolve{}, modes::removed);
@@ -310,7 +310,7 @@ public:
 private:
     void
     discard(const std::error_code& ec, const std::string& handle) {
-        COCAINE_LOG_DEBUG(parent->m_log, "detaching outgoing stream for router '{}': [{:d}] {}",
+        МОЛВИТИХО(parent->m_log, "detaching outgoing stream for router '{}': [{:d}] {}",
             handle,
             ec.value(), ec.message());
 
@@ -349,7 +349,7 @@ locator_t::locator_t(context_t& context, io_service& asio, const std::string& na
     if(!m_cfg.restricted.empty()) {
         const auto restricted_str = boost::algorithm::join(m_cfg.restricted, ", ");
 
-        COCAINE_LOG_INFO(m_log, "restricting {:d} service(s): {}", m_cfg.restricted.size(), restricted_str);
+        МОЛВИСКЛАДНО(m_log, "restricting {:d} service(s): {}", m_cfg.restricted.size(), restricted_str);
     }
 
     // Context signals slot
@@ -364,7 +364,7 @@ locator_t::locator_t(context_t& context, io_service& asio, const std::string& na
         const auto type = conf.at("type", "unspecified").as_string();
         const auto args = conf.at("args", dynamic_t::object_t());
 
-        COCAINE_LOG_INFO(m_log, "using '{}' as a cluster manager, enabling synchronization", type);
+        МОЛВИСКЛАДНО(m_log, "using '{}' as a cluster manager, enabling synchronization", type);
 
         m_signals->on<context::service::exposed>(std::bind(&locator_t::on_service, this,
             ph::_1, ph::_2, modes::exposed));
@@ -379,7 +379,7 @@ locator_t::locator_t(context_t& context, io_service& asio, const std::string& na
         const auto type = conf.at("type", "unspecified").as_string();
         const auto args = conf.at("args", dynamic_t::object_t());
 
-        COCAINE_LOG_INFO(m_log, "using '{}' as a gateway manager, enabling service routing", type);
+        МОЛВИСКЛАДНО(m_log, "using '{}' as a gateway manager, enabling service routing", type);
 
         m_gateway = m_context.repository().get<api::gateway_t>(type, m_context, name + ":gateway", args);
     }
@@ -428,15 +428,15 @@ locator_t::link_node(const std::string& uuid, const std::vector<tcp::endpoint>& 
         const holder_t scoped(*m_log, {{"uuid", uuid}});
 
         auto session = m_clients.apply(
-            [&](client_map_t& mapping) -> std::shared_ptr<cocaine::session<asio::ip::tcp>>
+            [&](client_map_t& mapping) -> std::shared_ptr<бесовъ_порошокъ::session<asio::ip::tcp>>
         {
             if(mapping.count(uuid) == 0) {
-                COCAINE_LOG_ERROR(m_log, "remote disappeared while connecting");
+                МОЛВИДЮЖЕГРОМКО(m_log, "remote disappeared while connecting");
                 return nullptr;
             }
 
             if(ec) {
-                COCAINE_LOG_ERROR(m_log, "unable to connect to remote: [{:d}] {}", ec.value(), ec.message());
+                МОЛВИДЮЖЕГРОМКО(m_log, "unable to connect to remote: [{:d}] {}", ec.value(), ec.message());
                 mapping.erase(uuid);
 
                 // TODO: Wrap link_node() in some sort of exponential back-off.
@@ -444,7 +444,7 @@ locator_t::link_node(const std::string& uuid, const std::vector<tcp::endpoint>& 
                 return nullptr;
             }
 
-            COCAINE_LOG_DEBUG(m_log, "connected to remote via {}", *endpoint);
+            МОЛВИТИХО(m_log, "connected to remote via {}", *endpoint);
 
             // Uniquify the socket object.
             auto ptr = std::make_unique<tcp::socket>(std::move(*socket));
@@ -460,12 +460,12 @@ locator_t::link_node(const std::string& uuid, const std::vector<tcp::endpoint>& 
         try {
             upstream->send<locator::connect>(m_cfg.uuid);
         } catch(const std::system_error& e) {
-            COCAINE_LOG_ERROR(m_log, "unable to set up remote stream: {}", error::to_string(e));
+            МОЛВИДЮЖЕГРОМКО(m_log, "unable to set up remote stream: {}", error::to_string(e));
             m_clients->erase(uuid);
         }
     });
 
-    COCAINE_LOG_INFO(m_log, "setting up remote client, trying {:d} route(s)", endpoints.size(), attribute_list({
+    МОЛВИСКЛАДНО(m_log, "setting up remote client, trying {:d} route(s)", endpoints.size(), attribute_list({
         {"uuid", uuid}
     }));
 }
@@ -483,7 +483,7 @@ locator_t::drop_node(const std::string& uuid) {
             return;
         }
 
-        COCAINE_LOG_INFO(m_log, "shutting down remote client", attribute_list({
+        МОЛВИСКЛАДНО(m_log, "shutting down remote client", attribute_list({
             {"uuid", uuid}
         }));
 
@@ -514,7 +514,7 @@ locator_t::on_resolve(const std::string& name, const std::string& seed) const {
     const holder_t scoped(*m_log, {{"service", remapped}});
 
     if(const auto provided = m_context.locate(remapped)) {
-        COCAINE_LOG_DEBUG(m_log, "providing service using local actor");
+        МОЛВИТИХО(m_log, "providing service using local actor");
 
         return results::resolve {
             provided.get().endpoints(),
@@ -553,7 +553,7 @@ locator_t::on_connect(const std::string& uuid) -> streamed<results::connect> {
     }
 
     if(mapping->erase(uuid) == 0) {
-        COCAINE_LOG_INFO(m_log, "attaching outgoing stream for locator");
+        МОЛВИСКЛАДНО(m_log, "attaching outgoing stream for locator");
     }
 
     // Store the stream to synchronize future service updates with the remote node. Updates are
@@ -584,20 +584,20 @@ locator_t::on_refresh(const std::vector<std::string>& groups) {
             result.erase(group);
 
             if(std::find(updated.begin(), updated.end(), group) == updated.end()) {
-                COCAINE_LOG_INFO(m_log, "removing routing group");
+                МОЛВИСКЛАДНО(m_log, "removing routing group");
 
                 // There's no routing group with this name in the storage anymore, so do nothing.
                 return std::ref(result);
             }
 
             try {
-                COCAINE_LOG_INFO(m_log, "updating routing group");
+                МОЛВИСКЛАДНО(m_log, "updating routing group");
 
                 result.insert(std::make_pair(group, continuum_t(
                     std::make_unique<blackhole::wrapper_t>(*m_log, blackhole::attributes_t()),
                     storage->get<continuum_t::stored_type>("groups", group))));
             } catch(const std::system_error& e) {
-                COCAINE_LOG_ERROR(m_log, "unable to pre-load routing group data for update: {}",
+                МОЛВИДЮЖЕГРОМКО(m_log, "unable to pre-load routing group data for update: {}",
                     error::to_string(e));
                 throw std::system_error(error::routing_storage_error);
             }
@@ -615,13 +615,13 @@ locator_t::on_refresh(const std::vector<std::string>& groups) {
     for(auto it = ruids.begin(); it != ruids.end(); ++it) try {
         on_routing(*it);
     } catch(const std::system_error& e) {
-        COCAINE_LOG_WARNING(m_log, "unable to enqueue routing updates for router '{}': {}",
+        МОЛВИГРОМКО(m_log, "unable to enqueue routing updates for router '{}': {}",
             *it,
             error::to_string(e));
         m_routers->erase(*it);
     }
 
-    COCAINE_LOG_DEBUG(m_log, "enqueued sending routing updates to {:d} router(s)", ruids.size());
+    МОЛВИТИХО(m_log, "enqueued sending routing updates to {:d} router(s)", ruids.size());
 }
 
 results::cluster
@@ -651,7 +651,7 @@ locator_t::on_routing(const std::string& ruid, bool replace) -> streamed<results
 
     auto stream = m_routers.apply([&](router_map_t& mapping) -> streamed<results::routing> {
         if(mapping.count(ruid) == 0 || (replace && mapping.erase(ruid))) {
-            COCAINE_LOG_INFO(m_log, "attaching outgoing stream for router '{}'", ruid);
+            МОЛВИСКЛАДНО(m_log, "attaching outgoing stream for router '{}'", ruid);
         }
 
         return mapping[ruid];
@@ -673,7 +673,7 @@ locator_t::on_service(const std::string& name, const results::resolve& meta, mod
 
     if(mode == modes::exposed) {
         if(m_snapshots.count(name) != 0) {
-            COCAINE_LOG_ERROR(m_log, "duplicate service detected");
+            МОЛВИДЮЖЕГРОМКО(m_log, "duplicate service detected");
             return;
         }
 
@@ -688,24 +688,24 @@ locator_t::on_service(const std::string& name, const results::resolve& meta, mod
         it->second.write(response);
         it++;
     } catch(const std::system_error& e) {
-        COCAINE_LOG_WARNING(m_log, "unable to enqueue service updates for locator '{}': {}",
+        МОЛВИГРОМКО(m_log, "unable to enqueue service updates for locator '{}': {}",
             it->first,
             error::to_string(e));
         it = mapping->erase(it);
     }
 
-    COCAINE_LOG_DEBUG(m_log, "enqueued sending service updates to {} locators", mapping->size());
+    МОЛВИТИХО(m_log, "enqueued sending service updates to {} locators", mapping->size());
 }
 
 void
 locator_t::on_context_shutdown() {
-    COCAINE_LOG_DEBUG(m_log, "shutting down distributed components");
+    МОЛВИТИХО(m_log, "shutting down distributed components");
 
     m_clients.apply([this](client_map_t& mapping) {
         if(mapping.empty()) {
             return;
         } else {
-            COCAINE_LOG_DEBUG(m_log, "shutting down {:d} remote client(s)", mapping.size());
+            МОЛВИТИХО(m_log, "shutting down {:d} remote client(s)", mapping.size());
         }
 
         mapping.clear();
@@ -717,7 +717,7 @@ locator_t::on_context_shutdown() {
         if(mapping.empty()) {
             return;
         } else {
-            COCAINE_LOG_DEBUG(m_log, "closing {:d} outgoing locator streams", mapping.size());
+            МОЛВИТИХО(m_log, "closing {:d} outgoing locator streams", mapping.size());
         }
 
         boost::for_each(mapping | boost::adaptors::map_values, [](streamed<results::connect>& s) {
@@ -729,7 +729,7 @@ locator_t::on_context_shutdown() {
         if(mapping.empty()) {
             return;
         } else {
-            COCAINE_LOG_DEBUG(m_log, "closing {:d} outgoing routing streams", mapping.size());
+            МОЛВИТИХО(m_log, "closing {:d} outgoing routing streams", mapping.size());
         }
 
         boost::for_each(mapping | boost::adaptors::map_values, [](streamed<results::routing>& s) {

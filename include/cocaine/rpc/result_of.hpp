@@ -28,7 +28,7 @@
 #include <boost/mpl/front.hpp>
 #include <boost/mpl/size.hpp>
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 namespace mpl = boost::mpl;
 
@@ -82,6 +82,6 @@ struct result_of<Event, typename depend<typename Event::tag>::type> {
     >::type type;
 };
 
-} // namespace cocaine
+} // namespace бесовъ_порошокъ
 
 #endif

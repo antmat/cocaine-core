@@ -27,7 +27,7 @@
 
 #include <system_error>
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 // Streaming service interface
 
@@ -86,6 +86,6 @@ struct protocol<primitive_tag<T>> {
     typedef primitive<T> scope;
 };
 
-}} // namespace cocaine::io
+}} // namespace бесовъ_порошокъ::io
 
 #endif

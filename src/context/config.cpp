@@ -35,7 +35,7 @@
 
 #include "rapidjson/reader.h"
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 
 namespace fs = boost::filesystem;
 
@@ -210,16 +210,16 @@ public:
             } else if (plugins.is_string()) {
                 m_plugins.push_back(plugins.as_string());
             } else {
-                throw cocaine::error_t("\"plugins\" section value should be either string or array of strings");
+                throw бесовъ_порошокъ::error_t("\"plugins\" section value should be either string or array of strings");
             }
             m_runtime = source.at("runtime", defaults::runtime_path).as_string();
 
             const auto runtime_path_status = fs::status(m_runtime);
 
             if(!fs::exists(runtime_path_status)) {
-                throw cocaine::error_t("directory {} does not exist", m_runtime);
+                throw бесовъ_порошокъ::error_t("directory {} does not exist", m_runtime);
             } else if(!fs::is_directory(runtime_path_status)) {
-                throw cocaine::error_t("{} is not a directory", m_runtime);
+                throw бесовъ_порошокъ::error_t("{} is not a directory", m_runtime);
             }
         }
 
@@ -244,11 +244,11 @@ public:
             ports_t(const dynamic_t::object_t& source) {
                 auto pinned = source.at("pinned", dynamic_t::empty_object);
                 if(!pinned.is_object()) {
-                    throw cocaine::error_t("invalid configuration for \"pinned\" section - {}", boost::lexical_cast<std::string>(pinned));
+                    throw бесовъ_порошокъ::error_t("invalid configuration for \"pinned\" section - {}", boost::lexical_cast<std::string>(pinned));
                 }
                 for(const auto& pair : pinned.as_object()) {
                     if(!pair.second.is_uint()) {
-                        throw cocaine::error_t("invalid configuration for \"pinned\" section - {}", boost::lexical_cast<std::string>(pinned));
+                        throw бесовъ_порошокъ::error_t("invalid configuration for \"pinned\" section - {}", boost::lexical_cast<std::string>(pinned));
                     }
                     m_pinned[pair.first] = pair.second.as_uint();
                 }
@@ -258,7 +258,7 @@ public:
                     !shared.as_array()[0].is_uint() ||
                     !shared.as_array()[1].is_uint())
                 {
-                    throw cocaine::error_t("invalid configuration for \"shared\" section - {}", boost::lexical_cast<std::string>(shared));
+                    throw бесовъ_порошокъ::error_t("invalid configuration for \"shared\" section - {}", boost::lexical_cast<std::string>(shared));
                 }
                 m_shared = std::make_tuple(shared.as_array()[0].as_uint(), shared.as_array()[1].as_uint());
             }
@@ -314,7 +314,7 @@ public:
             m_pool     = source.at("pool", boost::thread::hardware_concurrency() * 2).as_uint();
 
             if(m_pool <= 0) {
-                throw cocaine::error_t("network I/O pool size must be positive");
+                throw бесовъ_порошокъ::error_t("network I/O pool size must be positive");
             }
         }
 
@@ -354,7 +354,7 @@ public:
             try {
                 m_severity = priorities.at(severity);
             } catch (const std::out_of_range&) {
-                throw cocaine::error_t("severity \"{}\" not found", severity);
+                throw бесовъ_порошокъ::error_t("severity \"{}\" not found", severity);
             }
         }
 
@@ -473,13 +473,13 @@ public:
         const auto source_file_status = fs::status(source_file);
 
         if(!fs::exists(source_file_status) || !fs::is_regular_file(source_file_status)) {
-            throw cocaine::error_t("configuration file path is invalid");
+            throw бесовъ_порошокъ::error_t("configuration file path is invalid");
         }
 
         fs::ifstream stream(source_file);
 
         if(!stream) {
-            throw cocaine::error_t("unable to read configuration file");
+            throw бесовъ_порошокъ::error_t("unable to read configuration file");
         }
 
         rapidjson::MemoryPoolAllocator<> json_allocator;
@@ -490,15 +490,15 @@ public:
 
         if(!json_reader.Parse<rapidjson::kParseDefaultFlags>(json_stream, configuration_constructor)) {
             if(json_reader.HasParseError()) {
-                throw cocaine::error_t("configuration file is corrupted - {}", json_reader.GetParseError());
+                throw бесовъ_порошокъ::error_t("configuration file is corrupted - {}", json_reader.GetParseError());
             } else {
-                throw cocaine::error_t("configuration file is corrupted");
+                throw бесовъ_порошокъ::error_t("configuration file is corrupted");
             }
         }
         auto root = configuration_constructor.Result();
 
         if(root.as_object().at("version", 0).to<unsigned int>() != Version) {
-            throw cocaine::error_t("configuration file version is invalid");
+            throw бесовъ_порошокъ::error_t("configuration file version is invalid");
         }
 
         return root;
@@ -544,4 +544,4 @@ make_config(const std::string& source) {
     return std::unique_ptr<config_t>(new config<4>(source));
 }
 
-} //  namespace cocaine
+} //  namespace бесовъ_порошокъ

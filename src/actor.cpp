@@ -36,8 +36,8 @@
 
 #include <blackhole/logger.hpp>
 
-using namespace cocaine;
-using namespace cocaine::io;
+using namespace бесовъ_порошокъ;
+using namespace бесовъ_порошокъ::io;
 
 using namespace asio;
 using ip::tcp;
@@ -68,7 +68,7 @@ void
 actor_t::accept_action_t::operator()() {
     parent->m_acceptor.apply([this](std::unique_ptr<tcp::acceptor>& ptr) {
         if(!ptr) {
-            COCAINE_LOG_ERROR(parent->m_log, "abnormal termination of actor connection pump");
+            МОЛВИДЮЖЕГРОМКО(parent->m_log, "abnormal termination of actor connection pump");
             return;
         }
 
@@ -85,12 +85,12 @@ actor_t::accept_action_t::finalize(const std::error_code& ec) {
 
     switch(ec.value()) {
     case 0:
-        COCAINE_LOG_DEBUG(parent->m_log, "accepted connection on fd {:d}", ptr->native_handle());
+        МОЛВИТИХО(parent->m_log, "accepted connection on fd {:d}", ptr->native_handle());
 
         try {
             parent->m_context.engine().attach(std::move(ptr), parent->m_prototype);
         } catch(const std::system_error& e) {
-            COCAINE_LOG_ERROR(parent->m_log, "unable to attach connection to engine: {}",
+            МОЛВИДЮЖЕГРОМКО(parent->m_log, "unable to attach connection to engine: {}",
                 error::to_string(e));
             ptr = nullptr;
         }
@@ -101,7 +101,7 @@ actor_t::accept_action_t::finalize(const std::error_code& ec) {
         return;
 
     default:
-        COCAINE_LOG_ERROR(parent->m_log, "unable to accept connection: [{:d}] {}", ec.value(),
+        МОЛВИДЮЖЕГРОМКО(parent->m_log, "unable to accept connection: [{:d}] {}", ec.value(),
             ec.message());
         break;
     }
@@ -169,7 +169,7 @@ actor_t::endpoints() const {
             flags
         ));
     } catch(const std::system_error& e) {
-        COCAINE_LOG_ERROR(m_log, "unable to resolve local endpoints: {}", error::to_string(e));
+        МОЛВИДЮЖЕГРОМКО(m_log, "unable to resolve local endpoints: {}", error::to_string(e));
         return std::vector<tcp::endpoint>();
     }
 
@@ -205,18 +205,18 @@ actor_t::run() {
             auto addr = asio::ip::address::from_string(m_context.config().network().endpoint());
             endpoint = tcp::endpoint{addr, m_context.mapper().assign(m_prototype->name())};
         } catch(const std::system_error& e) {
-            COCAINE_LOG_ERROR(m_log, "unable to assign a local endpoint to service: {}", error::to_string(e));
+            МОЛВИДЮЖЕГРОМКО(m_log, "unable to assign a local endpoint to service: {}", error::to_string(e));
             throw;
         }
 
         try {
             ptr = std::make_unique<tcp::acceptor>(*m_asio, endpoint);
         } catch(const std::system_error& e) {
-            COCAINE_LOG_ERROR(m_log, "unable to bind local endpoint {} for service: {}", endpoint, error::to_string(e));
+            МОЛВИДЮЖЕГРОМКО(m_log, "unable to bind local endpoint {} for service: {}", endpoint, error::to_string(e));
             throw;
         }
 
-        COCAINE_LOG_INFO(m_log, "exposing service on local endpoint {}", ptr->local_endpoint(ec));
+        МОЛВИСКЛАДНО(m_log, "exposing service on local endpoint {}", ptr->local_endpoint(ec));
     });
 
     m_asio->post(std::bind(&accept_action_t::operator(),
@@ -240,7 +240,7 @@ actor_t::terminate() {
         std::error_code ec;
         const auto endpoint = ptr->local_endpoint(ec);
 
-        COCAINE_LOG_INFO(m_log, "removing service from local endpoint {}", endpoint);
+        МОЛВИСКЛАДНО(m_log, "removing service from local endpoint {}", endpoint);
 
         ptr = nullptr;
     });

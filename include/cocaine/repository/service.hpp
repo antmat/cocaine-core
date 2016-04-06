@@ -25,7 +25,7 @@
 #include "cocaine/common.hpp"
 #include "cocaine/repository.hpp"
 
-namespace cocaine { namespace api {
+namespace бесовъ_порошокъ { namespace api {
 
 template<>
 struct category_traits<service_t> {
@@ -47,6 +47,6 @@ struct category_traits<service_t> {
     };
 };
 
-}} // namespace cocaine::api
+}} // namespace бесовъ_порошокъ::api
 
 #endif

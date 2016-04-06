@@ -29,7 +29,7 @@
 #include "cocaine/rpc/asio/encoder.hpp"
 #include "cocaine/rpc/asio/decoder.hpp"
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 
 class session_t:
     public std::enable_shared_from_this<session_t>
@@ -136,6 +136,6 @@ public:
     remote_endpoint() const -> endpoint_type;
 };
 
-} // namespace cocaine
+} // namespace бесовъ_порошокъ
 
 #endif

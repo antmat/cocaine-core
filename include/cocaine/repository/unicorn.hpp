@@ -22,7 +22,7 @@
 
 #include <future>
 
-namespace cocaine { namespace api {
+namespace бесовъ_порошокъ { namespace api {
 
 template<>
 struct category_traits<unicorn_t> {

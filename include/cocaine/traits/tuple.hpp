@@ -34,7 +34,7 @@
 #include <boost/mpl/is_sequence.hpp>
 #include <boost/mpl/next.hpp>
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 // NOTE: The following structure is a template specialization for type lists, to support validating
 // sequence packing and unpacking with optional elements, which can be used as follows:
@@ -131,7 +131,7 @@ struct sequence_size_error:
     public msgpack::type_error
 {
     sequence_size_error(size_t size, size_t minimal):
-        message(cocaine::format("sequence size mismatch - got {} element(s), expected at least {}",
+        message(бесовъ_порошокъ::format("sequence size mismatch - got {} element(s), expected at least {}",
             size, minimal
         ))
     { }
@@ -355,7 +355,7 @@ struct type_traits<std::pair<T, U>> {
 };
 #endif
 
-}} // namespace cocaine::io
+}} // namespace бесовъ_порошокъ::io
 
 namespace msgpack {
 
@@ -363,7 +363,7 @@ template<class... Args>
 inline
 std::tuple<Args...>&
 operator>>(object o, std::tuple<Args...>& t) {
-    cocaine::io::type_traits<std::tuple<Args...>>::unpack(o, t);
+    бесовъ_порошокъ::io::type_traits<std::tuple<Args...>>::unpack(o, t);
     return t;
 }
 
@@ -371,7 +371,7 @@ template<class Stream, class... Args>
 inline
 packer<Stream>&
 operator<<(packer<Stream>& p, const std::tuple<Args...>& t) {
-    cocaine::io::type_traits<std::tuple<Args...>>::pack(p, t);
+    бесовъ_порошокъ::io::type_traits<std::tuple<Args...>>::pack(p, t);
     return p;
 }
 

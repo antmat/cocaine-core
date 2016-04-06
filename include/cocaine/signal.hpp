@@ -32,7 +32,7 @@
 #include <functional>
 #include <signal.h>
 
-namespace cocaine { namespace signal {
+namespace бесовъ_порошокъ { namespace signal {
 
 class cancellation_t {
 public:
@@ -116,7 +116,7 @@ public:
 
     typedef std::map<uint64_t, detailed_callback_type> detailed_callback_storage;
 
-    handler_t(std::unique_ptr<cocaine::logging::logger_t> logger, std::set<int> signal_set);
+    handler_t(std::unique_ptr<бесовъ_порошокъ::logging::logger_t> logger, std::set<int> signal_set);
 
     handler_t(const handler_t&) = delete;
     handler_t(handler_t&&) = delete;
@@ -144,7 +144,7 @@ private:
     virtual cancellation_t
     async_wait_detailed(int signum, detailed_callback_type handler);
 
-    std::unique_ptr<cocaine::logging::logger_t> logger;
+    std::unique_ptr<бесовъ_порошокъ::logging::logger_t> logger;
 
     std::set<int> signals;
 

@@ -28,7 +28,7 @@
 #include <blackhole/attribute.hpp>
 #include <blackhole/logger.hpp>
 
-namespace cocaine { namespace logging {
+namespace бесовъ_порошокъ { namespace logging {
 
 class trace_wrapper_t :
     public blackhole::logger_t
@@ -50,6 +50,6 @@ public:
     auto manager() -> blackhole::scope::manager_t&;
 };
 
-}} // namespace cocaine::logging
+}} // namespace бесовъ_порошокъ::logging
 
 #endif // COCAINE_TRACE_LOGGER

@@ -26,7 +26,7 @@
 
 #include <blackhole/logger.hpp>
 
-using namespace cocaine::gateway;
+using namespace бесовъ_порошокъ::gateway;
 
 using blackhole::attribute_list;
 
@@ -56,7 +56,7 @@ adhoc_t::resolve(const partition_t& name) const -> std::vector<asio::ip::tcp::en
     std::uniform_int_distribution<int> distribution(0, std::distance(lb, ub) - 1);
     std::advance(lb, distribution(m_random_generator));
 
-    COCAINE_LOG_DEBUG(m_log, "providing service using remote actor", attribute_list({
+    МОЛВИТИХО(m_log, "providing service using remote actor", attribute_list({
         {"uuid", lb->second.uuid}
     }));
 
@@ -74,7 +74,7 @@ adhoc_t::consume(const std::string& uuid,
         remote_t{uuid, endpoints}
     });
 
-    COCAINE_LOG_DEBUG(m_log, "registering destination with {:d} endpoints", endpoints.size(), attribute_list({
+    МОЛВИТИХО(m_log, "registering destination with {:d} endpoints", endpoints.size(), attribute_list({
         {"service", std::get<0>(name)},
         {"uuid"   , uuid             },
         {"version", (int)std::get<1>(name)}
@@ -97,7 +97,7 @@ adhoc_t::cleanup(const std::string& uuid, const partition_t& name) {
         return value.second.uuid == uuid;
     });
 
-    COCAINE_LOG_DEBUG(m_log, "removing destination with {:d} endpoints", it->second.endpoints.size(), attribute_list({
+    МОЛВИТИХО(m_log, "removing destination with {:d} endpoints", it->second.endpoints.size(), attribute_list({
         {"service", std::get<0>(name)},
         {"uuid", uuid                },
         {"version", (int)std::get<1>(name)}

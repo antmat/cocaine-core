@@ -31,7 +31,7 @@
 
 #include "cocaine/dynamic/detail.hpp"
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 
 template<class From, class = void>
 struct dynamic_constructor {
@@ -255,7 +255,7 @@ dynamic_t::to() const {
     return dynamic_converter<typename pristine<T>::type>::convert(*this);
 }
 
-} // namespace cocaine
+} // namespace бесовъ_порошокъ
 
 #include "cocaine/dynamic/object.hpp"
 #include "cocaine/dynamic/constructors.hpp"
@@ -265,7 +265,7 @@ namespace boost {
 
 template<>
 std::string
-lexical_cast<std::string, cocaine::dynamic_t>(const cocaine::dynamic_t&);
+lexical_cast<std::string, бесовъ_порошокъ::dynamic_t>(const бесовъ_порошокъ::dynamic_t&);
 
 } // namespace boost
 

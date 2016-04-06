@@ -24,7 +24,7 @@
 #include "cocaine/rpc/session.hpp"
 #include "cocaine/trace/trace.hpp"
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 
 template<class Tag> class upstream;
 
@@ -133,6 +133,6 @@ public:
     }
 };
 
-} // namespace cocaine
+} // namespace бесовъ_порошокъ
 
 #endif

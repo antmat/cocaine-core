@@ -38,8 +38,8 @@
 #include <asio/ip/tcp.hpp>
 #include <asio/local/stream_protocol.hpp>
 
-using namespace cocaine;
-using namespace cocaine::io;
+using namespace бесовъ_порошокъ;
+using namespace бесовъ_порошокъ::io;
 
 using namespace asio;
 
@@ -97,7 +97,7 @@ execution_unit_t::gc_action_t::finalize(const std::error_code& ec) {
     }
 
     if(recycled) {
-        COCAINE_LOG_DEBUG(parent->m_log, "recycled {:d} session(s)", recycled);
+        МОЛВИТИХО(parent->m_log, "recycled {:d} session(s)", recycled);
     }
 
     operator()();
@@ -113,12 +113,12 @@ execution_unit_t::execution_unit_t(context_t& context):
         std::make_shared<gc_action_t>(this, boost::posix_time::seconds(kCollectionInterval))
     ));
 
-    COCAINE_LOG_DEBUG(m_log, "engine started");
+    МОЛВИТИХО(m_log, "engine started");
 }
 
 execution_unit_t::~execution_unit_t() {
     m_asio->post([this] {
-        COCAINE_LOG_DEBUG(m_log, "stopping engine");
+        МОЛВИТИХО(m_log, "stopping engine");
 
         for(auto it = m_sessions.begin(); it != m_sessions.end(); ++it) {
             // Close the connections.
@@ -183,7 +183,7 @@ execution_unit_t::attach(std::unique_ptr<Socket> ptr, const dispatch_ptr_t& disp
             {"service",  dispatch ? dispatch->name() : "<none>"}
         }));
 
-        COCAINE_LOG_DEBUG(log, "attached connection to engine, load: {:.2f}%", utilization() * 100);
+        МОЛВИТИХО(log, "attached connection to engine, load: {:.2f}%", utilization() * 100);
 
         // Create a new inactive session.
         session_ = std::make_shared<session_type>(std::move(log), std::move(transport), dispatch);

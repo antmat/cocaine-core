@@ -20,7 +20,7 @@
 
 #pragma once
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 namespace hpack {
 
 struct headers {
@@ -870,4 +870,4 @@ public:
 };
 
 } //  namespace hpack
-} //  namespace cocaine
+} //  namespace бесовъ_порошокъ

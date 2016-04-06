@@ -26,7 +26,7 @@
 
 #include <asio/ip/tcp.hpp>
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 
 class actor_t {
     COCAINE_DECLARE_NONCOPYABLE(actor_t)
@@ -80,6 +80,6 @@ public:
     terminate();
 };
 
-} // namespace cocaine
+} // namespace бесовъ_порошокъ
 
 #endif

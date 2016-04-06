@@ -29,7 +29,7 @@
 #include <mutils/mincludes.h>
 #include <mutils/mhash.h>
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 
 template<hashid HashID>
 class crypto {
@@ -50,6 +50,6 @@ public:
 
 typedef crypto<MHASH_MD5> crypto_t;
 
-} // namespace cocaine
+} // namespace бесовъ_порошокъ
 
 #endif

@@ -25,7 +25,7 @@
 
 #include <blackhole/attributes.hpp>
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 struct log_tag;
 
@@ -100,6 +100,6 @@ struct protocol<log_tag> {
     typedef log scope;
 };
 
-}} // namespace cocaine::io
+}} // namespace бесовъ_порошокъ::io
 
 #endif

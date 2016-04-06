@@ -14,7 +14,7 @@
 #include <boost/filesystem/operations.hpp>
 #include <boost/lexical_cast.hpp>
 
-using namespace cocaine;
+using namespace бесовъ_порошокъ;
 
 namespace ph = std::placeholders;
 
@@ -34,7 +34,7 @@ public:
     operator()() {
         parent->m_acceptor.apply([this](std::unique_ptr<protocol_type::acceptor>& ptr) {
             if(!ptr) {
-                COCAINE_LOG_ERROR(parent->m_log, "abnormal termination of actor connection pump");
+                МОЛВИДЮЖЕГРОМКО(parent->m_log, "abnormal termination of actor connection pump");
                 return;
             }
 
@@ -53,14 +53,14 @@ private:
             
         switch(ec.value()) {
         case 0:
-            COCAINE_LOG_DEBUG(parent->m_log, "accepted connection on fd {}", ptr->native_handle());
+            МОЛВИТИХО(parent->m_log, "accepted connection on fd {}", ptr->native_handle());
 
             try {
                 auto base = parent->fact();
                 auto session = parent->m_context.engine().attach(std::move(ptr), base);
                 parent->bind(base, std::move(session));
             } catch(const std::system_error& e) {
-                COCAINE_LOG_ERROR(parent->m_log, "unable to attach connection to engine: {}",
+                МОЛВИДЮЖЕГРОМКО(parent->m_log, "unable to attach connection to engine: {}",
                     error::to_string(e));
                 ptr = nullptr;
             }
@@ -71,7 +71,7 @@ private:
             return;
 
         default:
-            COCAINE_LOG_ERROR(parent->m_log, "unable to accept connection: [{}] {}", ec.value(),
+            МОЛВИДЮЖЕГРОМКО(parent->m_log, "unable to accept connection: [{}] {}", ec.value(),
                 ec.message());
             break;
         }
@@ -82,12 +82,12 @@ private:
     }
 };
 
-unix_actor_t::unix_actor_t(cocaine::context_t& context,
+unix_actor_t::unix_actor_t(бесовъ_порошокъ::context_t& context,
                            asio::local::stream_protocol::endpoint endpoint,
                            fact_type fact,
                            bind_type bind,
                            const std::shared_ptr<asio::io_service>& asio,
-                           std::unique_ptr<cocaine::io::basic_dispatch_t> prototype) :
+                           std::unique_ptr<бесовъ_порошокъ::io::basic_dispatch_t> prototype) :
     m_context(context),
     endpoint(std::move(endpoint)),
     m_log(context.log("core/asio", {{ "service", prototype->name() }})),
@@ -105,7 +105,7 @@ unix_actor_t::run() {
         try {
             ptr = std::make_unique<protocol_type::acceptor>(*m_asio, this->endpoint);
         } catch(const std::system_error& e) {
-            COCAINE_LOG_ERROR(m_log, "unable to bind local endpoint for service: {}",
+            МОЛВИДЮЖЕГРОМКО(m_log, "unable to bind local endpoint for service: {}",
                 error::to_string(e));
             throw;
         }
@@ -113,7 +113,7 @@ unix_actor_t::run() {
         std::error_code ec;
         const auto endpoint = ptr->local_endpoint(ec);
 
-        COCAINE_LOG_INFO(m_log, "exposing service on local endpoint {}", endpoint);
+        МОЛВИСКЛАДНО(m_log, "exposing service on local endpoint {}", endpoint);
     });
 
     m_asio->post(std::bind(&accept_action_t::operator(),
@@ -137,7 +137,7 @@ unix_actor_t::terminate() {
         std::error_code ec;
         const auto endpoint = ptr->local_endpoint(ec);
 
-        COCAINE_LOG_INFO(m_log, "removing service from local endpoint {}", endpoint);
+        МОЛВИСКЛАДНО(m_log, "removing service from local endpoint {}", endpoint);
 
         ptr = nullptr;
     });
@@ -148,9 +148,9 @@ unix_actor_t::terminate() {
     const auto endpoint = boost::lexical_cast<std::string>(this->endpoint);
 
     try {
-        COCAINE_LOG_DEBUG(m_log, "removing local endpoint '{}'", endpoint);
+        МОЛВИТИХО(m_log, "removing local endpoint '{}'", endpoint);
         boost::filesystem::remove(endpoint);
     } catch (const std::exception& err) {
-        COCAINE_LOG_WARNING(m_log, "unable to clean local endpoint '{}': {}", endpoint, err.what());
+        МОЛВИГРОМКО(m_log, "unable to clean local endpoint '{}': {}", endpoint, err.what());
     }
 }

@@ -27,7 +27,7 @@
 #include <msgpack/pack.hpp>
 #include <msgpack/object.hpp>
 
-namespace cocaine { namespace hpack {
+namespace бесовъ_порошокъ { namespace hpack {
 
 struct msgpack_traits {
     // Pack a header from static table with predefined value
@@ -156,4 +156,4 @@ struct msgpack_traits {
     }
 };
 
-}} // namespace cocaine::hpack
+}} // namespace бесовъ_порошокъ::hpack

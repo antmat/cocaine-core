@@ -31,7 +31,7 @@
 
 #include <cstring>
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 template<class Protocol, class Decoder>
 class readable_stream:
@@ -124,6 +124,6 @@ private:
     }
 };
 
-}} // namespace cocaine::io
+}} // namespace бесовъ_порошокъ::io
 
 #endif

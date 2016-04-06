@@ -25,7 +25,7 @@
 
 #include <asio/ip/tcp.hpp>
 
-namespace cocaine { namespace api {
+namespace бесовъ_порошокъ { namespace api {
 
 struct gateway_t {
     typedef gateway_t category_type;
@@ -58,6 +58,6 @@ protected:
 
 typedef std::unique_ptr<gateway_t> gateway_ptr;
 
-}} // namespace cocaine::api
+}} // namespace бесовъ_порошокъ::api
 
 #endif

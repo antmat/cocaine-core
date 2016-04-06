@@ -27,7 +27,7 @@
 
 #include <blackhole/logger.hpp>
 
-using namespace cocaine;
+using namespace бесовъ_порошокъ;
 
 template<hashid HashID>
 crypto<HashID>::crypto(context_t& context, const std::string& service):
@@ -50,7 +50,7 @@ crypto<HashID>::sign(const std::string& message, const std::string& token_id) co
     try {
         token = m_store->template get<std::string>(m_service, token_id);
     } catch(const std::system_error& e) {
-        COCAINE_LOG_ERROR(m_log, "unable to load security token '{}' for service: {}", token_id,
+        МОЛВИДЮЖЕГРОМКО(m_log, "unable to load security token '{}' for service: {}", token_id,
             error::to_string(e));
         throw std::system_error(error::token_not_found);
     }
@@ -64,4 +64,4 @@ crypto<HashID>::sign(const std::string& message, const std::string& token_id) co
     return std::string(digest, mhash_get_block_size(HashID));
 }
 
-template class cocaine::crypto<MHASH_MD5>;
+template class бесовъ_порошокъ::crypto<MHASH_MD5>;

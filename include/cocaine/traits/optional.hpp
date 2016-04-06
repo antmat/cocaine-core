@@ -25,7 +25,7 @@
 
 #include <boost/optional/optional.hpp>
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 template<class T>
 struct type_traits<boost::optional<T>> {
@@ -52,6 +52,6 @@ struct type_traits<boost::optional<T>> {
     }
 };
 
-}} // namespace cocaine::io
+}} // namespace бесовъ_порошокъ::io
 
 #endif

@@ -36,7 +36,7 @@
 
 #include <cstring>
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 namespace io {
 
 namespace aux {
@@ -95,5 +95,5 @@ encoder_t::encode(const message_type& message) {
     return message.bind(*this);
 }
 
-}} // namespace cocaine::io
+}} // namespace бесовъ_порошокъ::io
 

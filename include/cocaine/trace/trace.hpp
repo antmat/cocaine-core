@@ -28,7 +28,7 @@
 #include <functional>
 #include <string>
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 
 class trace_t
 {
@@ -209,6 +209,6 @@ trace_t::mem_fn(Method m) -> callable_wrapper<decltype(std::mem_fn(std::forward<
     return result_type(std::mem_fn(std::forward<Method>(m)));
 }
 
-} // namespace cocaine
+} // namespace бесовъ_порошокъ
 
 #endif // COCAINE_TRACE_TRACE_HPP

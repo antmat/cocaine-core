@@ -24,7 +24,7 @@
 #include <map>
 #include <memory>
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 
 class dynamic_t;
 
@@ -113,6 +113,6 @@ private:
     ConstVisitor m_const_visitor;
 };
 
-}}} // namespace cocaine::detail::dynamic
+}}} // namespace бесовъ_порошокъ::detail::dynamic
 
 #endif // COCAINE_DYNAMIC_DETAIL_HPP

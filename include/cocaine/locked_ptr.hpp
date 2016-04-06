@@ -23,7 +23,7 @@
 
 #include <mutex>
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 
 template<class T, class Lockable = std::mutex>
 struct locked_ptr {
@@ -195,6 +195,6 @@ private:
     mutex_type mutable m_mutex;
 };
 
-} // namespace cocaine
+} // namespace бесовъ_порошокъ
 
 #endif

@@ -29,7 +29,7 @@
 
 #include <signal.h>
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 struct context_tag;
 // Context signals interface
@@ -135,9 +135,9 @@ struct protocol<context_tag> {
     typedef context scope;
 };
 
-}} // namespace cocaine::io
+}} // namespace бесовъ_порошокъ::io
 
-namespace cocaine { namespace aux {
+namespace бесовъ_порошокъ { namespace aux {
 template<class Event>
 struct history_traits;
 
@@ -149,5 +149,5 @@ struct history_traits<io::context::os_signal> {
     }
 };
 
-}} // namespace cocaine::aux
+}} // namespace бесовъ_порошокъ::aux
 #endif

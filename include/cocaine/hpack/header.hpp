@@ -27,7 +27,7 @@
 
 struct ch_header;
 
-namespace cocaine { namespace hpack {
+namespace бесовъ_порошокъ { namespace hpack {
 
 struct init_header_t;
 
@@ -265,4 +265,4 @@ private:
     size_t capacity;
 };
 
-}} // namespace cocaine::hpack
+}} // namespace бесовъ_порошокъ::hpack

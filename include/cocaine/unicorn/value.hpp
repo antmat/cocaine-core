@@ -20,10 +20,10 @@
 #include "cocaine/dynamic.hpp"
 #include "cocaine/traits/dynamic.hpp"
 
-namespace cocaine { namespace unicorn {
+namespace бесовъ_порошокъ { namespace unicorn {
 
 typedef long long version_t;
-typedef cocaine::dynamic_t value_t;
+typedef бесовъ_порошокъ::dynamic_t value_t;
 
 static constexpr version_t min_version = -2;
 static constexpr version_t not_existing_version = -1;

@@ -71,7 +71,7 @@
 #include <iostream>
 #include <thread>
 
-using namespace cocaine;
+using namespace бесовъ_порошокъ;
 
 namespace fs = boost::filesystem;
 namespace ph = std::placeholders;
@@ -87,8 +87,8 @@ struct sighup_handler_t {
     blackhole::root_logger_t& logger;
     logging::logger_t& wrapper;
     blackhole::registry_t& registry;
-    cocaine::signal::handler_base_t& sig_handler;
-    cocaine::context_t& context;
+    бесовъ_порошокъ::signal::handler_base_t& sig_handler;
+    бесовъ_порошокъ::context_t& context;
 
     void
     operator()(const std::error_code& ec, int signum, const siginfo_t& info) {
@@ -99,7 +99,7 @@ struct sighup_handler_t {
         // We do not suspect any other error codes except oeration cancellation.
         BOOST_ASSERT(!ec);
 
-        COCAINE_LOG_INFO(wrapper, "resetting logger");
+        МОЛВИСКЛАДНО(wrapper, "resetting logger");
         std::stringstream stream;
         stream << boost::lexical_cast<std::string>(context.config().logging().loggers());
 
@@ -109,21 +109,21 @@ struct sighup_handler_t {
 
         logger = std::move(log);
 
-        context.signal_hub().invoke<cocaine::io::context::os_signal>(signum, info);
+        context.signal_hub().invoke<бесовъ_порошокъ::io::context::os_signal>(signum, info);
         sig_handler.async_wait(SIGHUP, *this);
     }
 };
 
 struct sigchild_handler_t {
-    cocaine::context_t& context;
-    cocaine::signal::handler_base_t& handler;
+    бесовъ_порошокъ::context_t& context;
+    бесовъ_порошокъ::signal::handler_base_t& handler;
     void
     operator()(const std::error_code& ec, int signum, const siginfo_t& info) {
         if(ec == std::errc::operation_canceled) {
             return;
         }
         assert(!ec);
-        context.signal_hub().invoke<cocaine::io::context::os_signal>(signum, info);
+        context.signal_hub().invoke<бесовъ_порошокъ::io::context::os_signal>(signum, info);
         handler.async_wait(signum, *this);
     }
 };
@@ -147,7 +147,7 @@ struct terminate_handler_t {
 };
 
 struct sigpipe_handler_t {
-    cocaine::signal::handler_base_t& handler;
+    бесовъ_порошокъ::signal::handler_base_t& handler;
 
     void
     operator()(const std::error_code& ec, int signum) {
@@ -158,11 +158,11 @@ struct sigpipe_handler_t {
 };
 
 void
-run_signal_handler(cocaine::signal::handler_t& signal_handler, logging::logger_t& logger){
+run_signal_handler(бесовъ_порошокъ::signal::handler_t& signal_handler, logging::logger_t& logger){
     try {
         signal_handler.run();
     } catch (const std::system_error& e) {
-        COCAINE_LOG_ERROR(logger, "exception in signal handler - {}", error::to_string(e));
+        МОЛВИДЮЖЕГРОМКО(logger, "exception in signal handler - {}", error::to_string(e));
     }
 }
 
@@ -187,18 +187,18 @@ main(int argc, char* argv[]) {
         po::store(po::command_line_parser(argc, argv).options(general_options).run(), vm);
         po::notify(vm);
     } catch(const po::error& e) {
-        std::cerr << cocaine::format("ERROR: {}.", e.what()) << std::endl;
+        std::cerr << бесовъ_порошокъ::format("ERROR: {}.", e.what()) << std::endl;
         return EXIT_FAILURE;
     }
 
     if(vm.count("help")) {
-        std::cout << cocaine::format("USAGE: {} [options]", argv[0]) << std::endl;
+        std::cout << бесовъ_порошокъ::format("USAGE: {} [options]", argv[0]) << std::endl;
         std::cout << general_options;
         return EXIT_SUCCESS;
     }
 
     if(vm.count("version")) {
-        std::cout << cocaine::format("Cocaine {}.{}.{}", COCAINE_VERSION_MAJOR, COCAINE_VERSION_MINOR,
+        std::cout << бесовъ_порошокъ::format("Cocaine {}.{}.{}", COCAINE_VERSION_MAJOR, COCAINE_VERSION_MINOR,
             COCAINE_VERSION_RELEASE) << std::endl;
         return EXIT_SUCCESS;
     }
@@ -219,7 +219,7 @@ main(int argc, char* argv[]) {
     try {
         config = make_config(vm["configuration"].as<std::string>());
     } catch(const std::system_error& e) {
-        std::cerr << cocaine::format("ERROR: unable to initialize the configuration - {}.", error::to_string(e)) << std::endl;
+        std::cerr << бесовъ_порошокъ::format("ERROR: unable to initialize the configuration - {}.", error::to_string(e)) << std::endl;
         return EXIT_FAILURE;
     }
 
@@ -237,13 +237,13 @@ main(int argc, char* argv[]) {
         if(!vm["pidfile"].empty()) {
             pid_path = vm["pidfile"].as<std::string>();
         } else {
-            pid_path = cocaine::format("{}/cocained.pid", config->path.runtime);
+            pid_path = бесовъ_порошокъ::format("{}/бесовъ_порошокъd.pid", config->path.runtime);
         }
 
         try {
             pidfile.reset(new pid_file_t(pid_path));
         } catch(const std::system_error& e) {
-            std::cerr << cocaine::format("ERROR: unable to create the pidfile - {}.", error::to_string(e)) << std::endl;
+            std::cerr << бесовъ_порошокъ::format("ERROR: unable to create the pidfile - {}.", error::to_string(e)) << std::endl;
             return EXIT_FAILURE;
         }
     }
@@ -253,7 +253,7 @@ main(int argc, char* argv[]) {
 
     const auto backend = vm["logging"].as<std::string>();
 
-    std::cout << cocaine::format("[Runtime] Initializing the logging system, backend: {}.", backend)
+    std::cout << бесовъ_порошокъ::format("[Runtime] Initializing the logging system, backend: {}.", backend)
               << std::endl;
 
     std::unique_ptr<blackhole::root_logger_t> root;
@@ -280,8 +280,8 @@ main(int argc, char* argv[]) {
         return EXIT_FAILURE;
     }
 
-    COCAINE_LOG_INFO(logger, "initializing the server");
-    std::unique_ptr<cocaine::logging::logger_t> wrapper(new blackhole::wrapper_t(*root, {{"source", "signal_handler"}}));
+    МОЛВИСКЛАДНО(logger, "initializing the server");
+    std::unique_ptr<бесовъ_порошокъ::logging::logger_t> wrapper(new blackhole::wrapper_t(*root, {{"source", "signal_handler"}}));
     auto wrapper_ref = std::ref(*wrapper);
     std::set<int> signals = { SIGPIPE, SIGINT, SIGQUIT, SIGTERM, SIGCHLD, SIGHUP };
     signal::handler_t signal_handler(std::move(wrapper), signals);
@@ -300,7 +300,7 @@ main(int argc, char* argv[]) {
     try {
         context = get_context(std::move(config), std::move(logger));
     } catch(const std::system_error& e) {
-        COCAINE_LOG_ERROR(root, "unable to initialize the context - {}.", error::to_string(e));
+        МОЛВИДЮЖЕГРОМКО(root, "unable to initialize the context - {}.", error::to_string(e));
         signal_handler.stop();
         sig_thread.join();
         return 1;

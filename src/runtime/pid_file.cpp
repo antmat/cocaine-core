@@ -29,7 +29,7 @@
 
 #include <sys/types.h>
 
-using namespace cocaine;
+using namespace бесовъ_порошокъ;
 
 namespace fs = boost::filesystem;
 
@@ -41,7 +41,7 @@ pid_file_t::pid_file_t(const fs::path& filepath):
         fs::ifstream stream(m_filepath);
 
         if(!stream) {
-            throw cocaine::error_t("unable to read '{}'", m_filepath.string());
+            throw бесовъ_порошокъ::error_t("unable to read '{}'", m_filepath.string());
         }
 
         pid_t pid;
@@ -52,14 +52,14 @@ pid_file_t::pid_file_t(const fs::path& filepath):
             // Unlink the stale pid file.
             remove();
         } else {
-            throw cocaine::error_t("another process is active");
+            throw бесовъ_порошокъ::error_t("another process is active");
         }
     }
 
     fs::ofstream stream(m_filepath);
 
     if(!stream) {
-        throw cocaine::error_t("unable to write '{}'", m_filepath.string());
+        throw бесовъ_порошокъ::error_t("unable to write '{}'", m_filepath.string());
     }
 
     stream << ::getpid();
@@ -79,6 +79,6 @@ pid_file_t::remove() {
     try {
         fs::remove(m_filepath);
     } catch(const fs::filesystem_error& e) {
-        throw cocaine::error_t("unable to remove '{}'", m_filepath.string());
+        throw бесовъ_порошокъ::error_t("unable to remove '{}'", m_filepath.string());
     }
 }

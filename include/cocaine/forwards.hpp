@@ -40,7 +40,7 @@ class severity_t;
 }  // namespace v1
 }  // namespace blackhole
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 
 class actor_t;
 struct config_t;
@@ -59,9 +59,9 @@ class dynamic_t;
 
 typedef unsigned short port_t;
 
-} // namespace cocaine
+} // namespace бесовъ_порошокъ
 
-namespace cocaine { namespace api {
+namespace бесовъ_порошокъ { namespace api {
 
 struct cluster_t;
 struct gateway_t;
@@ -70,16 +70,16 @@ class repository_t;
 struct service_t;
 struct storage_t;
 
-}} // namespace cocaine::api
+}} // namespace бесовъ_порошокъ::api
 
-namespace cocaine { namespace hpack {
+namespace бесовъ_порошокъ { namespace hpack {
 
 struct headers;
 struct header_static_table;
 
-}} // namespace cocaine::hpack
+}} // namespace бесовъ_порошокъ::hpack
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 // used for context signals
 struct context_tag;
@@ -115,9 +115,9 @@ typedef std::shared_ptr<      basic_upstream_t> upstream_ptr_t;
 template<class>
 struct protocol;
 
-}} // namespace cocaine::io
+}} // namespace бесовъ_порошокъ::io
 
-namespace cocaine { namespace logging {
+namespace бесовъ_порошокъ { namespace logging {
 
 enum priorities: int {
     debug   =  0,
@@ -129,6 +129,6 @@ enum priorities: int {
 // Import the logger in our namespace.
 using blackhole::logger_t;
 
-}} // namespace cocaine::logging
+}} // namespace бесовъ_порошокъ::logging
 
 #endif

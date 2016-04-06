@@ -26,7 +26,7 @@
 #include "cocaine/rpc/protocol.hpp"
 #include "cocaine/traits/tuple.hpp"
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 template<class Event>
 struct encoded;
@@ -152,6 +152,6 @@ struct encoded:
     { }
 };
 
-}} // namespace cocaine::io
+}} // namespace бесовъ_порошокъ::io
 
 #endif

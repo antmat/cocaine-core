@@ -31,7 +31,7 @@
     #endif
 #endif
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 template<class T>
 struct vector_traits {
@@ -78,6 +78,6 @@ struct type_traits<boost::container::small_vector<T, N>> :
 #endif
 #endif
 
-}} // namespace cocaine::io
+}} // namespace бесовъ_порошокъ::io
 
 #endif

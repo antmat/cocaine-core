@@ -25,7 +25,7 @@
 
 #include <boost/mpl/is_sequence.hpp>
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 // Streaming service interface
 
@@ -97,6 +97,6 @@ struct protocol<streaming_tag<T>> {
     typedef streaming<T> scope;
 };
 
-}} // namespace cocaine::io
+}} // namespace бесовъ_порошокъ::io
 
 #endif

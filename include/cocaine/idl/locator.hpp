@@ -30,7 +30,7 @@
 
 #include <asio/ip/tcp.hpp>
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 struct locator_tag;
 
@@ -214,6 +214,6 @@ struct protocol<locator::routing_tag> {
     >::type messages;
 };
 
-}} // namespace cocaine::io
+}} // namespace бесовъ_порошокъ::io
 
 #endif

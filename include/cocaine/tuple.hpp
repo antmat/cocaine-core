@@ -30,7 +30,7 @@
 #include <boost/mpl/end.hpp>
 #include <boost/mpl/next.hpp>
 
-namespace cocaine { namespace tuple {
+namespace бесовъ_порошокъ { namespace tuple {
 
 namespace aux {
 
@@ -107,6 +107,6 @@ invoke(std::tuple<Args...>&& args, F&& callable)
     >::apply(std::move(args), std::forward<F>(callable));
 }
 
-}} // namespace cocaine::tuple
+}} // namespace бесовъ_порошокъ::tuple
 
 #endif

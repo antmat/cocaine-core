@@ -40,7 +40,7 @@
 #include <boost/variant/static_visitor.hpp>
 #include <boost/variant/variant.hpp>
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 
 namespace mpl = boost::mpl;
 
@@ -244,6 +244,6 @@ dispatch<Tag>::process(int id, const Visitor& visitor) const {
     return boost::apply_visitor(visitor, slot);
 }
 
-} // namespace cocaine
+} // namespace бесовъ_порошокъ
 
 #endif

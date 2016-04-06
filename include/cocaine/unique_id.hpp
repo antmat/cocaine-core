@@ -26,7 +26,7 @@
 #include <array>
 #include <cstdint>
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 
 struct unique_id_t {
     unique_id_t();
@@ -49,6 +49,6 @@ public:
     std::array<uint64_t, 2> uuid;
 };
 
-} // namespace cocaine
+} // namespace бесовъ_порошокъ
 
 #endif

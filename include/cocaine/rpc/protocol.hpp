@@ -33,7 +33,7 @@
 
 #include <cstdint>
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 namespace mpl = boost::mpl;
 
@@ -154,6 +154,6 @@ struct event_traits {
     typedef typename aux::upstream_type<Event>::type upstream_type;
 };
 
-}} // namespace cocaine::io
+}} // namespace бесовъ_порошокъ::io
 
 #endif

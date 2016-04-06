@@ -26,7 +26,7 @@
 // NOTE: You should manually include the <blackhole/attribute.hpp> header file BEFORE this include.
 // Such restrictment is required to avoid exporting Blackhole API.
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 template<>
 struct type_traits<blackhole::attribute::value_t> {
@@ -110,6 +110,6 @@ struct type_traits<blackhole::attribute::value_t> {
     }
 };
 
-}} // namespace cocaine::io
+}} // namespace бесовъ_порошокъ::io
 
 #endif

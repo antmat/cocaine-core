@@ -26,7 +26,7 @@
 #include <map>
 #include <random>
 
-namespace cocaine { namespace service {
+namespace бесовъ_порошокъ { namespace service {
 
 // Ketama algorithm implementation
 
@@ -84,6 +84,6 @@ private:
     std::uniform_int_distribution<point_type> mutable m_distribution;
 };
 
-}} // namespace cocaine::service
+}} // namespace бесовъ_порошокъ::service
 
 #endif

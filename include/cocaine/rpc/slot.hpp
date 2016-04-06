@@ -29,7 +29,7 @@
 #include <boost/mpl/transform.hpp>
 #include <boost/optional/optional_fwd.hpp>
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 namespace mpl = boost::mpl;
 
@@ -71,6 +71,6 @@ struct is_terminal:
     public std::is_same<typename event_traits<Event>::dispatch_type, void>
 { };
 
-}} // namespace cocaine::io
+}} // namespace бесовъ_порошокъ::io
 
 #endif

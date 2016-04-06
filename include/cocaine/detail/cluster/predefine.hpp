@@ -28,7 +28,7 @@
 #include <asio/deadline_timer.hpp>
 #include <asio/ip/tcp.hpp>
 
-namespace cocaine { namespace cluster {
+namespace бесовъ_порошокъ { namespace cluster {
 
 class predefine_cfg_t
 {
@@ -68,6 +68,6 @@ private:
     on_announce(const std::error_code& ec);
 };
 
-}} // namespace cocaine::cluster
+}} // namespace бесовъ_порошокъ::cluster
 
 #endif

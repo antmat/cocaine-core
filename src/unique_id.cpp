@@ -26,7 +26,7 @@
 
 #include <string>
 
-using namespace cocaine;
+using namespace бесовъ_порошокъ;
 
 unique_id_t::unique_id_t() {
     uuid_generate(reinterpret_cast<unsigned char*>(uuid.data()));
@@ -39,7 +39,7 @@ unique_id_t::unique_id_t(const std::string& other) {
     );
 
     if(rv != 0) {
-        throw cocaine::error_t("unable to parse '{}' as an unique id", other);
+        throw бесовъ_порошокъ::error_t("unable to parse '{}' as an unique id", other);
     }
 }
 
@@ -62,11 +62,11 @@ unique_id_t::operator==(const unique_id_t& other) const {
            uuid[1] == other.uuid[1];
 }
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 
 std::ostream&
 operator<<(std::ostream& stream, const unique_id_t& id) {
     return stream << id.string();
 }
 
-} // namespace cocaine
+} // namespace бесовъ_порошокъ

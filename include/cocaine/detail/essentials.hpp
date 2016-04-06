@@ -20,9 +20,9 @@
 
 #include "cocaine/repository.hpp"
 
-namespace cocaine { namespace essentials {
+namespace бесовъ_порошокъ { namespace essentials {
 
 void
 initialize(api::repository_t& repository);
 
-}} // namespace cocaine::essentials
+}} // namespace бесовъ_порошокъ::essentials

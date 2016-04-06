@@ -35,7 +35,7 @@ make_unique(Args&&... args) {
 } // namespace std
 #endif
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 template<class T>
 struct uninitialized: public std::allocator<T> {
@@ -43,6 +43,6 @@ struct uninitialized: public std::allocator<T> {
     void destroy  (T*) { }
 };
 
-}} // namespace cocaine::io
+}} // namespace бесовъ_порошокъ::io
 
 #endif

@@ -32,7 +32,7 @@
 
 #include <boost/thread/thread.hpp>
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 class chamber_t {
     class named_runnable_t;
@@ -70,6 +70,6 @@ public:
     thread_id() const;
 };
 
-}} // namespace cocaine::io
+}} // namespace бесовъ_порошокъ::io
 
 #endif

@@ -25,7 +25,7 @@
 
 #include <boost/variant/variant.hpp>
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 namespace mpl = boost::mpl;
 
@@ -64,6 +64,6 @@ struct make_frozen_over {
     typedef typename boost::make_variant_over<frozen_types>::type type;
 };
 
-}} // namespace cocaine::io
+}} // namespace бесовъ_порошокъ::io
 
 #endif

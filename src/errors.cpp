@@ -27,8 +27,8 @@
 #include <boost/assign/list_of.hpp>
 #include <boost/bimap.hpp>
 
-using namespace cocaine;
-using namespace cocaine::error;
+using namespace бесовъ_порошокъ;
+using namespace бесовъ_порошокъ::error;
 
 namespace {
 
@@ -60,13 +60,13 @@ class transport_category_t:
     virtual
     auto
     message(int code) const -> std::string {
-        if(code == cocaine::error::transport_errors::frame_format_error)
+        if(code == бесовъ_порошокъ::error::transport_errors::frame_format_error)
             return "message has an unexpected framing";
-        if(code == cocaine::error::transport_errors::hpack_error)
+        if(code == бесовъ_порошокъ::error::transport_errors::hpack_error)
             return "unable to decode message metadata";
-        if(code == cocaine::error::transport_errors::insufficient_bytes)
+        if(code == бесовъ_порошокъ::error::transport_errors::insufficient_bytes)
             return "insufficient bytes provided to decode the message";
-        if(code == cocaine::error::transport_errors::parse_error)
+        if(code == бесовъ_порошокъ::error::transport_errors::parse_error)
             return "unable to parse the incoming data";
 
         return "cocaine.rpc.transport error";
@@ -85,19 +85,19 @@ class dispatch_category_t:
     virtual
     auto
     message(int code) const -> std::string {
-        if(code == cocaine::error::dispatch_errors::duplicate_slot)
+        if(code == бесовъ_порошокъ::error::dispatch_errors::duplicate_slot)
             return "duplicate slot";
-        if(code == cocaine::error::dispatch_errors::invalid_argument)
+        if(code == бесовъ_порошокъ::error::dispatch_errors::invalid_argument)
             return "unable to decode message arguments";
-        if(code == cocaine::error::dispatch_errors::not_connected)
+        if(code == бесовъ_порошокъ::error::dispatch_errors::not_connected)
             return "session is detached";
-        if(code == cocaine::error::dispatch_errors::revoked_channel)
+        if(code == бесовъ_порошокъ::error::dispatch_errors::revoked_channel)
             return "specified channel was revoked";
-        if(code == cocaine::error::dispatch_errors::slot_not_found)
+        if(code == бесовъ_порошокъ::error::dispatch_errors::slot_not_found)
             return "specified slot is not bound";
-        if(code == cocaine::error::dispatch_errors::unbound_dispatch)
+        if(code == бесовъ_порошокъ::error::dispatch_errors::unbound_dispatch)
             return "no dispatch has been assigned for channel";
-        if(code == cocaine::error::dispatch_errors::uncaught_error)
+        if(code == бесовъ_порошокъ::error::dispatch_errors::uncaught_error)
             return "uncaught invocation exception";
 
         return "cocaine.rpc.dispatch error";
@@ -116,17 +116,17 @@ class repository_category_t:
     virtual
     auto
     message(int code) const -> std::string {
-        if(code == cocaine::error::repository_errors::component_not_found)
+        if(code == бесовъ_порошокъ::error::repository_errors::component_not_found)
             return "component is not available";
-        if(code == cocaine::error::repository_errors::duplicate_component)
+        if(code == бесовъ_порошокъ::error::repository_errors::duplicate_component)
             return "duplicate component";
-        if(code == cocaine::error::repository_errors::initialization_error)
+        if(code == бесовъ_порошокъ::error::repository_errors::initialization_error)
             return "component has failed to intialize";
-        if(code == cocaine::error::repository_errors::invalid_interface)
+        if(code == бесовъ_порошокъ::error::repository_errors::invalid_interface)
             return "component has an invalid interface";
-        if(code == cocaine::error::repository_errors::ltdl_error)
+        if(code == бесовъ_порошокъ::error::repository_errors::ltdl_error)
             return "internal libltdl error";
-        if(code == cocaine::error::repository_errors::version_mismatch)
+        if(code == бесовъ_порошокъ::error::repository_errors::version_mismatch)
             return "component version requirements are not met";
 
         return "cocaine.plugins error";
@@ -145,7 +145,7 @@ class security_category_t:
     virtual
     auto
     message(int code) const -> std::string {
-        if(code == cocaine::error::security_errors::token_not_found)
+        if(code == бесовъ_порошокъ::error::security_errors::token_not_found)
             return "specified token is not available";
 
         return "cocaine.security error";
@@ -167,11 +167,11 @@ public std::error_category
     auto
     message(int code) const -> std::string {
         switch(code) {
-            case cocaine::error::locator_errors::service_not_available:
+            case бесовъ_порошокъ::error::locator_errors::service_not_available:
                 return "service is not available";
-            case cocaine::error::locator_errors::routing_storage_error:
+            case бесовъ_порошокъ::error::locator_errors::routing_storage_error:
                 return "routing storage is unavailable";
-            case cocaine::error::locator_errors::missing_version_error:
+            case бесовъ_порошокъ::error::locator_errors::missing_version_error:
                 return "missing protocol version";
         }
 
@@ -256,7 +256,7 @@ locator_category() -> const std::error_category& {
 
 } // namespace
 
-namespace cocaine { namespace error {
+namespace бесовъ_порошокъ { namespace error {
 
 auto
 make_error_code(transport_errors code) -> std::error_code {
@@ -290,13 +290,13 @@ make_error_code(unicorn_errors code) -> std::error_code {
 
 std::string
 to_string(const std::system_error& e) {
-    return cocaine::format("[{}] {}", e.code().value(), e.what());
+    return бесовъ_порошокъ::format("[{}] {}", e.code().value(), e.what());
 }
 
 const std::error_code
 error_t::kInvalidArgumentErrorCode = std::make_error_code(std::errc::invalid_argument);
 
-}} // namespace cocaine::error
+}} // namespace бесовъ_порошокъ::error
 
 // Error category registrar
 

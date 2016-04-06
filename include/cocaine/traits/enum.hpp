@@ -26,7 +26,7 @@
 
 #include <type_traits>
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 // This magic specialization allows to pack enumerations. On older compilers it will assume that
 // the underlying type is int, on GCC 4.7 and Clang it can detect the underlying type.
@@ -57,6 +57,6 @@ struct type_traits<
     }
 };
 
-}} // namespace cocaine::io
+}} // namespace бесовъ_порошокъ::io
 
 #endif

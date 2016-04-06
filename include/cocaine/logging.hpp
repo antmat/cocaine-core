@@ -30,21 +30,21 @@
 // TODO: Do not include this file from public API.
 
 #define COCAINE_LOG(__log__, __severity__, ...) \
-    ::cocaine::detail::logging::make_facade(__log__).log(__severity__, __VA_ARGS__)
+    ::бесовъ_порошокъ::detail::logging::make_facade(__log__).log(__severity__, __VA_ARGS__)
 
-#define COCAINE_LOG_DEBUG(__log__, ...) \
-    COCAINE_LOG(__log__, ::cocaine::logging::debug, __VA_ARGS__)
+#define МОЛВИТИХО(__log__, ...) \
+    COCAINE_LOG(__log__, ::бесовъ_порошокъ::logging::debug, __VA_ARGS__)
 
-#define COCAINE_LOG_INFO(__log__, ...) \
-    COCAINE_LOG(__log__, ::cocaine::logging::info, __VA_ARGS__)
+#define МОЛВИСКЛАДНО(__log__, ...) \
+    COCAINE_LOG(__log__, ::бесовъ_порошокъ::logging::info, __VA_ARGS__)
 
-#define COCAINE_LOG_WARNING(__log__, ...) \
-    COCAINE_LOG(__log__, ::cocaine::logging::warning, __VA_ARGS__)
+#define МОЛВИГРОМКО(__log__, ...) \
+    COCAINE_LOG(__log__, ::бесовъ_порошокъ::logging::warning, __VA_ARGS__)
 
-#define COCAINE_LOG_ERROR(__log__, ...) \
-    COCAINE_LOG(__log__, ::cocaine::logging::error, __VA_ARGS__)
+#define МОЛВИДЮЖЕГРОМКО(__log__, ...) \
+    COCAINE_LOG(__log__, ::бесовъ_порошокъ::logging::error, __VA_ARGS__)
 
-namespace cocaine { namespace detail { namespace logging {
+namespace бесовъ_порошокъ { namespace detail { namespace logging {
 
 template<class T> inline auto logger_ref(T& log) -> T& { return log; }
 template<class T> inline auto logger_ref(T* const log) -> T& { return *log; }
@@ -55,10 +55,10 @@ template<class T> inline auto logger_ref(const std::shared_ptr<T>& log) -> T& { 
 
 template<class T>
 inline
-auto make_facade(T&& log) -> blackhole::logger_facade<cocaine::logging::logger_t> {
-    return blackhole::logger_facade<cocaine::logging::logger_t>(logger_ref(log));
+auto make_facade(T&& log) -> blackhole::logger_facade<бесовъ_порошокъ::logging::logger_t> {
+    return blackhole::logger_facade<бесовъ_порошокъ::logging::logger_t>(logger_ref(log));
 }
 
-}}}  // namespace cocaine::detail::logging
+}}}  // namespace бесовъ_порошокъ::detail::logging
 
 #endif

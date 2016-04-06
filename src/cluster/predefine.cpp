@@ -34,15 +34,15 @@
 
 #include <blackhole/logger.hpp>
 
-using namespace cocaine::io;
-using namespace cocaine::cluster;
+using namespace бесовъ_порошокъ::io;
+using namespace бесовъ_порошокъ::cluster;
 
 using namespace asio;
 using namespace asio::ip;
 
 using blackhole::attribute_list;
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 
 namespace ph = std::placeholders;
 
@@ -58,7 +58,7 @@ struct dynamic_converter<predefine_cfg_t> {
         const dynamic_t& nodes = source.as_object().at("nodes", dynamic_t::empty_object);
 
         if(nodes.as_object().empty()) {
-            throw cocaine::error_t("no nodes have been specified");
+            throw бесовъ_порошокъ::error_t("no nodes have been specified");
         }
 
         io_service service;
@@ -89,7 +89,7 @@ struct dynamic_converter<predefine_cfg_t> {
     }
 };
 
-} // namespace cocaine
+} // namespace бесовъ_порошокъ
 
 predefine_t::predefine_t(context_t& context, interface& locator, const std::string& name, const dynamic_t& args):
     category_type(context, locator, name, args),

@@ -18,7 +18,7 @@
 
 #include <string>
 
-namespace cocaine { namespace unicorn {
+namespace бесовъ_порошокъ { namespace unicorn {
 typedef std::string path_t;
 }}
 

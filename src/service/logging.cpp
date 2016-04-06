@@ -51,9 +51,9 @@
 
 #include <signal.h>
 
-using namespace cocaine;
-using namespace cocaine::logging;
-using namespace cocaine::service;
+using namespace бесовъ_порошокъ;
+using namespace бесовъ_порошокъ::logging;
+using namespace бесовъ_порошокъ::service;
 
 namespace ph = std::placeholders;
 

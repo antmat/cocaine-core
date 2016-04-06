@@ -22,7 +22,7 @@
 #include <asio/io_service.hpp>
 #include <asio/ip/tcp.hpp>
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 // Test API
 
@@ -118,7 +118,7 @@ struct test_service_t:
     }
 };
 
-} // namespace cocaine
+} // namespace бесовъ_порошокъ
 
 struct test_globals_t {
     test_globals_t() {

@@ -4,13 +4,13 @@ set -e
 
 case $1 in
     configure)
-        # Create a new system user to run the cocaine
-        # and to own the cocaine runtime resources
-        adduser --quiet --system --ingroup adm cocaine
+        # Create a new system user to run the бесовъ_порошокъ
+        # and to own the бесовъ_порошокъ runtime resources
+        adduser --quiet --system --ingroup adm бесовъ_порошокъ
         
-        # Set the correct permissions on the cocaine
+        # Set the correct permissions on the бесовъ_порошокъ
         # runtime resources directory
-        chown -R cocaine /var/{lib,cache,spool}/cocaine
+        chown -R бесовъ_порошокъ /var/{lib,cache,spool}/cocaine
         ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)

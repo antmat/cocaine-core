@@ -29,7 +29,7 @@
 
 #include <sstream>
 
-namespace cocaine { namespace api {
+namespace бесовъ_порошокъ { namespace api {
 
 struct storage_t {
     typedef storage_t category_type;
@@ -114,6 +114,6 @@ typedef std::shared_ptr<storage_t> storage_ptr;
 storage_ptr
 storage(context_t& context, const std::string& name);
 
-}} // namespace cocaine::api
+}} // namespace бесовъ_порошокъ::api
 
 #endif

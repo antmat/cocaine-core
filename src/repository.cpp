@@ -32,8 +32,8 @@
 
 #include <boost/iterator/filter_iterator.hpp>
 
-using namespace cocaine;
-using namespace cocaine::api;
+using namespace бесовъ_порошокъ;
+using namespace бесовъ_порошокъ::api;
 
 namespace bh = blackhole;
 namespace fs = boost::filesystem;
@@ -51,15 +51,15 @@ struct lt_dlclose_action_t {
     }
 };
 
-struct is_cocaine_plugin_t {
+struct is_бесовъ_порошокъ_plugin_t {
     template<typename T>
     bool
     operator()(const T& entry) const {
         // Strip the path from its platform-dependent extension and make sure that the
         // remaining extension matches "cocaine-plugin".
-        // An example path on Linux: "/usr/lib/cocaine/plugin-name.cocaine-plugin.so".
+        // An example path on Linux: "/usr/lib/бесовъ_порошокъ/plugin-name.бесовъ_порошокъ-plugin.so".
         return fs::is_regular_file(entry) &&
-               entry.path().filename().replace_extension().extension() == ".cocaine-plugin";
+               entry.path().filename().replace_extension().extension() == ".бесовъ_порошокъ-plugin";
     }
 };
 
@@ -90,20 +90,20 @@ repository_t::~repository_t() {
 
 void
 repository_t::load(const std::vector<std::string>& plugin_dirs) {
-    COCAINE_LOG_INFO(m_log, "loading plugins");
+    МОЛВИСКЛАДНО(m_log, "loading plugins");
     std::vector<std::string> paths;
     for (const auto& dir : plugin_dirs) {
         const auto status = fs::status(dir);
 
         if(!fs::exists(status) || !fs::is_directory(status)) {
-            COCAINE_LOG_WARNING(m_log, "loading plugins: path '{}' is not valid", dir);
+            МОЛВИГРОМКО(m_log, "loading plugins: path '{}' is not valid", dir);
             continue;
         }
-        COCAINE_LOG_INFO(m_log, "loading plugins from {}", dir);
+        МОЛВИСКЛАДНО(m_log, "loading plugins from {}", dir);
 
-        typedef boost::filter_iterator<is_cocaine_plugin_t, fs::directory_iterator> dir_iterator_t;
+        typedef boost::filter_iterator<is_бесовъ_порошокъ_plugin_t, fs::directory_iterator> dir_iterator_t;
 
-        dir_iterator_t begin((is_cocaine_plugin_t()), fs::directory_iterator(dir));
+        dir_iterator_t begin((is_бесовъ_порошокъ_plugin_t()), fs::directory_iterator(dir));
         dir_iterator_t end;
 
         std::for_each(begin, end, [&](const fs::directory_entry& entry){
@@ -118,12 +118,12 @@ repository_t::load(const std::vector<std::string>& plugin_dirs) {
     std::for_each(paths.begin(), paths.end(), [this](const std::string& plugin) {
         open(plugin);
     });
-    COCAINE_LOG_INFO(m_log, "successefully loaded {} plugins", paths.size());
+    МОЛВИСКЛАДНО(m_log, "successefully loaded {} plugins", paths.size());
 }
 
 void
 repository_t::open(const std::string& target) {
-    COCAINE_LOG_INFO(m_log, "loading \"{}\" plugin", target);
+    МОЛВИСКЛАДНО(m_log, "loading \"{}\" plugin", target);
 
     const holder_t scoped(*m_log, {{"plugin", target}});
     lt_dladvise advice;
@@ -163,10 +163,10 @@ repository_t::open(const std::string& target) {
         try {
             initialize.call(*this);
         } catch(const std::system_error& e) {
-            COCAINE_LOG_ERROR(m_log, "unable to initialize plugin: {}", error::to_string(e));
+            МОЛВИДЮЖЕГРОМКО(m_log, "unable to initialize plugin: {}", error::to_string(e));
             throw std::system_error(error::initialization_error);
         } catch(const std::exception& e) {
-            COCAINE_LOG_ERROR(m_log, "unable to initialize plugin: {}", e.what());
+            МОЛВИДЮЖЕГРОМКО(m_log, "unable to initialize plugin: {}", e.what());
             throw std::system_error(error::initialization_error);
         }
     } else {
@@ -184,7 +184,7 @@ repository_t::insert(const std::string& id, const std::string& name,
         throw std::system_error(error::duplicate_component);
     }
 
-    COCAINE_LOG_DEBUG(m_log, "registering component '{}' in category '{}'",
+    МОЛВИТИХО(m_log, "registering component '{}' in category '{}'",
         name,
         detail::logging::demangle(id)
     );

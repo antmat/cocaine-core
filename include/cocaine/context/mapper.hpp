@@ -27,7 +27,7 @@
 #include <map>
 #include <mutex>
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 
 // Dynamic port mapper
 
@@ -55,6 +55,6 @@ public:
     retain(const std::string& name);
 };
 
-} // namespace cocaine
+} // namespace бесовъ_порошокъ
 
 #endif

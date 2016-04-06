@@ -23,7 +23,7 @@
 
 #include <string>
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 
 struct defaults {
     // Default paths.
@@ -38,6 +38,6 @@ struct defaults {
     static const std::string log_timestamp;
 };
 
-} // namespace cocaine
+} // namespace бесовъ_порошокъ
 
 #endif

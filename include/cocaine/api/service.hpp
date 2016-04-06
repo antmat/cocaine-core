@@ -23,7 +23,7 @@
 
 #include "cocaine/common.hpp"
 
-namespace cocaine { namespace api {
+namespace бесовъ_порошокъ { namespace api {
 
 struct service_t {
     typedef service_t category_type;
@@ -45,6 +45,6 @@ protected:
 
 typedef std::unique_ptr<service_t> service_ptr;
 
-}} // namespace cocaine::api
+}} // namespace бесовъ_порошокъ::api
 
 #endif

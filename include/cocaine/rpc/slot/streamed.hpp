@@ -23,7 +23,7 @@
 
 #include "cocaine/rpc/slot/deferred.hpp"
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 
 template<class T>
 struct streamed {
@@ -92,6 +92,6 @@ private:
     const std::shared_ptr<synchronized<queue_type>> outbox;
 };
 
-} // namespace cocaine
+} // namespace бесовъ_порошокъ
 
 #endif

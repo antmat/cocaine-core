@@ -26,7 +26,7 @@
 
 #include <random>
 
-namespace cocaine { namespace gateway {
+namespace бесовъ_порошокъ { namespace gateway {
 
 class adhoc_t:
     public api::gateway_t
@@ -66,6 +66,6 @@ public:
     cleanup(const std::string& uuid, const partition_t& name);
 };
 
-}} // namespace cocaine::gateway
+}} // namespace бесовъ_порошокъ::gateway
 
 #endif

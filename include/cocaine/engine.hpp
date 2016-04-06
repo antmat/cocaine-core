@@ -25,7 +25,7 @@
 
 #include <asio/deadline_timer.hpp>
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 
 class session_t;
 
@@ -69,6 +69,6 @@ public:
     utilization() const;
 };
 
-} // namespace cocaine
+} // namespace бесовъ_порошокъ
 
 #endif

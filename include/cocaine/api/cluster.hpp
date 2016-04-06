@@ -25,7 +25,7 @@
 
 #include <asio/ip/tcp.hpp>
 
-namespace cocaine { namespace api {
+namespace бесовъ_порошокъ { namespace api {
 
 struct cluster_t {
     typedef cluster_t category_type;
@@ -61,6 +61,6 @@ protected:
 
 typedef std::unique_ptr<cluster_t> cluster_ptr;
 
-}} // namespace cocaine::api
+}} // namespace бесовъ_порошокъ::api
 
 #endif

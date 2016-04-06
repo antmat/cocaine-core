@@ -30,7 +30,7 @@
 #include <boost/mpl/stable_partition.hpp>
 #include <boost/mpl/vector.hpp>
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 namespace mpl = boost::mpl;
 
@@ -51,6 +51,6 @@ struct sanitize {
     >::value;
 };
 
-}} // namespace cocaine::io
+}} // namespace бесовъ_порошокъ::io
 
 #endif

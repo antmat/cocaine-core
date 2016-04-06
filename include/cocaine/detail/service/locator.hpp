@@ -34,13 +34,13 @@
 
 #include "cocaine/locked_ptr.hpp"
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 
 class actor_t;
 
-} // namespace cocaine
+} // namespace бесовъ_порошокъ
 
-namespace cocaine { namespace service {
+namespace бесовъ_порошокъ { namespace service {
 
 class locator_t;
 
@@ -181,6 +181,6 @@ private:
     on_context_shutdown();
 };
 
-}} // namespace cocaine::service
+}} // namespace бесовъ_порошокъ::service
 
 #endif

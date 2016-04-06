@@ -23,12 +23,12 @@
 
 #include <map>
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 
 class dynamic_t::object_t :
-    public std::map<std::string, cocaine::dynamic_t>
+    public std::map<std::string, бесовъ_порошокъ::dynamic_t>
 {
-    typedef std::map<std::string, cocaine::dynamic_t> base_type;
+    typedef std::map<std::string, бесовъ_порошокъ::dynamic_t> base_type;
 
 public:
     object_t() = default;
@@ -72,18 +72,18 @@ public:
 
     using base_type::at;
 
-    cocaine::dynamic_t&
-    at(const std::string& key, cocaine::dynamic_t& def);
+    бесовъ_порошокъ::dynamic_t&
+    at(const std::string& key, бесовъ_порошокъ::dynamic_t& def);
 
-    const cocaine::dynamic_t&
-    at(const std::string& key, const cocaine::dynamic_t& def) const;
+    const бесовъ_порошокъ::dynamic_t&
+    at(const std::string& key, const бесовъ_порошокъ::dynamic_t& def) const;
 
     using base_type::operator[];
 
-    const cocaine::dynamic_t&
+    const бесовъ_порошокъ::dynamic_t&
     operator[](const std::string& key) const;
 };
 
-} // namespace cocaine
+} // namespace бесовъ_порошокъ
 
 #endif // COCAINE_DYNAMIC_OBJECT_HPP

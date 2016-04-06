@@ -20,10 +20,10 @@
 
 #include "cocaine/defaults.hpp"
 
-using namespace cocaine;
+using namespace бесовъ_порошокъ;
 
-const std::string defaults::plugins_path  = "/usr/lib/cocaine";
-const std::string defaults::runtime_path  = "/var/run/cocaine";
+const std::string defaults::plugins_path  = "/usr/lib/бесовъ_порошокъ";
+const std::string defaults::runtime_path  = "/var/run/бесовъ_порошокъ";
 
 const std::string defaults::endpoint      = "::";
 

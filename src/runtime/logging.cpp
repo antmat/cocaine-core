@@ -25,7 +25,7 @@
 
 #include <blackhole/record.hpp>
 
-namespace cocaine { namespace logging {
+namespace бесовъ_порошокъ { namespace logging {
 
 console_t::console_t() :
     blackhole::sink::console_t()
@@ -40,17 +40,17 @@ auto console_t::color(const blackhole::record_t& record) const -> blackhole::sin
     return colors[id];
 }
 
-}}  // namespace cocaine::logging
+}}  // namespace бесовъ_порошокъ::logging
 
 namespace blackhole {
 
 auto
-factory<cocaine::logging::console_t>::type() -> const char* {
+factory<бесовъ_порошокъ::logging::console_t>::type() -> const char* {
     return "console";
 }
 
 auto
-factory<cocaine::logging::console_t>::from(const config::node_t&) -> cocaine::logging::console_t {
+factory<бесовъ_порошокъ::logging::console_t>::from(const config::node_t&) -> бесовъ_порошокъ::logging::console_t {
     return {};
 
 }

@@ -25,7 +25,7 @@
 
 #include <boost/optional/optional.hpp>
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 template<
     class Event,
@@ -140,6 +140,6 @@ struct blocking_slot<Event, mute_slot_tag>:
     }
 };
 
-}} // namespace cocaine::io
+}} // namespace бесовъ_порошокъ::io
 
 #endif

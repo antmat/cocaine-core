@@ -28,7 +28,7 @@
 #include <list>
 #include <mutex>
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 
 template<class Tag> class retroactive_signal;
 
@@ -155,6 +155,6 @@ public:
 private:
 };
 
-} // namespace cocaine
+} // namespace бесовъ_порошокъ
 
 #endif

@@ -25,7 +25,7 @@
 
 #include <boost/mpl/equal.hpp>
 
-namespace cocaine { namespace io {
+namespace бесовъ_порошокъ { namespace io {
 
 // Argument tags
 
@@ -102,6 +102,6 @@ struct is_compatible<streaming_tag<T>, streaming_tag<U>>:
     public boost::mpl::equal<T, U>::type
 { };
 
-}}} // namespace cocaine::io::details
+}}} // namespace бесовъ_порошокъ::io::details
 
 #endif

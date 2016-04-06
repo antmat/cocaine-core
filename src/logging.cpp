@@ -29,7 +29,7 @@
 
 #include "cocaine/format.hpp"
 
-namespace cocaine { namespace detail { namespace logging {
+namespace бесовъ_порошокъ { namespace detail { namespace logging {
 
 std::string
 demangle(const std::string& mangled) {
@@ -51,10 +51,10 @@ demangle(const std::string& mangled) {
     BOOST_ASSERT(errors.count(status));
 
     if(status != 0) {
-        return cocaine::format("unable to demangle '{}': {}", mangled, errors.at(status));
+        return бесовъ_порошокъ::format("unable to demangle '{}': {}", mangled, errors.at(status));
     }
 
     return buffer.get();
 }
 
-}}} // namespace cocaine::detail::logging
+}}} // namespace бесовъ_порошокъ::detail::logging

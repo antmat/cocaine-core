@@ -33,7 +33,7 @@
 #include "cocaine/repository/storage.hpp"
 
 void
-cocaine::essentials::initialize(api::repository_t& repository) {
+бесовъ_порошокъ::essentials::initialize(api::repository_t& repository) {
     repository.insert<cluster::multicast_t>("multicast");
     repository.insert<cluster::predefine_t>("predefine");
     repository.insert<gateway::adhoc_t>("adhoc");

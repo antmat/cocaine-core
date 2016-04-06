@@ -31,7 +31,7 @@
 #include <memory>
 #include <string>
 
-namespace cocaine { namespace api {
+namespace бесовъ_порошокъ { namespace api {
 
 template<>
 struct category_traits<storage_t> {
@@ -66,6 +66,6 @@ struct category_traits<storage_t> {
 };
 
 
-}} // namespace cocaine::api
+}} // namespace бесовъ_порошокъ::api
 
 #endif

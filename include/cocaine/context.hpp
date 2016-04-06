@@ -27,7 +27,7 @@
 
 #include <boost/optional/optional_fwd.hpp>
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 
 // Context
 
@@ -92,6 +92,6 @@ std::unique_ptr<context_t>
 get_context(std::unique_ptr<config_t> config, std::unique_ptr<logging::logger_t> log);
 
 
-} // namespace cocaine
+} // namespace бесовъ_порошокъ
 
 #endif

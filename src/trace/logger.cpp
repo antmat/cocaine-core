@@ -23,7 +23,7 @@
 
 using namespace blackhole;
 
-namespace cocaine { namespace logging {
+namespace бесовъ_порошокъ { namespace logging {
 
 namespace {
     attribute_list
@@ -87,4 +87,4 @@ auto trace_wrapper_t::manager() -> scope::manager_t& {
     return inner->manager();
 }
 
-}} // namespace cocaine::logging
+}} // namespace бесовъ_порошокъ::logging

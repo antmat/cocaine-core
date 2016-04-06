@@ -27,7 +27,7 @@
 #include "cocaine/idl/logging.hpp"
 #include "cocaine/rpc/dispatch.hpp"
 
-namespace cocaine { namespace service {
+namespace бесовъ_порошокъ { namespace service {
 
 class logging_t:
     public api::service_t,
@@ -53,6 +53,6 @@ private:
     on_verbosity() const -> logging::priorities;
 };
 
-}} // namespace cocaine::service
+}} // namespace бесовъ_порошокъ::service
 
 #endif

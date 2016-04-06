@@ -26,7 +26,7 @@
 #include <boost/mpl/deque.hpp>
 #include <boost/mpl/push_back.hpp>
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 
 // Dependent type for SFINAE
 
@@ -118,6 +118,6 @@ struct make_index_sequence {
     typedef typename aux::make_index_sequence_impl<N>::type type;
 };
 
-} // namespace cocaine
+} // namespace бесовъ_порошокъ
 
 #endif

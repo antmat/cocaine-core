@@ -33,8 +33,8 @@
 
 #include <blackhole/logger.hpp>
 
-using namespace cocaine;
-using namespace cocaine::io;
+using namespace бесовъ_порошокъ;
+using namespace бесовъ_порошокъ::io;
 
 using namespace asio;
 
@@ -73,9 +73,9 @@ void
 session_t::pull_action_t::finalize(const std::error_code& ec) {
     if(ec) {
         if(ec != asio::error::eof) {
-            COCAINE_LOG_ERROR(session->log, "client disconnected: [{:d}] {}", ec.value(), ec.message());
+            МОЛВИДЮЖЕГРОМКО(session->log, "client disconnected: [{:d}] {}", ec.value(), ec.message());
         } else {
-            COCAINE_LOG_DEBUG(session->log, "client disconnected");
+            МОЛВИТИХО(session->log, "client disconnected");
         }
 
         return session->detach(ec);
@@ -92,17 +92,17 @@ session_t::pull_action_t::finalize(const std::error_code& ec) {
             session->handle(message);
             message.clear();
         } catch(const std::system_error& e) {
-            COCAINE_LOG_ERROR(session->log, "uncaught invocation exception: {}", error::to_string(e));
+            МОЛВИДЮЖЕГРОМКО(session->log, "uncaught invocation exception: {}", error::to_string(e));
             return session->detach(e.code());
         } catch(const std::exception& e) {
-            COCAINE_LOG_ERROR(session->log, "uncaught invocation exception: {}", e.what());
+            МОЛВИДЮЖЕГРОМКО(session->log, "uncaught invocation exception: {}", e.what());
             return session->detach(error::uncaught_error);
         }
 
         // Cycle the transport back into the message pump.
         operator()(std::move(ptr));
     } else {
-        COCAINE_LOG_DEBUG(session->log, "ignoring invocation due to detached session");
+        МОЛВИТИХО(session->log, "ignoring invocation due to detached session");
     }
 }
 
@@ -132,9 +132,9 @@ void
 session_t::push_action_t::operator()(const std::shared_ptr<transport_type> ptr) {
     if(!trace_t::current().empty()) {
         if(trace_t::current().pushed()) {
-            COCAINE_LOG_DEBUG(session->log, "cs");
+            МОЛВИТИХО(session->log, "cs");
         } else {
-            COCAINE_LOG_DEBUG(session->log, "ss");
+            МОЛВИТИХО(session->log, "ss");
         }
     }
 
@@ -146,13 +146,13 @@ session_t::push_action_t::operator()(const std::shared_ptr<transport_type> ptr) 
 
 void
 session_t::push_action_t::finalize(const std::error_code& ec) {
-    COCAINE_LOG_DEBUG(session->log, "after send");
+    МОЛВИТИХО(session->log, "after send");
     if(ec.value() == 0) return;
 
     if(ec != asio::error::eof) {
-        COCAINE_LOG_ERROR(session->log, "client disconnected: [{:d}] {}", ec.value(), ec.message());
+        МОЛВИДЮЖЕГРОМКО(session->log, "client disconnected: [{:d}] {}", ec.value(), ec.message());
     } else {
-        COCAINE_LOG_DEBUG(session->log, "client disconnected");
+        МОЛВИТИХО(session->log, "client disconnected");
     }
 
     return session->detach(ec);
@@ -233,7 +233,7 @@ session_t::handle(const decoder_t::message_type& message) {
 
     trace_t::restore_scope_t trace_scope(incoming_trace);
 
-    COCAINE_LOG_DEBUG(log, "invocation type {}: '{}' in channel {}, dispatch: '{}'",
+    МОЛВИТИХО(log, "invocation type {}: '{}' in channel {}, dispatch: '{}'",
         message.type(),
         channel->dispatch->root().count(message.type()) ?
             std::get<0>(channel->dispatch->root().at(message.type()))
@@ -243,10 +243,10 @@ session_t::handle(const decoder_t::message_type& message) {
 
     if(!trace_t::current().empty()) {
         if(trace_t::current().pushed()) {
-            COCAINE_LOG_DEBUG(log, "cr");
+            МОЛВИТИХО(log, "cr");
             trace_t::current().pop();
         } else {
-            COCAINE_LOG_DEBUG(log, "sr");
+            МОЛВИТИХО(log, "sr");
         }
     }
 
@@ -266,16 +266,16 @@ session_t::revoke(uint64_t channel_id) {
         auto it = mapping.find(channel_id);
 
         if(it == mapping.end()) {
-            COCAINE_LOG_WARNING(log, "ignoring revoke request for channel {:d}", channel_id);
+            МОЛВИГРОМКО(log, "ignoring revoke request for channel {:d}", channel_id);
             return;
         }
 
         if(it->second->dispatch) {
-            COCAINE_LOG_ERROR(log, "revoking channel {:d}, dispatch: '{}'", channel_id,
+            МОЛВИДЮЖЕГРОМКО(log, "revoking channel {:d}, dispatch: '{}'", channel_id,
                 it->second->dispatch->name());
             it->second->dispatch->discard(std::error_code());
         } else {
-            COCAINE_LOG_DEBUG(log, "revoking channel {:d}", channel_id);
+            МОЛВИТИХО(log, "revoking channel {:d}", channel_id);
         }
 
         mapping.erase(it);
@@ -290,7 +290,7 @@ session_t::fork(const dispatch_ptr_t& dispatch) {
         trace.push(dispatch->name());
         const auto downstream = std::make_shared<basic_upstream_t>(shared_from_this(), channel_id, trace);
 
-        COCAINE_LOG_DEBUG(log, "forking new channel {:d}, dispatch: '{}'", channel_id,
+        МОЛВИТИХО(log, "forking new channel {:d}, dispatch: '{}'", channel_id,
             dispatch ? dispatch->name() : "<none>");
 
         if(dispatch) {
@@ -347,9 +347,9 @@ session_t::detach(const std::error_code& ec) {
     if(auto swapped = std::move(*transport.synchronize())) {
 #endif
         swapped = nullptr;
-        COCAINE_LOG_DEBUG(log, "detached session from the transport");
+        МОЛВИТИХО(log, "detached session from the transport");
     } else {
-        COCAINE_LOG_WARNING(log, "ignoring detach request for session");
+        МОЛВИГРОМКО(log, "ignoring detach request for session");
         return;
     }
 
@@ -357,7 +357,7 @@ session_t::detach(const std::error_code& ec) {
         if(mapping.empty()) {
             return;
         } else {
-            COCAINE_LOG_DEBUG(log, "discarding {:d} channel dispatch(es)", mapping.size());
+            МОЛВИТИХО(log, "discarding {:d} channel dispatch(es)", mapping.size());
         }
 
         for(auto it = mapping.begin(); it != mapping.end(); ++it) {
@@ -420,7 +420,7 @@ session_t::remote_endpoint() const {
     return endpoint;
 }
 
-namespace cocaine {
+namespace бесовъ_порошокъ {
 
 template<class Protocol>
 session<Protocol>::session(std::unique_ptr<logging::logger_t> log, std::unique_ptr<transport_type> transport, const dispatch_ptr_t& prototype):
@@ -450,4 +450,4 @@ class session<ip::tcp>;
 template
 class session<local::stream_protocol>;
 
-} // namespace cocaine
+} // namespace бесовъ_порошокъ

@@ -24,7 +24,7 @@
 
 #include <cassert>
 
-namespace cocaine { namespace hpack {
+namespace бесовъ_порошокъ { namespace hpack {
 
 size_t
 http2_integer_size(size_t sz, size_t bit_offset) {
@@ -374,12 +374,12 @@ header_table_t::operator[](size_t idx) {
     return headers[idx];
 }
 
-}} // namespace cocaine::hpack
+}} // namespace бесовъ_порошокъ::hpack
 
 extern "C" {
 
 struct ch_table {
-    cocaine::hpack::header_table_t table;
+    бесовъ_порошокъ::hpack::header_table_t table;
 };
 
 ch_table*
@@ -405,19 +405,19 @@ ch_table_get_header(ch_table* table, size_t idx) {
 
 void
 ch_table_push(ch_table* table, const ch_header* header) {
-    cocaine::hpack::header_t cpp_header(*header);
+    бесовъ_порошокъ::hpack::header_t cpp_header(*header);
     table->table.push(cpp_header);
 }
 
 size_t
 ch_table_find_by_full_match(ch_table* table, const ch_header* header) {
-    cocaine::hpack::header_t cpp_header(*header);
+    бесовъ_порошокъ::hpack::header_t cpp_header(*header);
     return table->table.find_by_full_match(cpp_header);
 }
 
 size_t
 ch_table_find_by_name(ch_table* table, const ch_header* header) {
-    cocaine::hpack::header_t cpp_header(*header);
+    бесовъ_порошокъ::hpack::header_t cpp_header(*header);
     return table->table.find_by_name(cpp_header);
 }
 
