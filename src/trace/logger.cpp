@@ -54,7 +54,7 @@ auto trace_wrapper_t::attributes() const noexcept -> blackhole::attributes_t {
 auto trace_wrapper_t::filter(filter_t new_filter) -> void{
     std::shared_ptr<filter_t> new_filter_ptr(new filter_t(std::move(new_filter)));
     m_filter.apply([=](std::shared_ptr<filter_t>& filter_ptr){
-        filter_ptr = new_filter_ptr;
+        filter_ptr.swap(new_filter_ptr);
     });
 }
 
