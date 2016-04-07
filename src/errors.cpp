@@ -357,10 +357,14 @@ std::unique_ptr<registrar::impl_type> registrar::ptr(std::make_unique<impl_type>
 auto
 registrar::add(const std::error_category& ec) -> size_t {
     size_t index = hash(ec.name()) | 0xFF;
-    return ptr->mapping.apply([&](impl_type::mapping_t& mapping){
-        if(mapping.insert({index, &ec}).second) {
-            return index;
-        } else {
+    add(ec, index);
+    return index;
+}
+
+auto
+registrar::add(const std::error_category& ec, size_t index) -> void {
+    ptr->mapping.apply([&](impl_type::mapping_t& mapping){
+        if(!mapping.insert({index, &ec}).second) {
             throw error_t("duplicate error category");
         }
     });
