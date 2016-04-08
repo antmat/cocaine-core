@@ -312,8 +312,6 @@ registrar::impl_type {
 
     synchronized<mapping_t> mapping;
 
-    // Dynamic error category name-based hash.
-    std::hash<std::string> hash;
 
     impl_type();
 };
