@@ -27,28 +27,10 @@
 #include <boost/assign/list_of.hpp>
 #include <boost/bimap.hpp>
 
-#define PROTOTYPES
-#include <mutils/mincludes.h>
-#include <mutils/mhash.h>
-
 using namespace cocaine;
 using namespace cocaine::error;
 
 namespace {
-
-size_t hash(const std::string& data) {
-    unsigned char digest[16] = {};
-    MHASH thread = mhash_init(MHASH_MD5);
-    mhash(thread, data.data(), data.size());
-    mhash_deinit(thread, digest);
-    size_t result = digest[0];
-    // This is requred because of endiannes
-    for(size_t i = 1; i < 8; i++) {
-        result <<= 8;
-        result += digest[i];
-    }
-    return result;
-}
 
 class unknown_category_t:
     public std::error_category
@@ -353,13 +335,6 @@ registrar::impl_type::impl_type() {
 }
 
 std::unique_ptr<registrar::impl_type> registrar::ptr(std::make_unique<impl_type>());
-
-auto
-registrar::add(const std::error_category& ec) -> size_t {
-    size_t index = hash(ec.name()) | 0xFF;
-    add(ec, index);
-    return index;
-}
 
 auto
 registrar::add(const std::error_category& ec, size_t index) -> void {
