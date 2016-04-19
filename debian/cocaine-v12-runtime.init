@@ -25,7 +25,7 @@ SCRIPTNAME=/etc/init.d/$NAME
 # Read configuration variable file if it is present
 [ -r /etc/default/$NAME ] && . /etc/default/$NAME
 
-if [ "$DISABLE_COCAINE_SERVICE" = true ] then
+if [ "$DISABLE_COCAINE_SERVICE" = true ]; then
 	echo "Cocaine service is disabled. Enable it in /etc/default/$NAME"
 	exit 0
 fi
