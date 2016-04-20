@@ -5,8 +5,6 @@ include /usr/share/cdbs/1/rules/debhelper.mk
 
 DEB_DBG_PACKAGES := cocaine-v12-dbg
 DEB_DH_INSTALLINIT_ARGS := -r
-DEB_BUILD_PARALLEL := true
-DEB_PARALLEL_JOBS := $(shell grep -c ^processor /proc/cpuinfo)
 
 install/cocaine-v12-runtime::
 	install -d $(DEB_DESTDIR)etc/cocaine
