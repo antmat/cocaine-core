@@ -19,6 +19,12 @@ Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Cocaine - Core Libraries
  Cocaine core libraries package.
 
+Package: libcocaine-util3
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Cocaine - Util Libraries
+ Cocaine common utility libraries package.
+
 Package: libcocaine-dev
 Architecture: any
 Section: libdevel

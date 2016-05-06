@@ -63,15 +63,12 @@ LINK_DIRECTORIES(
     ${LIBMSGPACK_LIBRARY_DIRS}
     ${LIBLTDL_LIBRARY_DIRS})
 
-ADD_LIBRARY(cocaine-util STATIC
+ADD_LIBRARY(cocaine-util SHARED
     src/encoder.cpp
     src/errors.cpp
     src/header.cpp
     src/trace.cpp
 )
-
-SET_TARGET_PROPERTIES(cocaine-util PROPERTIES
-        COMPILE_FLAGS -fPIC)
 
 ADD_LIBRARY(cocaine-core SHARED
     src/actor.cpp
@@ -104,6 +101,10 @@ ADD_LIBRARY(cocaine-core SHARED
     src/trace/logger.cpp
     src/unique_id.cpp)
 
+TARGET_LINK_LIBRARIES(cocaine-util
+    blackhole
+    ${Boost_LIBRARIES})
+
 TARGET_LINK_LIBRARIES(cocaine-core
     cocaine-util
     ${Boost_LIBRARIES}
@@ -112,6 +113,9 @@ TARGET_LINK_LIBRARIES(cocaine-core
     msgpack
     blackhole
     ${LIBUUID_LIBRARY})
+
+SET_TARGET_PROPERTIES(cocaine-util PROPERTIES
+    VERSION 3)
 
 SET_TARGET_PROPERTIES(cocaine-core PROPERTIES
     VERSION 3)
