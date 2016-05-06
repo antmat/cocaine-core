@@ -63,12 +63,11 @@ LINK_DIRECTORIES(
     ${LIBMSGPACK_LIBRARY_DIRS}
     ${LIBLTDL_LIBRARY_DIRS})
 
-ADD_LIBRARY(cocaine-util SHARED
+ADD_LIBRARY(cocaine-io-util SHARED
     src/encoder.cpp
     src/errors.cpp
     src/header.cpp
-    src/trace.cpp
-)
+    src/trace.cpp)
 
 ADD_LIBRARY(cocaine-core SHARED
     src/actor.cpp
@@ -101,12 +100,12 @@ ADD_LIBRARY(cocaine-core SHARED
     src/trace/logger.cpp
     src/unique_id.cpp)
 
-TARGET_LINK_LIBRARIES(cocaine-util
+TARGET_LINK_LIBRARIES(cocaine-io-util
     blackhole
     ${Boost_LIBRARIES})
 
 TARGET_LINK_LIBRARIES(cocaine-core
-    cocaine-util
+    cocaine-io-util
     ${Boost_LIBRARIES}
     ltdl
     mhash
@@ -114,7 +113,7 @@ TARGET_LINK_LIBRARIES(cocaine-core
     blackhole
     ${LIBUUID_LIBRARY})
 
-SET_TARGET_PROPERTIES(cocaine-util PROPERTIES
+SET_TARGET_PROPERTIES(cocaine-io-util PROPERTIES
     VERSION 3)
 
 SET_TARGET_PROPERTIES(cocaine-core PROPERTIES
@@ -161,7 +160,7 @@ ENDIF()
 
 INSTALL(
     TARGETS
-        cocaine-util
+        cocaine-io-util
         cocaine-core
         cocaine-runtime
     RUNTIME DESTINATION bin COMPONENT runtime
