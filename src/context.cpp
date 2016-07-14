@@ -100,6 +100,10 @@ public:
         m_config(std::move(_config)),
         m_mapper(*m_config)
     {
+    }
+
+    virtual void
+    run() {
         const holder_t scoped(*m_log, {{"source", "core"}});
 
         reset_logger_filter();
@@ -200,7 +204,7 @@ public:
     }
 
 
-    const api::repository_t&
+    api::repository_t&
     repository() const {
         return *m_repository;
     }

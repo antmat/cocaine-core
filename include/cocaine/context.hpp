@@ -37,6 +37,10 @@ public:
     ~context_t() {}
 
     virtual
+    void
+    run() = 0;
+
+    virtual
     std::unique_ptr<logging::logger_t>
     log(const std::string& source) = 0;
 
@@ -49,7 +53,7 @@ public:
     logger_filter(filter_t new_filter) = 0;
 
     virtual
-    const api::repository_t&
+    api::repository_t&
     repository() const = 0;
 
     virtual
