@@ -37,10 +37,6 @@ public:
     ~context_t() {}
 
     virtual
-    void
-    run() = 0;
-
-    virtual
     std::unique_ptr<logging::logger_t>
     log(const std::string& source) = 0;
 
@@ -98,6 +94,11 @@ public:
 
 std::unique_ptr<context_t>
 make_context(std::unique_ptr<config_t> config, std::unique_ptr<logging::logger_t> log);
+
+std::unique_ptr<context_t>
+make_context(std::unique_ptr<config_t> config,
+             std::unique_ptr<logging::logger_t> log,
+             std::unique_ptr<api::repository_t> repository);
 
 } // namespace cocaine
 
