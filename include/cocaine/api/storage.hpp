@@ -24,8 +24,8 @@
 #include "cocaine/common.hpp"
 
 #include "cocaine/locked_ptr.hpp"
-
 #include "cocaine/traits.hpp"
+#include "cocaine/utility/future.hpp"
 
 #include <sstream>
 
@@ -34,71 +34,128 @@ namespace cocaine { namespace api {
 struct storage_t {
     typedef storage_t category_type;
 
+    template<class T>
+    using callback = std::function<void(std::future<T>)>;
+
     virtual
    ~storage_t() {
         // Empty.
     }
 
     virtual
-    std::string
-    read(const std::string& collection, const std::string& key) = 0;
+    void
+    read(callback<std::string> cb, const std::string& collection, const std::string& key) = 0;
 
     virtual
     void
-    write(const std::string& collection, const std::string& key, const std::string& blob,
+    write(callback<void> cb,
+          const std::string& collection,
+          const std::string& key,
+          const std::string& blob,
           const std::vector<std::string>& tags) = 0;
 
     virtual
     void
-    remove(const std::string& collection, const std::string& key) = 0;
+    remove(callback<void> cb, const std::string& collection, const std::string& key) = 0;
 
     virtual
-    std::vector<std::string>
-    find(const std::string& collection, const std::vector<std::string>& tags) = 0;
+    void
+    find(callback<std::vector<std::string>> cb, const std::string& collection, const std::vector<std::string>& tags) = 0;
 
     // Helper methods
 
     template<class T>
-    T
-    get(const std::string& collection, const std::string& key);
+    void
+    get(callback<T> cb, const std::string& collection, const std::string& key);
 
     template<class T>
     void
-    put(const std::string& collection, const std::string& key, const T& object,
+    put(callback<void> cb, const std::string& collection, const std::string& key, const T& object,
         const std::vector<std::string>& tags);
+
+    std::string
+    read_sync(const std::string& collection, const std::string& key);
+
+    void
+    write_sync(const std::string& collection,
+               const std::string& key,
+               const std::string& blob,
+               const std::vector<std::string>& tags);
+
+    void
+    remove_sync(const std::string& collection, const std::string& key);
+
+    std::vector<std::string>
+    find_sync(const std::string& collection, const std::vector<std::string>& tags);
+
+    template<class T>
+    T
+    get_sync(const std::string& collection, const std::string& key);
+
+    template<class T>
+    void
+    put_sync(const std::string& collection, const std::string& key, const T& object, const std::vector<std::string>& tags);
 
 protected:
     storage_t(context_t&, const std::string& /* name */, const dynamic_t& /* args */) {
         // Empty.
     }
+private:
+    template <class R, class F, class... Args>
+    R
+    wrap_sync(F f, const Args&... args) {
+        std::future<R> result;
+        std::mutex m;
+        std::condition_variable cv;
+        std::unique_lock<std::mutex> lock(m);
+        f([&](std::future<R> future) {
+            result = std::move(future);
+            cv.notify_one();
+        }, args...);
+        cv.wait(lock);
+        return result.get();
+    }
 };
 
 template<class T>
-T
-storage_t::get(const std::string& collection, const std::string& key) {
-    T result;
-    msgpack::unpacked unpacked;
+void
+storage_t::get(callback<T> cb, const std::string& collection, const std::string& key) {
 
-    std::string blob(read(collection, key));
+    // TODO: move inside lambda as we move on c++14
+    auto inner_cb = [=](std::future<std::string> f) {
+        T result;
+        msgpack::unpacked unpacked;
+        std::string blob;
 
-    try {
-        msgpack::unpack(&unpacked, blob.data(), blob.size());
-    } catch(const msgpack::unpack_error& e) {
-        throw std::system_error(std::make_error_code(std::errc::invalid_argument));
-    }
+        try {
+            blob = f.get();
+        } catch(const std::exception& e) {
+            return cb(make_exceptional_future<T>(e));
+        }
 
-    try {
-        io::type_traits<T>::unpack(unpacked.get(), result);
-    } catch(const msgpack::type_error& e) {
-        throw std::system_error(std::make_error_code(std::errc::invalid_argument));
-    }
+        try {
+            msgpack::unpack(&unpacked, blob.data(), blob.size());
+        } catch(const msgpack::unpack_error& e) {
+            return cb(make_exceptional_future<T>(std::make_error_code(std::errc::invalid_argument), e.what()));
+        }
 
-    return result;
+        try {
+            io::type_traits<T>::unpack(unpacked.get(), result);
+        } catch(const msgpack::type_error& e) {
+            return cb(make_exceptional_future<T>(std::make_error_code(std::errc::invalid_argument), e.what()));
+        }
+
+        return cb(make_ready_future(result));
+    };
+    read(std::move(inner_cb), collection, key);
 }
 
 template<class T>
 void
-storage_t::put(const std::string& collection, const std::string& key, const T& object,
+storage_t::put(callback<void> cb,
+               const std::string& collection,
+               const std::string& key,
+               const T& object,
                const std::vector<std::string>& tags)
 {
     std::ostringstream buffer;
@@ -106,8 +163,23 @@ storage_t::put(const std::string& collection, const std::string& key, const T& o
 
     io::type_traits<T>::pack(packer, object);
 
-    write(collection, key, buffer.str(), tags);
+    write(std::move(cb), collection, key, buffer.str(), tags);
 }
+
+template<class T>
+T
+storage_t::get_sync(const std::string& collection, const std::string& key) {
+    namespace ph = std::placeholders;
+    return wrap_sync<T>(std::bind(&storage_t::get<T>, this, ph::_1, ph::_2, ph::_3), collection, key);
+}
+
+template<class T>
+void
+storage_t::put_sync(const std::string& collection, const std::string& key, const T& object, const std::vector<std::string>& tags) {
+    namespace ph = std::placeholders;
+    wrap_sync<void>(std::bind(&storage_t::put<T>, this, ph::_1, ph::_2, ph::_3, ph::_4, ph::_5), collection, key, object, tags);
+}
+
 
 typedef std::shared_ptr<storage_t> storage_ptr;
 

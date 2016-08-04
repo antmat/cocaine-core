@@ -48,16 +48,16 @@ files_t::~files_t() {
     // Empty.
 }
 
-std::string
-files_t::read(const std::string& collection, const std::string& key) {
+void
+files_t::read(callback<std::string> cb, const std::string& collection, const std::string& key) {
     std::lock_guard<std::mutex> guard(m_mutex);
 
     const fs::path file_path(m_parent_path / collection / key);
 
     if(!fs::exists(file_path)) {
-        throw std::system_error(std::make_error_code(std::errc::no_such_file_or_directory),
+        return cb(make_exceptional_future<std::string>(std::make_error_code(std::errc::no_such_file_or_directory),
             file_path.string()
-        );
+        ));
     }
 
     COCAINE_LOG_DEBUG(m_log, "reading object '{}'", key, attribute_list({
@@ -68,19 +68,22 @@ files_t::read(const std::string& collection, const std::string& key) {
     fs::ifstream stream(file_path, fs::ifstream::in | fs::ifstream::binary);
 
     if(!stream) {
-        throw std::system_error(std::make_error_code(std::errc::permission_denied),
+        return cb(make_exceptional_future<std::string>(std::make_error_code(std::errc::permission_denied),
             file_path.string()
-        );
+        ));
     }
 
-    return std::string(
+    return cb(make_ready_future(std::string(
         std::istreambuf_iterator<char>(stream),
         std::istreambuf_iterator<char>()
-    );
+    )));
 }
 
 void
-files_t::write(const std::string& collection, const std::string& key, const std::string& blob,
+files_t::write(callback<void> cb,
+               const std::string& collection,
+               const std::string& key,
+               const std::string& blob,
                const std::vector<std::string>& tags)
 {
     std::lock_guard<std::mutex> guard(m_mutex);
@@ -137,15 +140,17 @@ files_t::write(const std::string& collection, const std::string& key, const std:
 
     stream.write(blob.c_str(), blob.size());
     stream.close();
+    cb(make_ready_future());
 }
 
 void
-files_t::remove(const std::string& collection, const std::string& key) {
+files_t::remove(callback<void> cb, const std::string& collection, const std::string& key) {
     std::lock_guard<std::mutex> guard(m_mutex);
 
     const auto file_path(m_parent_path / collection / key);
 
     if(!fs::exists(file_path)) {
+        cb(make_ready_future());
         return;
     }
 
@@ -155,6 +160,7 @@ files_t::remove(const std::string& collection, const std::string& key) {
     }));
 
     fs::remove(file_path);
+    cb(make_ready_future());
 }
 
 namespace {
@@ -176,14 +182,15 @@ struct intersect {
 
 } // namespace
 
-std::vector<std::string>
-files_t::find(const std::string& collection, const std::vector<std::string>& tags) {
+void
+files_t::find(callback<std::vector<std::string>> cb, const std::string& collection, const std::vector<std::string>& tags) {
     std::lock_guard<std::mutex> guard(m_mutex);
 
     const fs::path store_path(m_parent_path / collection);
 
     if(!fs::exists(store_path) || tags.empty()) {
-        return std::vector<std::string>();
+        cb(make_ready_future(std::vector<std::string>()));
+        return;
     }
 
     std::vector<std::vector<std::string>> result;
@@ -193,7 +200,8 @@ files_t::find(const std::string& collection, const std::vector<std::string>& tag
 
         if(!fs::exists(store_path / *tag)) {
             // If one of the tags doesn't exist, the intersection is evidently empty.
-            return std::vector<std::string>();
+            cb(make_ready_future(std::vector<std::string>()));
+            return;
         }
 
         fs::directory_iterator it(store_path / *tag), end;
@@ -225,5 +233,5 @@ files_t::find(const std::string& collection, const std::vector<std::string>& tag
     // be kept sorted inside the functor by std::set_intersection().
     std::sort(initial.begin(), initial.end());
 
-    return std::accumulate(result.begin(), result.end(), initial, intersect());
+    cb(make_ready_future(std::accumulate(result.begin(), result.end(), initial, intersect())));
 }

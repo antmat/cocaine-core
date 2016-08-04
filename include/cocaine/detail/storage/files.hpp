@@ -45,21 +45,24 @@ public:
    ~files_t();
 
     virtual
-    std::string
-    read(const std::string& collection, const std::string& key);
+    void
+    read(callback<std::string> cb, const std::string& collection, const std::string& key);
 
     virtual
     void
-    write(const std::string& collection, const std::string& key, const std::string& blob,
+    write(callback<void> cb,
+          const std::string& collection,
+          const std::string& key,
+          const std::string& blob,
           const std::vector<std::string>& tags);
 
     virtual
     void
-    remove(const std::string& collection, const std::string& key);
+    remove(callback<void> cb, const std::string& collection, const std::string& key);
 
     virtual
-    std::vector<std::string>
-    find(const std::string& collection, const std::vector<std::string>& tags);
+    void
+    find(callback<std::vector<std::string>> cb, const std::string& collection, const std::vector<std::string>& tags);
 };
 
 }} // namespace cocaine::storage
