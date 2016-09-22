@@ -131,6 +131,8 @@ TARGET_LINK_LIBRARIES(cocaine-runtime
     blackhole
     cocaine-core)
 
+SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0")
+
 # Try and enable C++11.
 ADD_CXX_COMPILER_FLAG(-std=c++11)
 
