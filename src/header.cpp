@@ -142,8 +142,13 @@ header_table_t::data_size() const {
 }
 
 size_t
+header_table_t::data_capacity() const {
+    return capacity;
+}
+
+size_t
 header_table_t::size() const {
-    return headers.size();
+    return header_static_table_t::size + headers.size();
 }
 
 bool
@@ -165,7 +170,7 @@ header_table_t::push(header_t header) {
     }
 
     // Header does not fit in the table. According to RFC we just clean the table and do not put the header inside.
-    if(empty() && data_size() + header_size > capacity) {
+    if(empty() && (data_size() + header_size > capacity)) {
         return;
     }
 
@@ -180,7 +185,7 @@ header_table_t::find(const std::function<bool(const header_t&)> comp) {
     }
     auto dyn_it = std::find_if(headers.begin(), headers.end(), comp);
     if(dyn_it != headers.end()) {
-        return dyn_it - headers.begin();
+        return dyn_it - headers.begin() + header_static_table_t::size;
     }
     return 0;
 }

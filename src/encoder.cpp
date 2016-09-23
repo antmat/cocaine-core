@@ -74,6 +74,7 @@ unbound_message_t::unbound_message_t(function_type&& bind_): bind(std::move(bind
 
 void
 encoder_t::pack_headers(packer_type& packer, const hpack::header_storage_t& headers) {
+
     packer.pack_array(headers.size() + 3);
 
     uint64_t trace_id  = trace_t::current().get_trace_id();

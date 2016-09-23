@@ -187,10 +187,15 @@ public:
     data_size() const;
 
     size_t
+    data_capacity() const;
+
+    size_t
     size() const;
 
     bool
     empty() const;
+
+
 
     static constexpr size_t max_data_capacity = 4096;
     static constexpr size_t http2_header_overhead = 32;
