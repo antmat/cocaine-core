@@ -51,7 +51,7 @@ public:
             static
             const std::string&
             value() {
-                static std::string data("\0\0\0\0\0\0\0\0", 8);
+                static std::string data(8, '\0');
                 return data;
             }
         };
@@ -60,7 +60,7 @@ public:
             static
             const std::string&
             value() {
-                static std::string data("0", 1);
+                static std::string data("0");
                 return data;
             }
         };

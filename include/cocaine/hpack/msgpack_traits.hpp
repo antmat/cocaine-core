@@ -51,12 +51,12 @@ struct msgpack_traits {
         }
         packer.pack_array(3);
         header_t header(Header::name(), std::move(header_data));
-        table.push(std::move(header));
         // true flag means store header in dynamic_table on receiver side
         packer.pack_true();
         packer.pack_fix_uint64(pos);
-        packer.pack_raw(header_data.size());
-        packer.pack_raw_body(header_data.c_str(), header_data.size());
+        packer.pack_raw(header.value().size());
+        packer.pack_raw_body(header.value().c_str(), header.value().size());
+        table.push(std::move(header));
     }
 
     // Pack any other header

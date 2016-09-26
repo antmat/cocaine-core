@@ -22,6 +22,7 @@
 #include "cocaine/hpack/static_table.hpp"
 
 #include <cassert>
+#include <numeric>
 #include <sstream>
 
 namespace cocaine { namespace hpack {
@@ -101,7 +102,7 @@ header_t::name_equal(const header_t& other) const {
 }
 
 header_t::header_t(std::string _name, std::string _value) :
-    data({{std::move(_name)},{std::move(_value)}})
+    data({std::move(_name),std::move(_value)})
 {}
 
 const std::string&
@@ -159,8 +160,7 @@ header_table_t::empty() const {
 
 void
 header_table_t::push(header_t header) {
-    auto result = header;
-    size_t header_size = result.http2_size();
+    size_t header_size = header.http2_size();
 
     // Pop headers from table until there is enough room for new one or table is empty
     auto sz = data_size();

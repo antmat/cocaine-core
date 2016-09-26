@@ -101,8 +101,7 @@ find_first(const std::vector<header_t>& headers) {
 template <class To, class From>
 boost::optional<To>
 convert_first(const std::vector<header_t>& headers, From&& from) {
-    auto v = find_first(headers, from);
-    if(v) {
+    if(auto v = find_first(headers, from)) {
         return boost::make_optional(binary_unpack<To>(v->value()));
     }
     return boost::none;
