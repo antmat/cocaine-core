@@ -22,7 +22,6 @@
 #include "cocaine/hpack/static_table.hpp"
 
 #include <cassert>
-#include <numeric>
 #include <sstream>
 
 namespace cocaine { namespace hpack {
