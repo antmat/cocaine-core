@@ -25,21 +25,20 @@
 #include <gtest/gtest.h>
 
 #include <random>
-#include <iostream>
 
 using namespace cocaine::hpack;
 
 TEST(header_data_t, conversion) {
     size_t val = 42;
-    auto data = header::binary_pack(val);
+    auto data = header::pack(val);
     ASSERT_TRUE(data.size() == sizeof(val));
-    ASSERT_EQ(header::binary_unpack<size_t>(data), val);
-    ASSERT_ANY_THROW(header::binary_unpack<char>(data));
+    ASSERT_EQ(header::unpack<size_t>(data), val);
+    ASSERT_ANY_THROW(header::unpack<char>(data));
     int test2 = 42;
-    ASSERT_EQ(header::binary_unpack<int>(header::binary_pack(test2)), test2);
+    ASSERT_EQ(header::unpack<int>(header::pack(test2)), test2);
 
     char test3 = 42;
-    ASSERT_EQ(header::binary_unpack<char>(header::binary_pack(test3)), test3);
+    ASSERT_EQ(header::unpack<char>(header::pack(test3)), test3);
 }
 
 TEST(header_t, general) {

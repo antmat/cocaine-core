@@ -43,13 +43,13 @@ namespace header {
 
 template<size_t N>
 std::string
-binary_pack(char const (&source)[N]) {
+pack(char const (&source)[N]) {
     return std::string{source, N-1};
 }
 
 template<class From>
 std::string
-binary_pack(From&& source) {
+pack(From&& source) {
     static_assert(std::is_pod<typename std::remove_reference<From>::type>::value &&
                   !std::is_pointer<typename std::remove_reference<From>::type>::value,
                   "only lreference to non-pointer POD is allowed to pack header data");
@@ -62,13 +62,13 @@ binary_pack(From&& source) {
 
 inline
 std::string
-binary_pack(const char* source, size_t size) {
+pack(const char* source, size_t size) {
     return std::string(source, size);
 }
 
 template<class To>
 To
-binary_unpack(const std::string& from) {
+unpack(const std::string& from) {
     static_assert(std::is_pod<typename std::remove_reference<To>::type>::value &&
                   !std::is_pointer<typename std::remove_reference<To>::type>::value &&
                   !std::is_array<typename std::remove_reference<To>::type>::value,
@@ -102,7 +102,7 @@ template <class To, class From>
 boost::optional<To>
 convert_first(const std::vector<header_t>& headers, From&& from) {
     if(auto v = find_first(headers, from)) {
-        return boost::make_optional(binary_unpack<To>(v->value()));
+        return boost::make_optional(unpack<To>(v->value()));
     }
     return boost::none;
 }

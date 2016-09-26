@@ -260,9 +260,9 @@ session_t::handle(const decoder_t::message_type& message) {
             auto parent_header = hpack::header::find_first<hpack::headers::parent_id<>>(message.headers());
             if(trace_header && span_header && parent_header) {
                 incoming_trace = trace_t(
-                    hpack::header::binary_unpack<uint64_t>(trace_header->value()),
-                    hpack::header::binary_unpack<uint64_t>(span_header->value()),
-                    hpack::header::binary_unpack<uint64_t>(parent_header->value()),
+                    hpack::header::unpack<uint64_t>(trace_header->value()),
+                    hpack::header::unpack<uint64_t>(span_header->value()),
+                    hpack::header::unpack<uint64_t>(parent_header->value()),
                     std::get<0>(lb->second->dispatch->root().at(message.type()))
                 );
             }
