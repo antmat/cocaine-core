@@ -114,7 +114,7 @@ protected:
 private:
     template <class T>
     static
-    void assing_future_result(std::promise<T>& promise, std::future<T>& future) {
+    void assign_future_result(std::promise<T>& promise, std::future<T> future) {
         try {
             promise.set_value(future.get());
         } catch (...) {
@@ -123,7 +123,7 @@ private:
     }
 
     static
-    void assing_future_result(std::promise<void>& promise, std::future<void>& future) {
+    void assign_future_result(std::promise<void>& promise, std::future<void> future) {
         try {
             future.get();
             promise.set_value();
@@ -161,7 +161,7 @@ std::future<T>
 storage_t::get(const std::string& collection, const std::string& key) {
     auto promise = std::make_shared<std::promise<T>>();
     get<T>(collection, key, [=](std::future<T> future){
-        assing_future_result(*promise, future);
+        assign_future_result(*promise, std::move(future));
     });
     return promise->get_future();
 }
