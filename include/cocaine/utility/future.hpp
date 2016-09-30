@@ -22,9 +22,9 @@
 namespace cocaine {
 
 template<class T>
-std::future<T> make_ready_future(T value) {
-    std::promise<T> promise;
-    promise.set_value(std::move(value));
+std::future<typename std::decay<T>::type> make_ready_future(T&& value) {
+    std::promise<typename std::decay<T>::type> promise;
+    promise.set_value(std::forward<T>(value));
     return promise.get_future();
 }
 
@@ -44,7 +44,7 @@ std::future<T> make_exceptional_future() {
 }
 
 template<class T, class E>
-std::future<T> make_exceptional_future(E e) {
+std::future<T> make_exceptional_future(E&& e) {
     std::promise<T> promise;
     auto e_ptr = std::make_exception_ptr(e);
     promise.set_exception(e_ptr);
