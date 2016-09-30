@@ -44,82 +44,98 @@ struct storage_t {
 
     virtual
     void
-    read(callback<std::string> cb, const std::string& collection, const std::string& key) = 0;
+    read(const std::string& collection, const std::string& key, callback<std::string> cb) = 0;
+
+    virtual
+    std::future<std::string>
+    read(const std::string& collection, const std::string& key);
 
     virtual
     void
-    write(callback<void> cb,
-          const std::string& collection,
+    write(const std::string& collection,
           const std::string& key,
           const std::string& blob,
-          const std::vector<std::string>& tags) = 0;
+          const std::vector<std::string>& tags,
+          callback<void> cb) = 0;
+
+    virtual
+    std::future<void>
+    write(const std::string& collection,
+          const std::string& key,
+          const std::string& blob,
+          const std::vector<std::string>& tags);
 
     virtual
     void
-    remove(callback<void> cb, const std::string& collection, const std::string& key) = 0;
+    remove(const std::string& collection, const std::string& key, callback<void> cb) = 0;
+
+    virtual
+    std::future<void>
+    remove(const std::string& collection, const std::string& key);
 
     virtual
     void
-    find(callback<std::vector<std::string>> cb, const std::string& collection, const std::vector<std::string>& tags) = 0;
+    find(const std::string& collection, const std::vector<std::string>& tags, callback<std::vector<std::string>> cb) = 0;
+
+    virtual
+    std::future<std::vector<std::string>>
+    find(const std::string& collection, const std::vector<std::string>& tags);
 
     // Helper methods
 
     template<class T>
     void
-    get(callback<T> cb, const std::string& collection, const std::string& key);
+    get(const std::string& collection, const std::string& key, callback<T> cb);
+
+    template<class T>
+    std::future<T>
+    get(const std::string& collection, const std::string& key);
 
     template<class T>
     void
-    put(callback<void> cb, const std::string& collection, const std::string& key, const T& object,
+    put(const std::string& collection,
+        const std::string& key,
+        const T& object,
+        const std::vector<std::string>& tags,
+        callback<void> cb);
+
+    template<class T>
+    std::future<void>
+    put(const std::string& collection,
+        const std::string& key,
+        const T& object,
         const std::vector<std::string>& tags);
 
-    std::string
-    read_sync(const std::string& collection, const std::string& key);
-
-    void
-    write_sync(const std::string& collection,
-               const std::string& key,
-               const std::string& blob,
-               const std::vector<std::string>& tags);
-
-    void
-    remove_sync(const std::string& collection, const std::string& key);
-
-    std::vector<std::string>
-    find_sync(const std::string& collection, const std::vector<std::string>& tags);
-
-    template<class T>
-    T
-    get_sync(const std::string& collection, const std::string& key);
-
-    template<class T>
-    void
-    put_sync(const std::string& collection, const std::string& key, const T& object, const std::vector<std::string>& tags);
 
 protected:
     storage_t(context_t&, const std::string& /* name */, const dynamic_t& /* args */) {
         // Empty.
     }
 private:
-    template <class R, class F, class... Args>
-    R
-    wrap_sync(F f, const Args&... args) {
-        std::future<R> result;
-        std::mutex m;
-        std::condition_variable cv;
-        std::unique_lock<std::mutex> lock(m);
-        f([&](std::future<R> future) {
-            result = std::move(future);
-            cv.notify_one();
-        }, args...);
-        cv.wait(lock);
-        return result.get();
+    template <class T>
+    static
+    void assing_future_result(std::promise<T>& promise, std::future<T>& future) {
+        try {
+            promise.set_value(future.get());
+        } catch (...) {
+            promise.set_exception(std::current_exception());
+        }
+    }
+
+    static
+    void assing_future_result(std::promise<void>& promise, std::future<void>& future) {
+        try {
+            future.get();
+            promise.set_value();
+        } catch (...) {
+            promise.set_exception(std::current_exception());
+        }
     }
 };
 
 template<class T>
 void
-storage_t::get(callback<T> cb, const std::string& collection, const std::string& key) {
+storage_t::get(const std::string& collection, const std::string& key, callback<T> cb) {
 
     // TODO: move inside lambda as we move on c++14
     auto inner_cb = [=](std::future<std::string> f) {
@@ -129,55 +145,51 @@ storage_t::get(callback<T> cb, const std::string& collection, const std::string&
 
         try {
             blob = f.get();
-        } catch(const std::exception& e) {
-            return cb(make_exceptional_future<T>(e));
-        }
-
-        try {
             msgpack::unpack(&unpacked, blob.data(), blob.size());
-        } catch(const msgpack::unpack_error& e) {
-            return cb(make_exceptional_future<T>(std::make_error_code(std::errc::invalid_argument), e.what()));
-        }
-
-        try {
             io::type_traits<T>::unpack(unpacked.get(), result);
-        } catch(const msgpack::type_error& e) {
-            return cb(make_exceptional_future<T>(std::make_error_code(std::errc::invalid_argument), e.what()));
+        } catch(...) {
+            return cb(make_exceptional_future<T>());
         }
 
         return cb(make_ready_future(result));
     };
-    read(std::move(inner_cb), collection, key);
+    read(collection, key, std::move(inner_cb));
+}
+
+template<class T>
+std::future<T>
+storage_t::get(const std::string& collection, const std::string& key) {
+    auto promise = std::make_shared<std::promise<T>>();
+    get<T>(collection, key, [=](std::future<T> future){
+        assing_future_result(*promise, future);
+    });
+    return promise->get_future();
 }
 
 template<class T>
 void
-storage_t::put(callback<void> cb,
-               const std::string& collection,
+storage_t::put(const std::string& collection,
                const std::string& key,
                const T& object,
-               const std::vector<std::string>& tags)
+               const std::vector<std::string>& tags,
+               callback<void> cb)
 {
     std::ostringstream buffer;
     msgpack::packer<std::ostringstream> packer(buffer);
 
     io::type_traits<T>::pack(packer, object);
 
-    write(std::move(cb), collection, key, buffer.str(), tags);
+    write(collection, key, buffer.str(), tags, std::move(cb));
 }
 
 template<class T>
-T
-storage_t::get_sync(const std::string& collection, const std::string& key) {
-    namespace ph = std::placeholders;
-    return wrap_sync<T>(std::bind(&storage_t::get<T>, this, ph::_1, ph::_2, ph::_3), collection, key);
-}
-
-template<class T>
-void
-storage_t::put_sync(const std::string& collection, const std::string& key, const T& object, const std::vector<std::string>& tags) {
-    namespace ph = std::placeholders;
-    wrap_sync<void>(std::bind(&storage_t::put<T>, this, ph::_1, ph::_2, ph::_3, ph::_4, ph::_5), collection, key, object, tags);
+std::future<void>
+storage_t::put(const std::string& collection, const std::string& key, const T& object, const std::vector<std::string>& tags) {
+    std::promise<void> promise;
+    put(collection, key, object, tags, [=](std::future<T> future) mutable {
+        assing_future_result(promise, future);
+    });
+    return promise.get_future();
 }
 
 

@@ -23,7 +23,10 @@
 
 #include "cocaine/api/storage.hpp"
 
+#include <asio/io_service.hpp>
+
 #include <boost/filesystem/path.hpp>
+#include <boost/optional/optional.hpp>
 
 namespace cocaine { namespace storage {
 
@@ -32,11 +35,11 @@ class files_t:
 {
     const std::unique_ptr<logging::logger_t> m_log;
 
-    // Underlying storage access synchronization. Note that two or more runtime instances probably
-    // will trash the file storage if pointed to the same location.
-    std::mutex m_mutex;
-
     const boost::filesystem::path m_parent_path;
+
+    asio::io_service io_loop;
+    boost::optional<asio::io_service::work> io_work;
+    std::thread thread;
 
 public:
     files_t(context_t& context, const std::string& name, const dynamic_t& args);
@@ -46,23 +49,23 @@ public:
 
     virtual
     void
-    read(callback<std::string> cb, const std::string& collection, const std::string& key);
+    read(const std::string& collection, const std::string& key, callback<std::string> cb);
 
     virtual
     void
-    write(callback<void> cb,
-          const std::string& collection,
+    write(const std::string& collection,
           const std::string& key,
           const std::string& blob,
-          const std::vector<std::string>& tags);
+          const std::vector<std::string>& tags,
+          callback<void> cb);
 
     virtual
     void
-    remove(callback<void> cb, const std::string& collection, const std::string& key);
+    remove(const std::string& collection, const std::string& key, callback<void> cb);
 
     virtual
     void
-    find(callback<std::vector<std::string>> cb, const std::string& collection, const std::vector<std::string>& tags);
+    find(const std::string& collection, const std::vector<std::string>& tags, callback<std::vector<std::string>> cb);
 };
 
 }} // namespace cocaine::storage

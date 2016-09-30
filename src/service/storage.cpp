@@ -44,13 +44,13 @@ storage_t::storage_t(context_t& context, asio::io_service& asio, const std::stri
 
     read_fn_t read_fun = [=](const std::string& collection, const std::string& key) {
         deferred<std::string> result;
-        storage->read([=](std::future<std::string> future) mutable {
+        storage->read(collection, key, [=](std::future<std::string> future) mutable {
             try {
                 result.write(future.get());
             } catch (const std::system_error& e) {
                 result.abort(e.code(), e.what());
             }
-        }, collection, key);
+        });
         return result;
     };
 
@@ -61,39 +61,39 @@ storage_t::storage_t(context_t& context, asio::io_service& asio, const std::stri
                                const std::string& blob,
                                const std::vector<std::string>& tags) mutable {
         deferred<void> result;
-        storage->write([=](std::future<void> future) mutable {
+        storage->write(collection, key, blob, tags, [=](std::future<void> future) mutable {
             try {
                 future.get();
                 result.close();
             } catch (const std::system_error& e) {
                 result.abort(e.code(), e.what());
             }
-        }, collection, key, blob, tags);
+        });
         return result;
     };
 
     remove_fn_t remove_fun = [=](const std::string& collection, const std::string& key) mutable {
         deferred<void> result;
-        storage->remove([=](std::future<void> future) mutable {
+        storage->remove(collection, key, [=](std::future<void> future) mutable {
             try {
                 future.get();
                 result.close();
             } catch (const std::system_error& e) {
                 result.abort(e.code(), e.what());
             }
-        }, collection, key);
+        });
         return result;
     };
 
     find_fn_t find_fun = [=](const std::string& collection, const std::vector<std::string>& tags) mutable {
         deferred<std::vector<std::string>> result;
-        storage->find([=](std::future<std::vector<std::string>> future) mutable {
+        storage->find(collection, tags, [=](std::future<std::vector<std::string>> future) mutable {
             try {
                 result.write(future.get());
             } catch (const std::system_error& e) {
                 result.abort(e.code(), e.what());
             }
-        }, collection, tags);
+        });
         return result;
     };
 

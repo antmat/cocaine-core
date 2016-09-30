@@ -6,28 +6,44 @@ namespace cocaine {
 namespace api {
 namespace ph = std::placeholders;
 
-std::string
-storage_t::read_sync(const std::string& collection, const std::string& key) {
-    return wrap_sync<std::string>(std::bind(&storage_t::read, this, ph::_1, ph::_2, ph::_3), collection, key);
+std::future<std::string>
+storage_t::read(const std::string& collection, const std::string& key) {
+    auto promise = std::make_shared<std::promise<std::string>>();
+    read(collection, key, [=](std::future<std::string> future){
+        assing_future_result(*promise, future);
+    });
+    return promise->get_future();
 }
 
-void
-storage_t::write_sync(const std::string& collection,
+std::future<void>
+storage_t::write(const std::string& collection,
                       const std::string& key,
                       const std::string& blob,
                       const std::vector<std::string>& tags) {
-    return wrap_sync<void>(std::bind(&storage_t::write, this, ph::_1, ph::_2, ph::_3, ph::_4, ph::_5), collection, key, blob, tags);
+    auto promise = std::make_shared<std::promise<void>>();
+    write(collection, key, blob, tags, [=](std::future<void> future){
+        assing_future_result(*promise, future);
+    });
+    return promise->get_future();
 }
 
-void
-storage_t::remove_sync(const std::string& collection, const std::string& key) {
-    return wrap_sync<void>(std::bind(&storage_t::remove, this, ph::_1, ph::_2, ph::_3), collection, key);
+std::future<void>
+storage_t::remove(const std::string& collection, const std::string& key) {
+    auto promise = std::make_shared<std::promise<void>>();
+    remove(collection, key, [=](std::future<void> future){
+        assing_future_result(*promise, future);
+    });
+    return promise->get_future();
 }
 
-std::vector<std::string>
-storage_t::find_sync(const std::string& collection, const std::vector<std::string>& tags) {
-    return wrap_sync<std::vector<std::string>>(std::bind(&storage_t::find, this, ph::_1, ph::_2, ph::_3), collection, tags);
+std::future<std::vector<std::string>>
+storage_t::find(const std::string& collection, const std::vector<std::string>& tags) {
+    auto promise = std::make_shared<std::promise<std::vector<std::string>>>();
+    find(collection, tags, [=](std::future<std::vector<std::string>> future){
+        assing_future_result(*promise, future);
+    });
+    return promise->get_future();
 }
 
-} // namesapce api
+} // namespace api
 } // namespace cocaine
