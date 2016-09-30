@@ -185,11 +185,11 @@ storage_t::put(const std::string& collection,
 template<class T>
 std::future<void>
 storage_t::put(const std::string& collection, const std::string& key, const T& object, const std::vector<std::string>& tags) {
-    std::promise<void> promise;
+    auto promise = std::make_shared<std::promise<void>>();
     put(collection, key, object, tags, [=](std::future<T> future) mutable {
-        assing_future_result(promise, future);
+        assign_future_result(*promise, std::move(future));
     });
-    return promise.get_future();
+    return promise->get_future();
 }
 
 

@@ -66,6 +66,22 @@ public:
     virtual
     void
     find(const std::string& collection, const std::vector<std::string>& tags, callback<std::vector<std::string>> cb);
+
+private:
+    std::string
+    read_sync(const std::string& collection, const std::string& key);
+
+    void
+    write_sync(const std::string& collection,
+               const std::string& key,
+               const std::string& blob,
+               const std::vector<std::string>& tags);
+
+    void
+    remove_sync(const std::string& collection, const std::string& key);
+
+    std::vector<std::string>
+    find_sync(const std::string& collection, const std::vector<std::string>& tags);
 };
 
 }} // namespace cocaine::storage
