@@ -161,7 +161,7 @@ std::future<T>
 storage_t::get(const std::string& collection, const std::string& key) {
     auto promise = std::make_shared<std::promise<T>>();
     get<T>(collection, key, [=](std::future<T> future){
-        assign_future_result(*promise, std::move(future));
+        assign_future_result<T>(*promise, std::move(future));
     });
     return promise->get_future();
 }
@@ -186,7 +186,7 @@ template<class T>
 std::future<void>
 storage_t::put(const std::string& collection, const std::string& key, const T& object, const std::vector<std::string>& tags) {
     auto promise = std::make_shared<std::promise<void>>();
-    put(collection, key, object, tags, [=](std::future<T> future) mutable {
+    put(collection, key, object, tags, [=](std::future<void> future) mutable {
         assign_future_result(*promise, std::move(future));
     });
     return promise->get_future();
