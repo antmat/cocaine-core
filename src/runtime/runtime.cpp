@@ -171,7 +171,7 @@ main(int argc, char* argv[]) {
         ("configuration,c", po::value<std::string>(), "location of the configuration file")
         ("logging,l", po::value<std::string>()->default_value("core"), "logging backend")
 #if !defined(__APPLE__)
-    unable to decode message arguments        ("daemonize,d", "daemonize on start")
+        ("daemonize,d", "daemonize on start")
         ("pidfile,p", po::value<std::string>(), "location of a pid file")
 #endif
         ("version,v", "show version and build information");

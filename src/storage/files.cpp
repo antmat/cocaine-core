@@ -44,7 +44,7 @@ files_t::files_t(context_t& context, const std::string& name, const dynamic_t& a
     m_log(context.log(name)),
     m_parent_path(args.as_object().at("path").as_string()),
     io_loop(),
-    io_work(io_loop),
+    io_work(asio::io_service::work(io_loop)),
     thread([&](){
         io_loop.run();
     })

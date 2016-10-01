@@ -47,9 +47,13 @@ public:
     virtual
    ~files_t();
 
+    using api::storage_t::read;
+
     virtual
     void
     read(const std::string& collection, const std::string& key, callback<std::string> cb);
+
+    using api::storage_t::write;
 
     virtual
     void
@@ -59,9 +63,13 @@ public:
           const std::vector<std::string>& tags,
           callback<void> cb);
 
+    using api::storage_t::remove;
+
     virtual
     void
     remove(const std::string& collection, const std::string& key, callback<void> cb);
+
+    using api::storage_t::find;
 
     virtual
     void
