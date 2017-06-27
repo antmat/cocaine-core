@@ -22,7 +22,7 @@
 
 #include "cocaine/logging.hpp"
 
-#include "cocaine/detail/logging.hpp"
+#include "cocaine/logging.hpp"
 
 #include <blackhole/logger.hpp>
 #include <blackhole/scope/holder.hpp>

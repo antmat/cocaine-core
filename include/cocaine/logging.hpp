@@ -93,6 +93,16 @@ log(Log&& log, cocaine::logging::priorities severity, Message&& message, const A
     );
 }
 
+// C++ typename demangling
+auto
+demangle(const std::string& mangled) -> std::string;
+
+template<class T>
+auto
+demangle() -> std::string {
+    return demangle(typeid(T).name());
+}
+
 }}}  // namespace cocaine::detail::logging
 
 #endif

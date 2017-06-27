@@ -18,7 +18,7 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "cocaine/detail/logging.hpp"
+#include "cocaine/logging.hpp"
 
 #include <cxxabi.h>
 
