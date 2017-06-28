@@ -30,7 +30,7 @@
 
 #include "cocaine/format.hpp"
 
-namespace cocaine { namespace detail { namespace logging {
+namespace cocaine { namespace logging {
 
 std::string
 demangle(const std::string& mangled) {
@@ -58,4 +58,4 @@ demangle(const std::string& mangled) {
     return buffer.get();
 }
 
-}}} // namespace cocaine::detail::logging
+}} // namespace cocaine::logging

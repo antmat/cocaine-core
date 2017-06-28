@@ -211,18 +211,14 @@ private:
         try {
             return boost::get<T>(m_value);
         } catch (const boost::bad_get& e) {
-            throw error_t("failed to get node value as {} - got {}", detail::logging::demangle<T>(), boost::lexical_cast<std::string>(*this));
+            throw error_t("failed to get node value as {} - got {}", logging::demangle<T>(), boost::lexical_cast<std::string>(*this));
         }
     }
 
     template<class T>
     const T&
     get() const {
-        try {
-            return boost::get<T>(m_value);
-        } catch (const boost::bad_get& e) {
-            throw error_t("failed to get node value as {} - got {}", detail::logging::demangle<T>(), boost::lexical_cast<std::string>(*this));
-        }
+        return const_cast<dynamic_t*>(this)->get<T>();
     }
 
     template<class T>
