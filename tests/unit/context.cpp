@@ -31,7 +31,7 @@ struct engine_mock_t {
 };
 
 TEST(context, bucket_random_dispatcher) {
-    auto d = new_distributor<std::vector<engine_mock_t>>("bucket_random", dynamic_t::object_t());
+    auto d = make_distributor<std::vector<engine_mock_t>>("bucket_random", dynamic_t::object_t());
     std::vector<double> values {
         0.005, 0.002, 0.001, 0.15
     };
@@ -61,7 +61,7 @@ TEST(context, bucket_random_dispatcher) {
     counter.clear();
     dynamic_t::object_t args;
     args["bucket_size"] = 0.3;
-    d = new_distributor<std::vector<engine_mock_t>>("bucket_random", args);
+    d = make_distributor<std::vector<engine_mock_t>>("bucket_random", args);
     for(size_t i = 0; i < 3000; i++) {
         counter[d->next(sample)->utilization()]++;
     }

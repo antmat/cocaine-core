@@ -197,10 +197,10 @@ public:
             if(!distributor_component) {
                 throw error_t("missing distributor component in context section");
             }
-            m_engine_distributor = new_distributor<engine_pool_t>(distributor_component->type(), distributor_component->args());
+            m_engine_distributor = make_distributor<engine_pool_t>(distributor_component->type(), distributor_component->args());
         } catch (const std::exception& e) {
             COCAINE_LOG_WARNING(m_log, "could not load distributor config - {}; processing with default values", e);
-            m_engine_distributor = new_distributor<engine_pool_t>("bucket_random", dynamic_t::object_t());
+            m_engine_distributor = make_distributor<engine_pool_t>("bucket_random", dynamic_t::object_t());
         }
     }
 
