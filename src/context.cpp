@@ -111,7 +111,7 @@ class context_impl_t : public context_t {
     // Service port mapping and pinning.
     port_mapping_t m_mapper;
 
-    std::unique_ptr<distributor<engine_pool_t>> engine_distributor;
+    std::unique_ptr<distributor<engine_pool_t>> m_engine_distributor;
 public:
     context_impl_t(std::unique_ptr<config_t> _config,
                    std::unique_ptr<logging::logger_t> _log,
@@ -123,6 +123,7 @@ public:
         m_mapper(*m_config)
     {
         const holder_t scoped(*m_log, {{"source", "core"}});
+        initialize_distributor();
 
         reset_logger_filter();
 
@@ -187,6 +188,20 @@ public:
 
         // Signal and stop all the services, shut down execution units.
         terminate();
+    }
+
+    auto
+    initialize_distributor() -> void {
+        try {
+            auto distributor_component = m_config->component_group("context").get("distributor");
+            if(!distributor_component) {
+                throw error_t("missing distributor component in context section");
+            }
+            m_engine_distributor = new_distributor<engine_pool_t>(distributor_component->type(), distributor_component->args());
+        } catch (const std::exception& e) {
+            COCAINE_LOG_WARNING(m_log, "could not load distributor config - {}; processing with default values", e);
+            m_engine_distributor = new_distributor<engine_pool_t>("bucket_random", {});
+        }
     }
 
     std::unique_ptr<logging::logger_t>
@@ -349,7 +364,7 @@ public:
 
     execution_unit_t&
     engine() override {
-        return *engine_distributor->next(m_pool);
+        return *m_engine_distributor->next(m_pool);
     }
 
     void

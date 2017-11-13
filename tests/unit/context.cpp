@@ -31,7 +31,7 @@ struct engine_mock_t {
 };
 
 TEST(context, bucket_random_dispatcher) {
-    auto d = new_distributor<std::vector<engine_mock_t>>("bucket_random");
+    auto d = new_distributor<std::vector<engine_mock_t>>("bucket_random", dynamic_t::object_t());
     std::vector<double> values {
         0.005, 0.002, 0.001, 0.15
     };
