@@ -19,6 +19,7 @@
 */
 
 #include "cocaine/context.hpp"
+#include "context/engine_dispatcher.hpp"
 
 #include "cocaine/api/cluster.hpp"
 #include "cocaine/api/service.hpp"
@@ -110,6 +111,7 @@ class context_impl_t : public context_t {
     // Service port mapping and pinning.
     port_mapping_t m_mapper;
 
+    std::unique_ptr<engine_dispatcher_t> engine_dispatcher;
 public:
     context_impl_t(std::unique_ptr<config_t> _config,
                    std::unique_ptr<logging::logger_t> _log,
@@ -347,6 +349,9 @@ public:
 
     execution_unit_t&
     engine() override {
+        return engine_dispatcher()->dispatch(*m_pool);
+//        static std::atomic_int counter;
+//        return *m_pool[counter++ % m_pool.size()];
         typedef std::unique_ptr<execution_unit_t> unit_t;
         auto comp = [](const unit_t& lhs, const unit_t& rhs) {
             return lhs->utilization() < rhs->utilization();
