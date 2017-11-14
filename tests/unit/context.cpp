@@ -69,6 +69,17 @@ TEST(context, bucket_random_dispatcher) {
     EXPECT_NEAR(counter[values[1]], 750, 50);
     EXPECT_NEAR(counter[values[2]], 750, 50);
     EXPECT_NEAR(counter[values[3]], 750, 50);
+
+    // Check empty pool case
+    sample.clear();
+    ASSERT_THROW(d->next(sample), cocaine::error_t);
+
+    // check misconfiguration case
+    args["bucket_size"] = 0.0;
+    EXPECT_THROW(make_distributor<std::vector<engine_mock_t>>("bucket_random", args), cocaine::error_t);
+    args["bucket_size"] = 2.0;
+    EXPECT_THROW(make_distributor<std::vector<engine_mock_t>>("bucket_random", args), cocaine::error_t);
+
 }
 
 } // namespace

@@ -17,9 +17,18 @@ struct distributor {
     virtual
     ~distributor() {}
 
+    auto
+    next(Pool& pool) -> result_type& {
+        if(pool.empty()) {
+            throw error_t("empty pool passed to distributor");
+        }
+        return next_impl(pool);
+    }
+
+private:
     virtual
     auto
-    next(Pool& pool) -> result_type& = 0;
+    next_impl(Pool& pool) -> result_type& = 0;
 };
 
 
@@ -29,10 +38,9 @@ template <class Pool>
 struct load_distributor: public distributor<Pool> {
     using result_type = typename Pool::value_type;
 
-    load_distributor() {}
-
+private:
     auto
-    next(Pool& pool) -> result_type& override {
+    next_impl(Pool& pool) -> result_type& override {
         auto comp = [](const result_type& lhs, const result_type& rhs) {
             return lhs->utilization() < rhs->utilization();
         };
@@ -48,12 +56,15 @@ struct rr_distributor: public distributor<Pool> {
 
     rr_distributor() : counter(0) {}
 
+private:
     auto
-    next(Pool& pool) -> result_type& override {
+    next_impl(Pool& pool) -> result_type& override {
+        if(pool.empty()) {
+            throw error_t("empty pool passed to distributor");
+        }
         return pool[counter++ % pool.size()];
     }
 
-private:
     std::atomic_uint counter;
 };
 
@@ -68,10 +79,19 @@ struct bucket_random_distributor: public distributor<Pool> {
 
     bucket_random_distributor(const dynamic_t& args) :
         bucket_size(args.as_object().at("bucket_size", 0.02).as_double())
-    {}
+    {
+        auto eps = std::numeric_limits<double>::epsilon();
+        if(bucket_size < eps || bucket_size >= 1.0 - eps) {
+            throw error_t("invalid bucket size `{}` for bucket_random_distributor", bucket_size);
+        }
+    }
 
+private:
     auto
-    next(Pool& pool) -> result_type& override {
+    next_impl(Pool& pool) -> result_type& override {
+        if(pool.empty()) {
+            throw error_t("empty pool passed to distributor");
+        }
         auto units = get_bucket_with_minimal_utilization(pool);
         return units[rand() % units.size()];
     }
