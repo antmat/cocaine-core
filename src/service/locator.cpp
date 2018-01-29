@@ -120,6 +120,7 @@ locator_t::connect_sink_t::discard(const std::error_code& ec) {
     }));
 
     parent->drop_node(uuid);
+    //TODO: Maybe retry with timer?
 }
 
 void
@@ -327,9 +328,7 @@ locator_t::locator_t(context_t& context, io_service& asio, const std::string& na
     m_context(context),
     m_log(context.log(name)),
     m_cfg(name, root),
-    m_asio(asio),
-    link_attempts(0),
-    link_timer()
+    m_asio(asio)
 {
     on<locator::resolve>(std::bind(&locator_t::on_resolve, this, ph::_1, ph::_2));
     on<locator::connect>(std::bind(&locator_t::on_connect, this, ph::_1));
@@ -400,7 +399,11 @@ locator_t::locator_t(context_t& context, io_service& asio, const std::string& na
 }
 
 locator_t::~locator_t() {
-    // Empty.
+    // In general we don't need this, because ioloop is stopped before dtor.
+    for (auto& timer: m_retry_timers) {
+        timer.second->cancel();
+    }
+    m_retry_timers.clear();
 }
 
 basic_dispatch_t&
@@ -421,8 +424,23 @@ locator_t::link_node(const std::string& uuid, const std::vector<tcp::endpoint>& 
         return;
     }
 
-    auto  socket = std::make_shared<tcp::socket>(m_asio);
+    auto socket = std::make_shared<tcp::socket>(m_asio);
+    auto connect_timer = std::make_shared<asio::deadline_timer>(m_asio);
     auto& uplink = ((*mapping)[uuid] = {endpoints, nullptr});
+
+    connect_timer->expires_from_now(boost::posix_time::seconds(10));
+    connect_timer->async_wait([=](std::error_code ec) {
+        if(!ec) {
+            COCAINE_LOG_INFO(m_log, "connection timer expired, canceling socket, going to schedule reconnect");
+            m_clients->erase(uuid);
+            //We don't care about ec - it's here to use nothrow overload.
+            std::error_code ec;
+            socket->close(ec);
+            retry_link_node(uuid, endpoints);
+        } else {
+            COCAINE_LOG_DEBUG(m_log, "connection timer was cancelled");
+        }
+    });
 
     asio::async_connect(*socket, uplink.endpoints.begin(), uplink.endpoints.end(),
         [=](const std::error_code& ec, std::vector<tcp::endpoint>::const_iterator endpoint)
@@ -437,18 +455,20 @@ locator_t::link_node(const std::string& uuid, const std::vector<tcp::endpoint>& 
                 return nullptr;
             }
 
-            if(ec) {
-                COCAINE_LOG_ERROR(m_log, "unable to connect to remote: [{:d}] {}", ec.value(), ec.message());
+            if(!connect_timer->cancel()) {
+                COCAINE_LOG_ERROR(m_log, "could not connect locator to {} - timed out (timer could not be cancelled)", uuid);
                 mapping.erase(uuid);
-
                 retry_link_node(uuid, endpoints);
                 return nullptr;
             }
 
-            link_timer.apply([&](std::unique_ptr<asio::deadline_timer>& timer) {
-                timer.reset();
-                link_attempts = 0;
-            });
+            if(ec) {
+                COCAINE_LOG_ERROR(m_log, "unable to connect to remote: [{:d}] {}", ec.value(), ec.message());
+                mapping.erase(uuid);
+                retry_link_node(uuid, endpoints);
+                return nullptr;
+            }
+
             COCAINE_LOG_INFO(m_log, "connected to remote via {}", *endpoint);
 
             // Uniquify the socket object.
@@ -517,26 +537,20 @@ locator_t::uuid() const {
 
 auto
 locator_t::retry_link_node(const std::string& uuid, const std::vector<asio::ip::tcp::endpoint>& endpoints) -> void {
-    link_timer.apply([&](std::unique_ptr<asio::deadline_timer>& timer) {
-        if (timer) {
-            // Do nothing if the timer is already locked and loaded.
-            return;
-        }
+    auto it = m_retry_timers.find(uuid);
+    if (it != m_retry_timers.end()) {
+        return;
+    }
 
-        timer.reset(new asio::deadline_timer(m_asio));
-        timer->expires_from_now(boost::posix_time::seconds(std::min(static_cast<int>(std::pow(2, link_attempts)), 32)));
-        timer->async_wait([=](const std::error_code& ec) {
-            switch (ec.value()) {
-            case asio::error::operation_aborted:
-                return;
-            default:
-                ;
-            }
+    auto timer = std::make_shared<asio::deadline_timer>(m_asio);
 
+    m_retry_timers[uuid] = timer;
+    timer->expires_from_now(boost::posix_time::seconds(10));
+    timer->async_wait([=](const std::error_code& ec) {
+        m_retry_timers.erase(uuid);
+        if(!ec) {
             link_node(uuid, endpoints);
-        });
-
-        link_attempts += 1;
+        }
     });
 }
 
