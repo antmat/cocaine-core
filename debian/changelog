@@ -1,3 +1,10 @@
+cocaine-core (0.12.14.22) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Fixed: Proper reconnects in locator + connection timer.
+
+ -- Anton Matveenko <antmat@me.com>  Mon, 29 Jan 2018 21:25:07 +0300
+
 cocaine-core (0.12.14.21) unstable; urgency=low
 
   * Non-maintainer upload.
