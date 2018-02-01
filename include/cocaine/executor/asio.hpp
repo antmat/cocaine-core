@@ -7,6 +7,8 @@
 #include <boost/optional/optional.hpp>
 #include <boost/thread/thread.hpp>
 
+#define OWNING_ASIO_INIT ::cocaine::executor::owning_asio_t::format_origin(__FILE__, __LINE__)
+
 namespace cocaine {
 namespace executor {
 
@@ -19,7 +21,10 @@ public:
     };
 
     // Choose wheteher to wait wor async operations completion in dtor or not
+    __attribute__((deprecated("use ctor with loop name, e.g. owning_asio_t(OWNING_ASIO_INIT)")))
     owning_asio_t(stop_policy_t stop_policy = stop_policy_t::graceful);
+
+    owning_asio_t(const std::string& name, stop_policy_t stop_policy = stop_policy_t::graceful);
 
     ~owning_asio_t();
 
@@ -29,7 +34,12 @@ public:
     auto
     asio() -> asio::io_service&;
 
+    static auto
+    format_origin(std::string filename, size_t line) -> std::string;
+
 private:
+    auto run(const std::string& name) -> void;
+
     asio::io_service io_loop;
     boost::optional<asio::io_service::work> work;
     boost::thread thread;
