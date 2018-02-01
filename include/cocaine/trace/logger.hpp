@@ -48,6 +48,10 @@ public:
     auto log(blackhole::severity_t severity, const blackhole::lazy_message_t& message, blackhole::attribute_pack& pack) -> void;
 
     auto manager() -> blackhole::scope::manager_t&;
+
+private:
+    template<class Message>
+    auto log_impl(blackhole::severity_t severity, const Message& message, blackhole::attribute_pack& pack) -> void;
 };
 
 }} // namespace cocaine::logging

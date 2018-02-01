@@ -110,6 +110,11 @@ public:
     bool
     pushed() const;
 
+    const std::string&
+    rpc_name() const {
+        return state.rpc_name;
+    }
+
     template<class AttributeSet>
     AttributeSet
     formatted_attributes() const {

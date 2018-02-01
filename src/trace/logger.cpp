@@ -19,23 +19,12 @@
 */
 
 #include "cocaine/context/filter.hpp"
+#include "cocaine/format.hpp"
 #include "cocaine/trace/logger.hpp"
 
 using namespace blackhole;
 
 namespace cocaine { namespace logging {
-
-namespace {
-    attribute_list
-    gen_view(const attributes_t& attributes) {
-        attribute_list attr_list;
-        for (const auto& attribute : attributes) {
-            attr_list.emplace_back(attribute);
-        }
-        return attr_list;
-    }
-}
-
 
 trace_wrapper_t::trace_wrapper_t(std::unique_ptr<blackhole::logger_t> log):
     inner(std::move(log)),
@@ -64,27 +53,53 @@ auto trace_wrapper_t::log(severity_t severity, const message_t& message) -> void
 }
 
 auto trace_wrapper_t::log(severity_t severity, const message_t& message, attribute_pack& pack) -> void {
-    auto attr = attributes();
-    auto attr_list = gen_view(attr);
-    pack.push_back(attr_list);
-    auto filter = *(m_filter.synchronize());
-    if(filter->operator()(severity, pack)) {
-        inner->log(severity, message, pack);
-    }
+    log_impl(severity, message, pack);
 }
 
 auto trace_wrapper_t::log(severity_t severity, const lazy_message_t& message, attribute_pack& pack) -> void {
-    auto attr = attributes();
-    auto attr_list = gen_view(attr);
-    pack.push_back(attr_list);
-    auto filter = *(m_filter.synchronize());
-    if(filter->operator()(severity, pack)) {
-        inner->log(severity, message, pack);
-    }
+    log_impl(severity, message, pack);
 }
 
 auto trace_wrapper_t::manager() -> scope::manager_t& {
     return inner->manager();
+}
+
+template<class Message>
+auto trace_wrapper_t::log_impl(blackhole::severity_t severity, const Message& message, blackhole::attribute_pack& pack) -> void {
+    // This all strange looking code is written for performance,
+    // cause profiling of vicodyn showed out that up to 30% of CPU is
+    // consumed in trace_wrapper_t and unneeded trace attribute formatting and copying took the biggest part
+    // of that 30%.
+    attribute_list attr_list;
+    const auto& trace = trace_t::current();
+    if(!trace.empty()) {
+        attr_list.reserve(5ul);
+        attr_list.emplace_back("trace_id", "");
+        attr_list.emplace_back("span_id", "");
+        attr_list.emplace_back("parent_id", "");
+        attr_list.emplace_back("rpc_name", trace.rpc_name());
+        attr_list.emplace_back("trace_bit", trace.verbose());
+        pack.push_back(attr_list);
+    }
+    auto filter = *(m_filter.synchronize());
+
+    // We run filter with empty trace attributes for perf and only format them if filter passed.
+    // We assume here that no one will check those attributes for exact match.
+    if(filter->operator()(severity, pack)) {
+        if(!trace.empty()) {
+            auto trace_id = cocaine::format("{:016x}", trace.get_trace_id());
+            auto span_id = cocaine::format("{:016x}", trace.get_id());
+            auto parent_id = cocaine::format("{:016x}", trace.get_parent_id());
+
+            attr_list[0].second = trace_id;
+            attr_list[1].second = span_id;
+            attr_list[2].second = parent_id;
+            // Code duplication is here because vars should be in scope
+            inner->log(severity, message, pack);
+        } else {
+            inner->log(severity, message, pack);
+        }
+    }
 }
 
 }} // namespace cocaine::logging
